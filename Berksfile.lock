@@ -1,0 +1,7 @@
+DEPENDENCIES
+  rbenv
+    git: https://github.com/peterzhao/rbenv_cookbook.git
+    revision: 2e568f21c84dde91f33726b23c7efd00f2f7bd72
+
+GRAPH
+  rbenv (0.1.0)

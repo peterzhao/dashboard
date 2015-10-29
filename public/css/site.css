@@ -1,0 +1,10 @@
+/* fluid 22 columns */
+.gridster ul li {
+  border: 2px solid hsla(0, 0%, 0%, 0.5);
+  padding: 2px;
+  margin: 2px;
+}
+
+.gridster ul {
+  list-style-type: none;
+}

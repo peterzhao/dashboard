@@ -1,0 +1,18 @@
+<div class="gridster">
+  <ul>
+    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">love</li>
+    <li data-row="2" data-col="1" data-sizex="1" data-sizey="1">hi</li>
+    <li data-row="3" data-col="1" data-sizex="1" data-sizey="1">boo</li>
+    <li data-row="1" data-col="2" data-sizex="2" data-sizey="1">good</li>
+    <li data-row="2" data-col="2" data-sizex="2" data-sizey="2">hood</li>
+  </ul>
+</div>
+<script type="text/javascript">
+  $(function(){
+    $('.gridster ul').gridster({
+      widget_margins: [10, 10],
+      widget_base_dimensions: [140, 140],
+      resize: { enabled: true }
+    });
+  }); 
+</script>
