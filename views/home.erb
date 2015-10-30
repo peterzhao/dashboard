@@ -1,10 +1,8 @@
 <div class="gridster">
   <ul>
-    <li data-row="1" data-col="1" data-sizex="1" data-sizey="1">love</li>
-    <li data-row="2" data-col="1" data-sizex="1" data-sizey="1">hi</li>
-    <li data-row="3" data-col="1" data-sizex="1" data-sizey="1">boo</li>
-    <li data-row="1" data-col="2" data-sizex="2" data-sizey="1">good</li>
-    <li data-row="2" data-col="2" data-sizex="2" data-sizey="2">hood</li>
+    <% config['widges'].each do |widge| %> 
+    <li data-row="<%= widge['row'] %>" data-col="<%= widge['col'] %>" data-sizex="<%= widge['sizex'] %>" data-sizey="<%= widge['sizey'] %>"><%= widge['name'] %></li>
+    <% end %>
   </ul>
 </div>
 <script type="text/javascript">
