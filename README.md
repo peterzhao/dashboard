@@ -1,4 +1,4 @@
-A ruby web application to show a dashboard. A dashboard can be configed to contains multiple grids. 
+A ruby web application to show a dashboard. A dashboard can be configed to contain multiple grids. 
 A grid can be configed to pull a dashboard plugin to display some information. 
 At this moment we only have Gocd plugin available, which is used to monitor a Gocd pipeline build status.
 
@@ -17,7 +17,7 @@ Vagrant
 Chef Development Kit (Chef DK)
 
 Then you can check out this git repo to your local file system and then from there run the following commands:
-
+       vagrant plugin install vagrant-berkshelf
        vagrant up
        # ssh to the new vm
        vagrant ssh

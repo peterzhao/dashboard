@@ -1,4 +1,7 @@
-/* fluid 22 columns */
+.page-title {
+  text-align: center
+}
+
 .gridster ul li {
   border: 2px solid hsla(0, 0%, 0%, 0.5);
   padding: 2px;
