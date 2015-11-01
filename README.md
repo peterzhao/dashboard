@@ -17,6 +17,7 @@ Vagrant
 Chef Development Kit (Chef DK)
 
 Then you can check out this git repo to your local file system and then from there run the following commands:
+
        vagrant plugin install vagrant-berkshelf
        vagrant up
        # ssh to the new vm
