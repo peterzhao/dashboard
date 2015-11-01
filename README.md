@@ -12,9 +12,10 @@ At this moment we only have Gocd plugin available, which is used to monitor a Go
 To have a develpment environment easily, you may use vagrant to start a virtual machine as your devolpment box. 
 You need have following tools installed:
 
-Virtual Box
-Vagrant
-Chef Development Kit (Chef DK)
+* Virtual Box
+* Vagrant
+* Chef Development Kit (Chef DK)
+
 
 Then you can check out this git repo to your local file system and then from there run the following commands:
 
