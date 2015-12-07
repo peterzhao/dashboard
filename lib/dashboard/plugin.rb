@@ -1,28 +1,41 @@
 module Dashboard
   class Plugin
+
+    def initialize(options)
+      @options = options
+    end
+
+    def  options
+      @options
+    end
+
     class << self
-      def register(id, plugin)
-        @plugins ||= {}
-        @plugins[id] = plugin
+      def register(type, plugin_class)
+        @plugin_classes ||= {}
+        @plugin_classes[type] = plugin_class
       end
 
-      def check(id, options) 
-        plugin(id).send :check, options
+      def check(type, options) 
+        plugin(type, options).send :check
       end
       
-      def template(id, options)
-        plugin(id).send :template, options
+      def template(type, options)
+        plugin(type, options).send :template
       end
 
-      def config(id, options)
-        plugin(id).send :config, options
+      def style(type, options)
+        plugin(type, options).send :style
+      end
+
+      def config(type, options)
+        plugin(type, options).send :config
       end
 
       private 
 
-      def plugin(id)
-        raise "Could not find the plugin #{id}!" unless @plugins[id]
-        @plugins[id].new
+      def plugin(type, options)
+        raise "Could not find the plugin #{type}!" unless @plugin_classes[type]
+        @plugin_classes[type].new options
       end
     end
   end

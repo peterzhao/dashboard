@@ -1,19 +1,35 @@
-<h3 class="page-title">Default dashboard</h3>
-<a class="header-link" href="/config/default">Config this dashboard</a>
-<a class="header-link" href="/config/new">Add a new dashboard</a>
+<h2 class="page-title"><%= config['board'].capitalize %></h2>
+<a class="header-link" href="/boards/default/config">Config this dashboard</a>
+<a class="header-link" href="/boards/new">Add a new dashboard</a>
+<style>
+  <% config['styles'].values.each do |style| %>
+    <%= style %>
+  <% end %>
+</style>
 <div class="gridster">
   <ul>
     <% config['widges'].each do |widge| %> 
-    <li data-row="<%= widge['row'] %>" data-col="<%= widge['col'] %>" data-sizex="<%= widge['sizex'] %>" data-sizey="<%= widge['sizey'] %>"><%= widge['name'] %></li>
+      <li class="dashboard-widge" id="<%= widge['id'] %>" data-row="<%= widge['row'] %>" data-col="<%= widge['col'] %>" data-sizex="<%= widge['sizex'] %>" data-sizey="<%= widge['sizey'] %>">
+        <div data-bind="with: data">
+          <%= widge['template'] %>
+        </div>
+      </li>
     <% end %>
   </ul>
 </div>
 <script type="text/javascript">
+  widget_base_width = 280;
+  widget_base_height = 140;
   $(function(){
     $('.gridster ul').gridster({
       widget_margins: [10, 10],
-      widget_base_dimensions: [140, 140],
+      widget_base_dimensions: [widge_base_width, widge_base_height],
       resize: { enabled: true }
+    });
+    $('.dashboard-widge').each(function(index, widge){
+      loader = new Dashboard.WidgeLoader("<%=config['board'] %>", widge.id);
+      ko.applyBindings(loader, widge);
+      loader.startPull();
     });
   }); 
 </script>
