@@ -75,7 +75,7 @@ EOS
       <div class="label left" data-bind="text: label"></div>
       <div class="stages left" data-bind="foreach: stages">
         <div class="stage left" data-bind="css: result">
-          <div class="stage-label" data-bind="text: name, style: { height: 1/($parents[1].pipelines.length)*(140-28) + 'px', width: 1/($parent.stages.length)*(280-16) + 'px' }"></div>
+          <div class="stage-label" data-bind="text: name, style: { height: 1/($parents[1].pipelines.length)*($root.base_height * $root.sizey - 28) + 'px', width: 1/($parent.stages.length)*($root.base_width * $root.sizex - 16) + 'px' }"></div>
         </div>
       </div>
     </div>

@@ -11,10 +11,14 @@ if(typeof(Log) === "undefined") {
 }
 
 if(typeof(Dashboard) === "undefined") Dashboard = {}
-Dashboard.WidgeLoader = function(board, widgeId){
+Dashboard.WidgeLoader = function(board, widgeId, base_width, base_height){
   var self = this;
   self.board = board,
   self.widgeId = widgeId;
+  self.base_width = base_width;
+  self.base_height = base_height;
+  self.sizex = 1;
+  self.sizey = 1;
   self.data = ko.observable(null);
   self.pull = function(){
     $.ajax({
@@ -26,13 +30,15 @@ Dashboard.WidgeLoader = function(board, widgeId){
        Log.error(arguments);
        },
       success: function(result){
+        self.sizex = $("li#" + self.widgeId).attr('data-sizex');
+        self.sizey = $("li#" + self.widgeId).attr('data-sizey');
         self.data(result);
       }
     });
   };
   self.startPull = function(){
     self.pull();
-    setTimeout(self.pull, 500);
+    setInterval(self.pull, 15000);
   };
 };
 

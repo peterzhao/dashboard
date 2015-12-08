@@ -18,16 +18,16 @@
   </ul>
 </div>
 <script type="text/javascript">
-  widget_base_width = 280;
-  widget_base_height = 140;
+  base_width = 280;
+  base_height = 140;
   $(function(){
     $('.gridster ul').gridster({
       widget_margins: [10, 10],
-      widget_base_dimensions: [widge_base_width, widge_base_height],
+      widget_base_dimensions: [base_width, base_height],
       resize: { enabled: true }
     });
     $('.dashboard-widge').each(function(index, widge){
-      loader = new Dashboard.WidgeLoader("<%=config['board'] %>", widge.id);
+      loader = new Dashboard.WidgeLoader("<%=config['board'] %>", widge.id, base_width, base_height);
       ko.applyBindings(loader, widge);
       loader.startPull();
     });
