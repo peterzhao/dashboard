@@ -20,6 +20,10 @@ Dashboard.WidgeLoader = function(board, widgeId, base_width, base_height){
   self.sizex = 1;
   self.sizey = 1;
   self.data = ko.observable(null);
+  self.changeSize = function(x, y){
+    self.sizex = x;
+    self.sizey = y;
+  };
   self.pull = function(){
     $.ajax({
       url: "/board/" + self.board + "/widge/" + widgeId,
@@ -30,8 +34,6 @@ Dashboard.WidgeLoader = function(board, widgeId, base_width, base_height){
        Log.error(arguments);
        },
       success: function(result){
-        self.sizex = $("li#" + self.widgeId).attr('data-sizex');
-        self.sizey = $("li#" + self.widgeId).attr('data-sizey');
         self.data(result);
       }
     });

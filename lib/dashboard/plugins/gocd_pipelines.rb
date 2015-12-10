@@ -3,7 +3,8 @@ require 'json'
 
 module Dashboard
   class GocdPipeline < Dashboard::Plugin
-
+    Stage_margin = '1'
+    Pipeline_margin = '3'
     def check
 <<EOS
 {
@@ -75,7 +76,7 @@ EOS
       <div class="label left" data-bind="text: label"></div>
       <div class="stages left" data-bind="foreach: stages">
         <div class="stage left" data-bind="css: result">
-          <div class="stage-label" data-bind="text: name, style: { height: 1/($parents[1].pipelines.length)*($root.base_height * $root.sizey - 28) + 'px', width: 1/($parent.stages.length)*($root.base_width * $root.sizex - 16) + 'px' }"></div>
+          <div class="stage-label" data-bind="text: name, style: { height: 1/($parents[1].pipelines.length)*($root.base_height * $root.sizey -#{Pipeline_margin}*$parents[1].pipelines.length - 28) + 'px', width: 1/($parent.stages.length)*($root.base_width * $root.sizex - #{Stage_margin}*$parent.stages.length - 16) + 'px' }"></div>
         </div>
       </div>
     </div>
@@ -99,11 +100,15 @@ EOS
 .gocd-widge .pipeline{
   clear: both;
 }
+.gocd-widge .stages{
+  margin-bottom: #{Pipeline_margin}px
+}
 .gocd-widge .left{
   float: left;
 }
 .gocd-widge .stage{
   display: table;
+  margin-left: #{Stage_margin}px
 }
 
 .gocd-widge .stage-label{

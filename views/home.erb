@@ -24,10 +24,24 @@
     $('.gridster ul').gridster({
       widget_margins: [10, 10],
       widget_base_dimensions: [base_width, base_height],
-      resize: { enabled: true }
+      resize: { 
+        enabled: true,
+        stop: function(e, ui, widges){
+          for(i=0; i<widges.length; i++){
+            id = widges[i].id;
+            model = widge_models[id];
+            sizex = $(widges[i]).attr('data-sizex')
+            sizey = $(widges[i]).attr('data-sizey')
+            model.changeSize(sizex, sizey);
+            model.pull();
+          }
+        }
+      }
     });
+    widge_models = {};
     $('.dashboard-widge').each(function(index, widge){
       loader = new Dashboard.WidgeLoader("<%=config['board'] %>", widge.id, base_width, base_height);
+      widge_models[widge.id] = loader;
       ko.applyBindings(loader, widge);
       loader.startPull();
     });
