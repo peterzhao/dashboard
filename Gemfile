@@ -7,4 +7,5 @@ gem 'rest-client'
 group :test do
  gem 'pry'
  gem 'rspec'
+ gem 'jasmine'
 end

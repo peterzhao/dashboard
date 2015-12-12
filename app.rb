@@ -1,12 +1,14 @@
 require 'sinatra'
 require 'json'
-require_relative 'lib/dashboard'
 
 set :bind, '0.0.0.0'
 
 helpers do
   def widge_id(widge_name)
     widge_name.gsub(' ', '-').gsub('_', '-')
+  end
+  def load_plugins
+    load File.expand_path("../lib/dashboard.rb", __FILE__)
   end
 end
 
@@ -15,6 +17,7 @@ get '/' do
 end
 
 get '/board/:board_name' do
+  load_plugins
   config = JSON.load(File.read("config/#{params['board_name']}.json"))
   config['styles'] = {}
   config['board'] = params['board_name'] 
@@ -27,6 +30,7 @@ get '/board/:board_name' do
 end
 
 get '/board/:board_name/widge/:widge_id' do
+  load_plugins
   config = JSON.load(File.read("config/#{params['board_name']}.json"))
   widge = config['widges'].find{ |widge| widge_id(widge['name']) == params['widge_id'] }
   Dashboard::Plugin.check(widge['type'], widge)

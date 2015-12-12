@@ -11,7 +11,7 @@ module Dashboard
   "pipelines": [
     {
       "name": "#{options['name']}",
-      "label": 12,
+      "label": 13,
       "stages": [
         {
           "name": "build",
@@ -32,7 +32,7 @@ module Dashboard
     },
     {
       "name": "#{options['name']}",
-      "label": 11,
+      "label": 10,
       "stages": [
         {
           "name": "build",
