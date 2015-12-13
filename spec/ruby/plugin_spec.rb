@@ -1,5 +1,5 @@
 require 'rspec'
-require_relative '../lib/dashboard'
+require_relative '../../lib/dashboard'
 
 class TestPlugin < Dashboard::Plugin 
 end

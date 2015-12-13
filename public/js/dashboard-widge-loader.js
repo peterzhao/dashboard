@@ -25,7 +25,7 @@ Dashboard.WidgeLoader = function(board, widgeId, base_width, base_height){
     self.sizey = y;
   };
   self.pull = function(){
-    $.ajax({
+    jQuery.ajax({
       url: "/board/" + self.board + "/widge/" + widgeId,
       contentType: "application/json; charset=utf-8",
       type: "get",
