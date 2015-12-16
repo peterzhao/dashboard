@@ -12,8 +12,10 @@
   <ul>
     <% config['widges'].each do |widge| %> 
       <li class="dashboard-widge" id="<%= widge['id'] %>" data-row="<%= widge['row'] %>" data-col="<%= widge['col'] %>" data-sizex="<%= widge['sizex'] %>" data-sizey="<%= widge['sizey'] %>" data-bind="css: {error: hasError()}">
-        <div data-bind="with: data">
-          <%= widge['template'] %>
+        <div data-bind="ifnot: hasError">
+          <div data-bind="with: data">
+            <%= widge['template'] %>
+          </div>
         </div>
         <div data-bind="if: hasError">
           <div class="widge-title"><%= widge['id'] %></div>

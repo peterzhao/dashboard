@@ -8,4 +8,5 @@ group :test do
  gem 'pry'
  gem 'rspec'
  gem 'jasmine'
+ gem 'rack-test'
 end
