@@ -1,15 +1,3 @@
-window.console = window.console || { log: function(){}}; 
-if(typeof(Log) === "undefined") {
- Log = {
-   debug:  function(message){
-     console.log('Debug', message);     
-   },
-   error:  function(message){
-     console.log('Error', message);     
-   }
- }
-}
-
 if(typeof(Dashboard) === "undefined") Dashboard = {}
 Dashboard.WidgeLoader = function(board, widgeId, base_width, base_height){
   var self = this;
@@ -20,10 +8,13 @@ Dashboard.WidgeLoader = function(board, widgeId, base_width, base_height){
   self.sizex = 1;
   self.sizey = 1;
   self.data = ko.observable(null);
+  self.error = ko.observable(null);
+  self.hasError = ko.observable(false);
   self.changeSize = function(x, y){
     self.sizex = x;
     self.sizey = y;
   };
+
   self.pull = function(){
     jQuery.ajax({
       url: "/board/" + self.board + "/widge/" + widgeId,
@@ -31,10 +22,17 @@ Dashboard.WidgeLoader = function(board, widgeId, base_width, base_height){
       type: "get",
       dataType: "json",
       error: function(XMLHttpRequest, textStatus, errorThrown) {
-       Log.error(arguments);
-       },
+        self.error("Failed to update data from the dashboard server.");
+        self.hasError(true);
+      },
       success: function(result){
-        self.data(result);
+        if(result.error == null){
+          self.data(result);
+          self.hasError(false);
+        }else{
+          self.error(result.error);
+          self.hasError(true);
+        }
       }
     });
   };

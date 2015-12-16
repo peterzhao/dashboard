@@ -6,65 +6,17 @@ module Dashboard
     Stage_margin = '1'
     Pipeline_margin = '3'
     def check
-<<EOS
-{
-  "pipelines": [
-    {
-      "name": "#{options['name']}",
-      "label": 13,
-      "stages": [
-        {
-          "name": "build",
-          "state": "Completed",
-          "result": "Passed"
-        },
-        {
-          "name": "test",
-          "state": "Completed",
-          "result": "Passed"
-        },
-        {
-          "name": "deploy",
-          "state": "Completed",
-          "result": "Passed"
-        }
-      ]
-    },
-    {
-      "name": "#{options['name']}",
-      "label": 10,
-      "stages": [
-        {
-          "name": "build",
-          "state": "Completed",
-          "result": "Passed"
-        },
-        {
-          "name": "test",
-          "state": "Completed",
-          "result": "Passed"
-        },
-        {
-          "name": "deploy",
-          "state": "Completed",
-          "result": "Failed"
-        }
-      ]
-    }
-  ]
-}
-EOS
-      #params = { method: :get, url: "#{options['base_url']}/go/api/pipelines/#{options['name']}/history"}
-      #if options['user_name']
-        #params[:user] = options['user']
-        #params[:password] = options['password']
-      #end
-      #begin
-        #response = RestClient::Request.execute params
-        #response.to_str 
-      #rescue => e
-        #{'error' => { 'message' => e.reponse, 'http_code' => e.http_code }}.to_s
-      #end
+      params = { method: :get, url: "#{options['base_url']}/go/api/pipelines/#{options['name']}/history"}
+      if options['user']
+        params[:user] = options['user']
+        params[:password] = options['password']
+      end
+      begin
+        response = RestClient::Request.execute(params)
+      rescue => e
+        return "{\"error\":\"#{e.message}\"}"
+      end
+      remove_unwanted_instances(response, options['number_of_instances'])
     end
 
     def template
@@ -123,6 +75,14 @@ EOS
 
     end
   end
+end
+
+private 
+
+def remove_unwanted_instances(response_str, number_of_instances)
+  response = JSON.parse(response_str)
+  response['pipelines'] = response['pipelines'][0..(number_of_instances - 1)] if response['pipelines'] 
+  response.to_json
 end
 
 Dashboard::Plugin.register('gocd_pipeline', Dashboard::GocdPipeline)

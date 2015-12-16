@@ -23,6 +23,11 @@ describe Dashboard::Plugin do
     Dashboard::Plugin.template('test_plugin', options)
   end
 
+  it 'should get style from plugin' do
+    expect(test_plugin).to receive(:style)
+    Dashboard::Plugin.style('test_plugin', options)
+  end
+
   it 'should get config ui from plugin' do
     expect(test_plugin).to receive(:config)
     Dashboard::Plugin.config('test_plugin', options)

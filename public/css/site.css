@@ -11,3 +11,20 @@
 .gridster ul {
   list-style-type: none;
 }
+
+.dashboard-widge.error {
+  background-color: #eeeeee;
+}
+
+.dashboard-widge .error-message {
+  color: #222222;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.widge-title {
+  text-align: center;
+  color: white;
+  font-size: 20px;
+  background-color: red;
+}
