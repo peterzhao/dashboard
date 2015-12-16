@@ -1,6 +1,8 @@
 <h2 class="page-title"><%= config['board'].capitalize %></h2>
-<a class="header-link" href="/boards/default/config">Config this dashboard</a>
-<a class="header-link" href="/boards/new">Add a new dashboard</a>
+<div class="header-links">
+  <a class="header-link" href="/boards/default/config">Config this dashboard</a>
+  <a class="header-link" href="/boards/new">Add a new dashboard</a>
+</div>
 <style>
   <% config['styles'].values.each do |style| %>
     <%= style %>

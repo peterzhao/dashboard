@@ -1,6 +1,9 @@
 .page-title {
   text-align: center
 }
+.header-links {
+  text-align: center
+}
 
 .gridster ul li {
   border: 2px solid hsla(0, 0%, 0%, 0.5);
