@@ -11,6 +11,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provision "chef_solo" do |chef|
     chef.add_recipe "rbenv"
+    chef.add_recipe "tools"
   end
 
   config.vm.provider "virtualbox" do |v|

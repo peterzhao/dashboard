@@ -1,7 +1,35 @@
 DEPENDENCIES
+  nodejs
+    git: https://github.com/redguide/nodejs.git
+    revision: 2f05db5d9278e7d491e5ffb7147226cf3538ac63
   rbenv
     git: https://github.com/peterzhao/rbenv_cookbook.git
     revision: 2e568f21c84dde91f33726b23c7efd00f2f7bd72
+  tools
+    path: cookbooks/tools
 
 GRAPH
+  7-zip (1.0.2)
+    windows (>= 1.2.2)
+  apt (2.9.2)
+  ark (0.9.0)
+    7-zip (>= 0.0.0)
+    windows (>= 0.0.0)
+  build-essential (2.2.4)
+  chef_handler (1.2.0)
+  homebrew (2.0.3)
+    build-essential (>= 2.1.2)
+  nodejs (2.4.5)
+    apt (>= 0.0.0)
+    ark (>= 0.0.0)
+    build-essential (>= 0.0.0)
+    homebrew (>= 0.0.0)
+    yum-epel (>= 0.0.0)
   rbenv (0.1.0)
+  tools (0.1.0)
+    nodejs (>= 0.0.0)
+  windows (1.38.4)
+    chef_handler (>= 0.0.0)
+  yum (3.8.2)
+  yum-epel (0.6.5)
+    yum (~> 3.2)
