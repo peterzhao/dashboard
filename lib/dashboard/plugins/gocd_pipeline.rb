@@ -14,7 +14,8 @@ module Dashboard
       begin
         response = RestClient::Request.execute(params)
       rescue => e
-        return { "error" => e.message }.to_json
+        message = e.message.gsub('"', '\"')
+        return "{\"error\":\"#{message}\"}"
       end
       remove_unwanted_instances(response, options['number_of_instances'])
     end
