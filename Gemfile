@@ -9,5 +9,7 @@ group :test do
  gem 'pry'
  gem 'rspec'
  gem 'jasmine'
+ gem 'cucumber'
+ gem 'capybara' 
  gem 'rack-test'
 end
