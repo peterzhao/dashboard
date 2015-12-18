@@ -13,6 +13,7 @@ Vagrant.configure(2) do |config|
     chef.add_recipe "tools::rbenv"
     chef.add_recipe "tools::mounte_bank"
     chef.add_recipe "tools::tmate"
+    chef.add_recipe "tools::vim"
   end
 
   config.vm.provider "virtualbox" do |v|
