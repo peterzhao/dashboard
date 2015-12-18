@@ -1,4 +1,5 @@
 require 'rspec'
+require 'json'
 require_relative '../../lib/dashboard'
 
 describe Dashboard::GocdPipeline do
@@ -27,11 +28,12 @@ describe Dashboard::GocdPipeline do
   end
 
   it 'should return error data when server gives an error' do
-    expect(RestClient::Request).to receive(:execute).with(anything()).and_raise("400 error")
+    expect(RestClient::Request).to receive(:execute).with(anything()).and_raise('400 error("2")')
 
     plugin = Dashboard::GocdPipeline.new(options)
     pipeline_data = plugin.check
 
-    expect(pipeline_data).to eq('{"error":"400 error"}')
+    expect(pipeline_data).to eq('{"error":"400 error(\"2\")"}')
+    expect{JSON.load(pipeline_data)}.not_to raise_error
   end
 end
