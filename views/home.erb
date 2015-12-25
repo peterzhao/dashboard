@@ -1,32 +1,43 @@
-<h2 class="page-title"><%= config['board'].capitalize %></h2>
-<div class="header-links">
-  <a class="header-link" href="/boards/default/config">Config this dashboard</a>
-  <a class="header-link" href="/boards/new">Add a new dashboard</a>
+<div class="header">
+    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+      <div class="heading">
+      <img src="/images/ju138.png" height="36" width="36"/>
+    </div>
+      <div class="heading heading-title">JU</div>
+      <div class="pure-menu-heading"><%= config['board'] %></div>
+
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="#" class="pure-menu-link">Config this dashboard</a></li>
+            <li class="pure-menu-item"><a href="#" class="pure-menu-link">Add a new dashboard</a></li>
+        </ul>
+    </div>
 </div>
 <style>
   <% config['styles'].values.each do |style| %>
     <%= style %>
   <% end %>
 </style>
-<div class="gridster">
-  <ul>
-    <% config['widges'].each do |widge| %> 
-      <li class="dashboard-widge" id="<%= widge['id'] %>" data-row="<%= widge['row'] %>" data-col="<%= widge['col'] %>" data-sizex="<%= widge['sizex'] %>" data-sizey="<%= widge['sizey'] %>" data-bind="css: {error: hasError()}">
-        <div data-bind="ifnot: hasError">
-          <div data-bind="with: data">
-            <%= widge['template'] %>
-          </div>
-        </div>
-        <div data-bind="if: hasError">
-          <div class="widge-title"><%= widge['id'] %></div>
-          <div class="error-message"> 
-            <span>Error: </span>
-            <span data-bind="text: error"></span>
-          </div>
-        </div>
-      </li>
-    <% end %>
-  </ul>
+<div class="content-wrapper">
+    <div class="gridster">
+      <ul>
+        <% config['widges'].each do |widge| %> 
+          <li class="dashboard-widge" id="<%= widge['id'] %>" data-row="<%= widge['row'] %>" data-col="<%= widge['col'] %>" data-sizex="<%= widge['sizex'] %>" data-sizey="<%= widge['sizey'] %>" data-bind="css: {error: hasError()}">
+            <div data-bind="ifnot: hasError">
+              <div data-bind="with: data">
+                <%= widge['template'] %>
+              </div>
+            </div>
+            <div data-bind="if: hasError">
+              <div class="widge-title"><%= widge['id'] %></div>
+              <div class="error-message"> 
+                <span>Error: </span>
+                <span data-bind="text: error"></span>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
 </div>
 <script type="text/javascript">
   base_width = 280;

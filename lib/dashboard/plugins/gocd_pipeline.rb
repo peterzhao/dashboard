@@ -3,8 +3,9 @@ require 'json'
 
 module Dashboard
   class GocdPipeline < Dashboard::Plugin
-    Stage_margin = '1'
-    Pipeline_margin = '3'
+    TITLE_HEIGHT = '27'
+    TITLE_PADDING_TOP = '3'
+    LABEL_WIDTH = '30'
     def check
       params = { method: :get, url: "#{options['base_url']}/go/api/pipelines/#{options['name']}/history"}
       if options['user']
@@ -22,17 +23,25 @@ module Dashboard
 
     def template
 <<EOS
-<div class="gocd-widge">
-  <div class="title">#{options['name']}</div>
-  <div data-bind="foreach: pipelines">
-    <div class="pipeline">
-      <div class="label left" data-bind="text: label"></div>
-      <div class="stages left" data-bind="foreach: stages">
-        <div class="stage left" data-bind="css: result">
-          <div class="stage-label" data-bind="text: name, style: { height: 1/($parents[1].pipelines.length)*($root.base_height * $root.sizey -#{Pipeline_margin}*$parents[1].pipelines.length - 28) + 'px', width: 1/($parent.stages.length)*($root.base_width * $root.sizex - #{Stage_margin}*$parent.stages.length - 16) + 'px' }"></div>
+<div class="gocd">
+  <div class="gocd-title">#{options['name']}</div>
+  <div class="gocd-pipelines" data-bind="style: { height: ($root.base_height * $root.sizey - #{TITLE_HEIGHT} - #{TITLE_PADDING_TOP}) + 'px'}">
+    <!-- ko foreach: pipelines -->
+      <div class="gocd-pipeline-wrapper" data-bind="style: { height: (1/($parent.pipelines.length)*100 - 1 ) + '%' }">
+        <div class="gocd-pipeline">
+          <div class="gocd-build-label" data-bind="text: label"></div>
+          <div class="gocd-stages" data-bind="style: { width: ($root.base_width * $root.sizex - #{LABEL_WIDTH}) + 'px' }">
+            <!-- ko foreach: stages -->
+              <div class="gocd-stage-wrapper" data-bind="style: { width: (1/($parent.stages.length)*100 - 1 ) + '%' }">
+                <div class="gocd-stage" data-bind="css: result">
+                  <div class="gocd-stage-content" data-bind="text: name"></div>
+                </div>
+              </div>
+            <!-- /ko --> 
+          </div>
         </div>
       </div>
-    </div>
+    <!-- /ko --> 
   </div>
 </div>
 EOS
@@ -40,34 +49,55 @@ EOS
 
     def style
 <<EOS
-.gocd-widge .title{
+.gocd-title {
  text-align: center;
- padding: 5px;
+ color: black;
+ font-weight: 600;
+ font-size: 120%;
+ padding-top: #{TITLE_PADDING_TOP}px;
+ height: #{TITLE_HEIGHT}px;
 }
-.gocd-widge .Passed{
+.Passed {
   background-color: green;
 }
-.gocd-widge .Failed{
+.Failed {
   background-color: red;
 }
-.gocd-widge .pipeline{
+.gocd-pipeline-wrapper {
   clear: both;
+  width: 100%;
 }
-.gocd-widge .stages{
-  margin-bottom: #{Pipeline_margin}px
+.gocd-pipeline {
+  height: 95%;
 }
-.gocd-widge .left{
+.gocd-build-label {
+  float: left;
+  text-align: center;
+  width: #{LABEL_WIDTH}px;
+  font-size: 80%;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.gocd-stages {
+  float: left;
+  height: 100%;
+}
+.gocd-stage-wrapper {
+  height: 100%;
   float: left;
 }
-.gocd-widge .stage{
-  display: table;
-  margin-left: #{Stage_margin}px
+.gocd-stage {
+  height: 100%;
+  width: 98%;
 }
 
-.gocd-widge .stage-label{
-  display: table-cell;
-  vertical-align: middle;
+.gocd-stage-content {
+  color: black;
   text-align: center;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
 }
 EOS
     end
