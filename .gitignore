@@ -3,3 +3,5 @@ Gemfile.lock
 **/*.swp
 data/config
 data/layout
+spec/data/layout/temp.json
+spec/data/config/default.json

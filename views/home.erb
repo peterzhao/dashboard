@@ -1,5 +1,5 @@
 <div class="header">
-    <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+    <div class="home-menu pure-menu pure-menu-horizontal">
       <div class="heading">
       <img src="/images/ju138.png" height="36" width="36"/>
     </div>
@@ -51,14 +51,14 @@
       widget_base_dimensions: [base_width, base_height],
       resize: { 
         enabled: true,
-        stop: Dashboard.layoutChangeHandler
+        stop: function(){Dashboard.layoutChangeHandler("<%=config['board'] %>");}
       },
       draggable: {
-        stop: Dashboard.layoutChangeHandler 
+        stop: function(){Dashboard.layoutChangeHandler("<%=config['board'] %>");}
       }
     });
     $('.dashboard-widge').each(function(index, widge){
-      loader = new Dashboard.WidgeLoader("<%=config['board'] %>", widge.id, base_width, base_height);
+      loader = new Dashboard.WidgeLoader("<%=config['board'] %>", widge.id, base_width, base_height, $(widge).attr('data-sizex'), $(widge).attr('data-sizey'));
       widge_models[widge.id] = loader;
       ko.applyBindings(loader, widge);
       loader.startPull();

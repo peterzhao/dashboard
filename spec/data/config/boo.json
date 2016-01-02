@@ -1,0 +1,13 @@
+{
+  "widges":[
+    {
+      "name": "foo",
+      "type": "gocd_pipeline",
+      "base_url": "http://localhost:8153",
+      "user": null,
+      "password": null,
+      "pull_inteval": 5,
+      "number_of_instances": 1
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 if(typeof(Dashboard) === "undefined") Dashboard = {}
-Dashboard.layoutChangeHandler = function(){
+Dashboard.layoutChangeHandler = function(board){
   widges = $('.dashboard-widge');
   for(i=0; i<widges.length; i++){
     id = widges[i].id;
@@ -11,14 +11,14 @@ Dashboard.layoutChangeHandler = function(){
     model.changeSize(sizex, sizey, row, col);
     model.pull();
   };
-  Dashboard.saveLayout("<%=config['board'] %>", widges);
+  Dashboard.saveLayout(board, widge_models);
 };
 
 Dashboard.saveLayout = function(board, widges){
   var widgesData = {};
-  for(i=0; i<widges.length; i++){
-    model = widges[i];
-    widgesData["" + model.id + ""] = { row: model.row, col: model.col, sizex: model.sizex, sizey: model.sizey }
+  for(var id in widges){
+    model = widges[id];
+    widgesData[ id ] = { row: model.row, col: model.col, sizex: model.sizex, sizey: model.sizey }
   }
   jQuery.ajax({
     url: "/board/" + encodeURI(board) + "/layout",

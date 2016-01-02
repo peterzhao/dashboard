@@ -1,12 +1,12 @@
 if(typeof(Dashboard) === "undefined") Dashboard = {}
-Dashboard.WidgeLoader = function(board, id, base_width, base_height){
+Dashboard.WidgeLoader = function(board, id, base_width, base_height, sizex, sizey){
   var self = this;
   self.board = board,
   self.id = id;
   self.base_width = base_width;
   self.base_height = base_height;
-  self.sizex = 1;
-  self.sizey = 1;
+  self.sizex = sizex;
+  self.sizey = sizey;
   self.row = 1;
   self.col = 1;
   self.data = ko.observable(null);

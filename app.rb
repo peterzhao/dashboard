@@ -25,3 +25,8 @@ get '/board/:board_name/widge/:widge_id' do
   widge = Dashboard::Config.get_widge_config(params['board_name'], params['widge_id'])
   Dashboard::Plugin.check(widge['type'], widge)
 end
+
+post '/board/:board_name/layout' do
+  layout = JSON.parse(request.body.read)
+  Dashboard::Config.save_layout(params['board_name'], layout)
+end

@@ -39,4 +39,12 @@ describe 'Dashboard App' do
     expect(last_response).to be_ok 
     expect(last_response.body).to eq('good')
   end
+
+  it "should save layout for a board" do
+    data_str = '{"widge1": {"row":1, "col":1}}'
+    data = JSON.parse(data_str)
+    expect(Dashboard::Config).to receive(:save_layout).with('boo', data)
+    post '/board/boo/layout', data_str , "CONTENT_TYPE" => "application/json" 
+    expect(last_response).to be_ok 
+  end
 end
