@@ -13,12 +13,12 @@ describe("Dashboard.WidgeLoade", function() {
   });
 
   it("should pull data successfully", function(){
-    var loader = new Dashboard.WidgeLoader("myBoard", "widge1", "100", "100");
+    var loader = new Dashboard.WidgeLoader("my Board", "widge 1", "100", "100");
     expect(loader.data()).toBe(null);
     loader.pull();
     expect(ajaxOptions.type).toBe("get"); 
     expect(ajaxOptions.dataType).toBe("json"); 
-    expect(ajaxOptions.url).toBe("/board/myBoard/widge/widge1");
+    expect(ajaxOptions.url).toBe("/board/my%20Board/widge/widge%201");
 
     var data = {"boo": "foo"}; 
     ajaxOptions.success(data);
