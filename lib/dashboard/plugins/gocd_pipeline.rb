@@ -33,7 +33,7 @@ module Dashboard
           <div class="gocd-stages" data-bind="style: { width: ($root.base_width * $root.sizex - #{LABEL_WIDTH}) + 'px' }">
             <!-- ko foreach: stages -->
               <div class="gocd-stage-wrapper" data-bind="style: { width: (1/($parent.stages.length)*100 - 1 ) + '%' }, css: state">
-                <div class="gocd-stage" data-bind="css: {passed: result == 'Passed', failed: result == 'Failed', building: state == 'Building'}">
+                <div class="gocd-stage" data-bind="css: {passed: result == 'Passed', failed: result == 'Failed', scheduled: state == 'Scheduled', shine: state == 'Building'}">
                   <div class="display-content" data-bind="text: name"></div>
                 </div>
               </div>

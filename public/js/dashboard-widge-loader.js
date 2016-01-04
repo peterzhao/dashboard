@@ -1,5 +1,5 @@
 if(typeof(Dashboard) === "undefined") Dashboard = {}
-Dashboard.WidgeLoader = function(board, id, base_width, base_height, sizex, sizey){
+Dashboard.WidgeLoader = function(board, id, base_width, base_height, pull_inteval, sizex, sizey){
   var self = this;
   self.board = board,
   self.id = id;
@@ -12,6 +12,7 @@ Dashboard.WidgeLoader = function(board, id, base_width, base_height, sizex, size
   self.data = ko.observable(null);
   self.error = ko.observable(null);
   self.hasError = ko.observable(false);
+  self.pull_inteval = pull_inteval;
 
   self.changeSize = function(sizex, sizey, row, col){
     self.sizex = sizex;
@@ -44,7 +45,7 @@ Dashboard.WidgeLoader = function(board, id, base_width, base_height, sizex, size
   };
   self.startPull = function(){
     self.pull();
-    setInterval(self.pull, 15000);
+    setInterval(self.pull, self.pull_inteval);
   };
 };
 

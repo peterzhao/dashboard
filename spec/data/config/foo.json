@@ -11,7 +11,8 @@
       "row": 1,
       "col": 2,
       "sizex": 1,
-      "sizey": 1
+      "sizey": 1,
+      "pull-inteval": 10000
     }
   ]
 }
