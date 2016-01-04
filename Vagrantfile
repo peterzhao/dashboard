@@ -7,6 +7,7 @@ Vagrant.configure(2) do |config|
   config.vm.box_url ="http://www.lyricalsoftware.com/downloads/centos65.box"
   config.vm.hostname = 'dashboard-server'
   config.vm.network "forwarded_port", guest: 4567, host: 4567
+  config.vm.network "forwarded_port", guest: 2525, host: 2525
   config.berkshelf.enabled = true
 
   config.vm.provision "chef_solo" do |chef|

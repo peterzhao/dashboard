@@ -33,7 +33,7 @@ module Dashboard
           <div class="gocd-stages" data-bind="style: { width: ($root.base_width * $root.sizex - #{LABEL_WIDTH}) + 'px' }">
             <!-- ko foreach: stages -->
               <div class="gocd-stage-wrapper" data-bind="style: { width: (1/($parent.stages.length)*100 - 1 ) + '%' }">
-                <div class="gocd-stage" data-bind="css: result">
+                <div class="gocd-stage" data-bind="css: typeof(result) == 'undefined' ? 'Unknown': result">
                   <div class="gocd-stage-content" data-bind="text: name"></div>
                 </div>
               </div>
@@ -62,6 +62,9 @@ EOS
 }
 .Failed {
   background-color: red;
+}
+.Unknown {
+  background-color: grey;
 }
 .gocd-pipeline-wrapper {
   clear: both;
