@@ -18,7 +18,7 @@ module Dashboard
         message = e.message.gsub('"', '\"')
         return "{\"error\":\"#{message}\"}"
       end
-      remove_unwanted_instances(response, options['number_of_instances'])
+      transform(response, options['number_of_instances'])
     end
 
     def template
@@ -32,9 +32,9 @@ module Dashboard
           <div class="gocd-build-label" data-bind="text: label"></div>
           <div class="gocd-stages" data-bind="style: { width: ($root.base_width * $root.sizex - #{LABEL_WIDTH}) + 'px' }">
             <!-- ko foreach: stages -->
-              <div class="gocd-stage-wrapper" data-bind="style: { width: (1/($parent.stages.length)*100 - 1 ) + '%' }">
-                <div class="gocd-stage" data-bind="css: typeof(result) == 'undefined' ? 'Unknown': result">
-                  <div class="gocd-stage-content" data-bind="text: name"></div>
+              <div class="gocd-stage-wrapper" data-bind="style: { width: (1/($parent.stages.length)*100 - 1 ) + '%' }, css: state">
+                <div class="gocd-stage" data-bind="css: {passed: result == 'Passed', failed: result == 'Failed', building: state == 'Building'}">
+                  <div class="display-content" data-bind="text: name"></div>
                 </div>
               </div>
             <!-- /ko --> 
@@ -57,14 +57,8 @@ EOS
  padding-top: #{TITLE_PADDING_TOP}px;
  height: #{TITLE_HEIGHT}px;
 }
-.Passed {
-  background-color: green;
-}
-.Failed {
-  background-color: red;
-}
-.Unknown {
-  background-color: grey;
+.Unscheduled {
+ visibility: hidden;
 }
 .gocd-pipeline-wrapper {
   clear: both;
@@ -93,15 +87,9 @@ EOS
 .gocd-stage {
   height: 100%;
   width: 98%;
+  border-radius: 3px;
 }
 
-.gocd-stage-content {
-  color: black;
-  text-align: center;
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-}
 EOS
     end
 
@@ -113,10 +101,30 @@ end
 
 private 
 
-def remove_unwanted_instances(response_str, number_of_instances)
+def transform(response_str, number_of_instances)
   response = JSON.parse(response_str)
-  response['pipelines'] = response['pipelines'][0..(number_of_instances - 1)] if response['pipelines'] 
+  response['pipelines'] = response['pipelines'][0..(number_of_instances - 1)] 
+  response['pipelines'].each do |pipeline|
+    pipeline['stages'].each do |stage|
+      transform_stage(stage)
+    end
+  end
   response.to_json
 end
+
+def transform_stage(stage)
+  stage['result'] = 'Unknown' unless stage['result']
+  if(stage['scheduled'])
+    if stage['jobs'].any?{ |job| job['state'] == 'Building' } 
+      stage['state'] = 'Building'
+    elsif stage['jobs'].all?{ |job| job['state'] == 'Completed' } 
+      stage['state'] = 'Completed'
+    else
+      stage['state'] = 'Scheduled'
+    end
+  else
+      stage['state'] = 'Unscheduled'
+  end
+end 
 
 Dashboard::Plugin.register('gocd_pipeline', Dashboard::GocdPipeline)

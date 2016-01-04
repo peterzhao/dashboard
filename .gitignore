@@ -6,3 +6,4 @@ data/layout
 spec/data/layout/temp.json
 spec/data/config/default.json
 logs
+spec/data/layout/foo.json
