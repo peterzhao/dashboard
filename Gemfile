@@ -12,4 +12,5 @@ group :test do
  gem 'cucumber'
  gem 'capybara' 
  gem 'rack-test'
+ gem 'selenium-webdriver'
 end
