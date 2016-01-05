@@ -13,4 +13,5 @@ group :test do
  gem 'capybara' 
  gem 'rack-test'
  gem 'selenium-webdriver'
+ gem 'headless'
 end

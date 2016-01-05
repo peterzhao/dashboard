@@ -1,3 +1,4 @@
+@rack_test
 Feature: default home page
 As a dashboard user I would like to see a default home page displayed when first time visit the application after the application is installed so that I can start to config the application from there.
 

@@ -7,3 +7,5 @@ spec/data/layout/temp.json
 spec/data/config/default.json
 logs
 spec/data/layout/foo.json
+screenshots
+spec/data/layout/default.json
