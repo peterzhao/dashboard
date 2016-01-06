@@ -13,5 +13,5 @@ group :test do
  gem 'capybara' 
  gem 'rack-test'
  gem 'selenium-webdriver'
- gem 'headless'
+ gem 'headless' unless RUBY_PLATFORM == 'java'
 end
