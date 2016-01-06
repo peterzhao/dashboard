@@ -1,8 +1,6 @@
 require 'capybara/cucumber'
-require_relative '../../app'
 require 'headless'
 
-Capybara.app = Sinatra::Application
 Capybara.app_host = "http://localhost:4567"
 Capybara.default_driver = :selenium
 
