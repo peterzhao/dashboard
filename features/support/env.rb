@@ -11,8 +11,10 @@ end
 Before do
   $setup ||= false
   unless($setup) 
-    $headless = Headless.new
-    $headless.start
+    if RUBY_PLATFORM =~ /linux/
+      $headless = Headless.new
+      $headless.start
+    end
     system 'DATA_PATH=spec/data rake restart'
     system 'rm -rf screenshots/*'
     $setup = true
@@ -24,5 +26,5 @@ After do |scenario|
 end
 
 at_exit do
-  $headless.destroy if $headless #for some reason, jruby has some issues to keep $headless
+  $headless.destroy if $headless
 end
