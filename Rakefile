@@ -35,4 +35,4 @@ task :clean do
   system "rm -rf logs/*"
 end
 
-task :restart => [:stop, :clean, :start]
+task :restart => [:stop, :start]

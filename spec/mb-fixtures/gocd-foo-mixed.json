@@ -38,14 +38,14 @@
                "jobs":[
                   {
                      "name":"build",
-                     "result":"Failed",
-                     "state":"Completed",
+                     "result":"Unknown",
+                     "state":"Building",
                      "id":31,
                      "scheduled_date":1451922467439
                   }
                ],
                "can_run":false,
-               "result":"Failed",
+               "result":"Unknown",
                "approval_type":"success",
                "counter":"1",
                "id":31,
