@@ -26,5 +26,5 @@ After do |scenario|
 end
 
 at_exit do
-  $headless.destroy
+  $headless.destroy if $headless #for some reason, jruby has some issues to keep $headless
 end

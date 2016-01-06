@@ -6,19 +6,11 @@ begin
   load 'jasmine/tasks/jasmine.rake'
 
   require 'cucumber/rake/task'
-  Cucumber::Rake::Task.new(:cuke_rack) do |t|
-      t.cucumber_opts = "features --format progress --tags ~@javascript"
-  end
-
-  Cucumber::Rake::Task.new(:cuke_firefox) do |t|
-      t.cucumber_opts = "features --format progress --tags @javascript"
-  end
-
-  Cucumber::Rake::Task.new(:features) do |t|
+  Cucumber::Rake::Task.new do |t|
       t.cucumber_opts = "features --format pretty"
   end
 
-  task :default =>[:spec, 'jasmine:ci', :cuke_rack]
+  task :default =>[:spec, 'jasmine:ci']
 rescue LoadError
   # no rspec or jasmine available
 end
