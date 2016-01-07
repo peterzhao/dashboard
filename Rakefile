@@ -11,16 +11,17 @@ begin
   end
 
   task :default =>[:spec, 'jasmine:ci']
+  task :test =>[:spec, 'jasmine:ci', :cucumber]
 rescue LoadError
   # no rspec or jasmine available
 end
 
 task :start do
-  system "ruby app.rb >logs/server 2>&1 &"
+  system "sh start_server.sh"
 end
 
 task :stop do
-  system "kill -9 `ps -ef | grep 'app.rb' | awk '{print $2}' | head -n 1`"
+  system "sh stop_server.sh"
 end
 
 task :clean do

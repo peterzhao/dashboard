@@ -17,7 +17,7 @@ Before do
       $headless = Headless.new
       $headless.start
     end
-    system 'DATA_PATH=spec/data rake restart'
+    system 'sh stop_server.sh; DATA_PATH=spec/data sh start_server.sh'
     FileUtils.rm_rf(Dir.glob("screenshots/*"))
     $setup = true
   end
