@@ -22,7 +22,19 @@ module Ju
       def save_layout(board, data)
         File.open("#{data_path}/layout/#{board}.json", 'w') { |file| file.write(data.to_json) }
       end
-      
+
+      def new_board(board_name)
+        data = <<EOS
+{
+  "widges": []
+}
+EOS
+        File.open("#{data_path}/config/#{board_name}.json", 'w') { |file| file.write(data) }
+      end
+
+      def get_all_boards
+        Dir.glob("#{data_path}/config/*.json").select{ |e| File.file? e }.map{|f| File.basename(f, '.json')} 
+      end
       
       private 
      

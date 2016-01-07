@@ -24,7 +24,7 @@ Dashboard.WidgeLoader = function(board, id, base_width, base_height, pull_inteva
   self.pull = function(){
     if(typeof(debug) != "undefined" && debug == true) return;
     jQuery.ajax({
-      url: "/board/" + encodeURI(self.board) + "/widge/" + encodeURI(id),
+      url: "/boards/" + encodeURI(self.board) + "/widges/" + encodeURI(id),
       contentType: "application/json; charset=utf-8",
       type: "get",
       dataType: "json",

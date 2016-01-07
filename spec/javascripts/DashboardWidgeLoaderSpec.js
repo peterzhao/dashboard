@@ -18,7 +18,7 @@ describe("Dashboard.WidgeLoade", function() {
     loader.pull();
     expect(ajaxOptions.type).toBe("get"); 
     expect(ajaxOptions.dataType).toBe("json"); 
-    expect(ajaxOptions.url).toBe("/board/my%20Board/widge/widge%201");
+    expect(ajaxOptions.url).toBe("/boards/my%20Board/widges/widge%201");
 
     var data = {"boo": "foo"}; 
     ajaxOptions.success(data);
@@ -33,7 +33,7 @@ describe("Dashboard.WidgeLoade", function() {
     loader.pull();
     expect(ajaxOptions.type).toBe("get"); 
     expect(ajaxOptions.dataType).toBe("json"); 
-    expect(ajaxOptions.url).toBe("/board/myBoard/widge/widge1");
+    expect(ajaxOptions.url).toBe("/boards/myBoard/widges/widge1");
 
     var data = {"error": "broken connection"}; 
     ajaxOptions.success(data);
@@ -48,7 +48,7 @@ describe("Dashboard.WidgeLoade", function() {
     loader.pull();
     expect(ajaxOptions.type).toBe("get"); 
     expect(ajaxOptions.dataType).toBe("json"); 
-    expect(ajaxOptions.url).toBe("/board/myBoard/widge/widge1");
+    expect(ajaxOptions.url).toBe("/boards/myBoard/widges/widge1");
 
     ajaxOptions.error();
 

@@ -45,4 +45,8 @@ describe Ju::Config do
 
     expect(File.read('spec/data/layout/temp.json')).to eq(data.to_json)
   end
+
+  it 'should get all dashboard names' do
+    expect(Ju::Config.get_all_boards).to include('boo')
+  end
 end

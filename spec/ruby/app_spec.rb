@@ -12,10 +12,10 @@ describe 'Ju App' do
     Sinatra::Application
   end
 
-  it "should redirect to /board/default when getting /" do
+  it "should redirect to /boards/default when getting /" do
     get '/'
     expect(last_response.status).to eq(302)
-    expect(last_response.header['Location']).to match(/board\/default$/) 
+    expect(last_response.header['Location']).to match(/boards\/default$/) 
   end
 
   it "should get board" do
@@ -25,7 +25,8 @@ describe 'Ju App' do
               } 
     expect(Ju::Config).to receive(:get_board_config).with('boo').and_return(config)
     expect(Ju::Board).to receive(:fill_template_and_style).with(config).and_return(config)
-    get '/board/boo'
+    expect(Ju::Config).to receive(:get_all_boards).and_return(['test', 'moo'])
+    get '/boards/boo'
     expect(last_response).to be_ok 
   end
 
@@ -34,7 +35,7 @@ describe 'Ju App' do
     expect(Ju::Config).to receive(:get_widge_config).with('boo', 'myApp').and_return(config)
     expect(Ju::Plugin).to receive(:check).with('gocd', config).and_return('good')
 
-    get '/board/boo/widge/myApp'
+    get '/boards/boo/widges/myApp'
 
     expect(last_response).to be_ok 
     expect(last_response.body).to eq('good')
@@ -44,7 +45,21 @@ describe 'Ju App' do
     data_str = '{"widge1": {"row":1, "col":1}}'
     data = JSON.parse(data_str)
     expect(Ju::Config).to receive(:save_layout).with('boo', data)
-    post '/board/boo/layout', data_str , "CONTENT_TYPE" => "application/json" 
+    post '/boards/boo/layout', data_str , "CONTENT_TYPE" => "application/json" 
     expect(last_response).to be_ok 
   end
+
+  it "should get a new board form" do
+    get '/board/new'
+    expect(last_response.status).to eq(200)
+    expect(last_response.body).to match(/New Dashboard/) 
+  end
+
+  it "should create a new board" do
+    expect(Ju::Config).to receive(:new_board).with('waha')
+    post '/board', :board_name => 'waha'
+    expect(last_response.status).to eq(303)
+    expect(last_response.header['Location']).to match(/boards\/waha$/) 
+  end
+
 end

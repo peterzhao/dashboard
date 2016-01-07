@@ -21,7 +21,7 @@ Dashboard.saveLayout = function(board, widges){
     widgesData[ id ] = { row: model.row, col: model.col, sizex: model.sizex, sizey: model.sizey }
   }
   jQuery.ajax({
-    url: "/board/" + encodeURI(board) + "/layout",
+    url: "/boards/" + encodeURI(board) + "/layout",
     contentType: "application/json; charset=utf-8",
     type: "post",
     dataType: "json",

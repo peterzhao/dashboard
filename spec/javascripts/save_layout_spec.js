@@ -17,7 +17,7 @@ describe("Dashboard.saveLayout", function() {
     Dashboard.saveLayout("my Board", widges);
     expect(ajaxOptions.type).toBe("post"); 
     expect(ajaxOptions.dataType).toBe("json"); 
-    expect(ajaxOptions.url).toBe("/board/my%20Board/layout");
+    expect(ajaxOptions.url).toBe("/boards/my%20Board/layout");
     expect(ajaxOptions.data).toBe('{"widge1":{"row":1,"col":1,"sizex":2,"sizey":2},"widge2":{"row":1,"col":2,"sizex":1,"sizey":3}}');
   });
 });

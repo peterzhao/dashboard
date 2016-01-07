@@ -49,9 +49,6 @@ label {
 .home-menu a {
     color: #6FBEF3;
 }
-.home-menu ul {
-  float: right;
-}
 .home-menu li a:hover,
 .home-menu li a:focus {
     background: none;
@@ -168,3 +165,31 @@ label {
  50% { box-shadow: 0 5px 5px rgba(255, 255, 255, .3) inset, 0 -5px 5px rgba(255, 255, 255, .3) inset;} 
  100% { box-shadow: 0 5px 5px rgba(255, 255, 255, .7) inset, 0 -5px 5px rgba(255, 255, 255, .7) inset;}
  }
+
+.new-board {
+  margin-left: 1em;
+}
+
+.menus {
+  display: inline-block;
+  width: 85%;
+  vertical-align: middle;
+}
+
+.board-list {
+  margin-left: 2em;
+  float: left;
+}
+
+.right-header-menu {
+  float: right;
+}
+
+.board-link {
+  font-size: 135%;
+  font-weight: 400;
+}
+
+.other-board-link {
+  background-color: #2d3e50;
+}

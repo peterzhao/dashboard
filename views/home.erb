@@ -1,15 +1,25 @@
 <div class="header">
     <div class="home-menu pure-menu pure-menu-horizontal">
       <div class="heading">
-      <img src="/images/ju138.png" height="36" width="36"/>
-    </div>
+        <img src="/images/ju138.png" height="36" width="36"/>
+      </div>
       <div class="heading heading-title">JU</div>
-      <div class="pure-menu-heading"><%= config['board'] %></div>
-
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item"><a href="#" class="pure-menu-link">Config this dashboard</a></li>
-            <li class="pure-menu-item"><a href="#" class="pure-menu-link">Add a new dashboard</a></li>
+      <div class="menus">
+        <ul class="pure-menu-list board-list">
+          <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+              <a href="#" id="menuLink1" class="pure-menu-link board-link"><%= config['board'].capitalize %></a>
+              <ul class="pure-menu-children">
+                <% other_boards.each do |board_name| %>
+                  <li class="pure-menu-item"><a href="/boards/<%= board_name %>" class="pure-menu-link board-link other-board-link"><%= board_name.capitalize %></a></li>
+                <% end %>
+              </ul>
+          </li>
         </ul>
+        <ul class="pure-menu-list right-header-menu">
+          <li class="pure-menu-item"><a href="#" class="pure-menu-link">Config this dashboard</a></li>
+          <li class="pure-menu-item"><a href="/board/new" class="pure-menu-link">Create a new dashboard</a></li>
+        </ul>
+      </div>
     </div>
 </div>
 <style>
