@@ -1,8 +1,8 @@
 require 'rspec'
 require 'json'
-require_relative '../../lib/dashboard'
+require_relative '../../lib/ju'
 
-describe Dashboard::GocdPipeline do
+describe Ju::GocdPipeline do
   let(:options){{ 
     'base_url' => 'http://abc.com/gocd',
     'name' => 'billingPipeline',
@@ -63,7 +63,7 @@ describe Dashboard::GocdPipeline do
       expect(request[:password]).to eq(options['password'])
     end.and_return(response.to_json)
 
-    plugin = Dashboard::GocdPipeline.new(options)
+    plugin = Ju::GocdPipeline.new(options)
     pipeline_data = JSON.parse(plugin.check)
 
     expect(pipeline_data['pipelines'].count).to eq(2)
@@ -79,7 +79,7 @@ describe Dashboard::GocdPipeline do
   it 'should return error data when server gives an error' do
     expect(RestClient::Request).to receive(:execute).with(anything()).and_raise('400 error("2")')
 
-    plugin = Dashboard::GocdPipeline.new(options)
+    plugin = Ju::GocdPipeline.new(options)
     pipeline_data = plugin.check
 
     expect(pipeline_data).to eq('{"error":"400 error(\"2\")"}')

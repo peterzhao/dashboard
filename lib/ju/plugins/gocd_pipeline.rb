@@ -1,8 +1,8 @@
 require 'rest-client'
 require 'json'
 
-module Dashboard
-  class GocdPipeline < Dashboard::Plugin
+module Ju
+  class GocdPipeline < Ju::Plugin
     TITLE_HEIGHT = '27'
     TITLE_PADDING_TOP = '3'
     LABEL_WIDTH = '30'
@@ -33,7 +33,7 @@ module Dashboard
           <div class="gocd-stages" data-bind="style: { width: ($root.base_width * $root.sizex - #{LABEL_WIDTH}) + 'px' }">
             <!-- ko foreach: stages -->
               <div class="gocd-stage-wrapper" data-bind="style: { width: (1/($parent.stages.length)*100 - 1 ) + '%'}">
-                <div class="gocd-stage" data-bind="css: {passed: result == 'Passed', failed: result == 'Failed', scheduled: state == 'Scheduled', building: state == 'Building'}">
+                <div class="gocd-stage" data-bind="css: {passed: result == 'Passed', failed: result == 'Failed', scheduled: state == 'Scheduled', building: state == 'Building', unscheduled: state == 'Unscheduled'}">
                   <div class="display-content" data-bind="text: name"></div>
                 </div>
               </div>
@@ -57,7 +57,7 @@ EOS
  padding-top: #{TITLE_PADDING_TOP}px;
  height: #{TITLE_HEIGHT}px;
 }
-.Unscheduled {
+.unscheduled {
  visibility: hidden;
 }
 .gocd-pipeline-wrapper {
@@ -127,4 +127,4 @@ def transform_stage(stage)
   end
 end 
 
-Dashboard::Plugin.register('gocd_pipeline', Dashboard::GocdPipeline)
+Ju::Plugin.register('gocd_pipeline', Ju::GocdPipeline)

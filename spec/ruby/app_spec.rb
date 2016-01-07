@@ -1,11 +1,11 @@
 ENV['RACK_ENV'] = 'test'
 
 require_relative '../../app.rb' 
-require_relative '../../lib/dashboard' 
+require_relative '../../lib/ju' 
 require 'rspec'
 require 'rack/test'
 
-describe 'Dashboard App' do
+describe 'Ju App' do
   include Rack::Test::Methods
 
   def app
@@ -23,16 +23,16 @@ describe 'Dashboard App' do
               'styles' => {},
               'widges' => [ {'type' => 'gocd', 'name' => 'foo'} ]
               } 
-    expect(Dashboard::Config).to receive(:get_board_config).with('boo').and_return(config)
-    expect(Dashboard::Widge).to receive(:fill_template_and_style).with(config).and_return(config)
+    expect(Ju::Config).to receive(:get_board_config).with('boo').and_return(config)
+    expect(Ju::Board).to receive(:fill_template_and_style).with(config).and_return(config)
     get '/board/boo'
     expect(last_response).to be_ok 
   end
 
   it "should check widge" do
     config = {'type' => 'gocd'}
-    expect(Dashboard::Config).to receive(:get_widge_config).with('boo', 'myApp').and_return(config)
-    expect(Dashboard::Plugin).to receive(:check).with('gocd', config).and_return('good')
+    expect(Ju::Config).to receive(:get_widge_config).with('boo', 'myApp').and_return(config)
+    expect(Ju::Plugin).to receive(:check).with('gocd', config).and_return('good')
 
     get '/board/boo/widge/myApp'
 
@@ -43,7 +43,7 @@ describe 'Dashboard App' do
   it "should save layout for a board" do
     data_str = '{"widge1": {"row":1, "col":1}}'
     data = JSON.parse(data_str)
-    expect(Dashboard::Config).to receive(:save_layout).with('boo', data)
+    expect(Ju::Config).to receive(:save_layout).with('boo', data)
     post '/board/boo/layout', data_str , "CONTENT_TYPE" => "application/json" 
     expect(last_response).to be_ok 
   end

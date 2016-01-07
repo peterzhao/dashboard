@@ -8,6 +8,7 @@ Vagrant.configure(2) do |config|
   config.vm.hostname = 'dashboard-server'
   config.vm.network "forwarded_port", guest: 4567, host: 4567
   config.vm.network "forwarded_port", guest: 2525, host: 2525
+  config.vm.network "forwarded_port", guest: 4545, host: 4545
   config.berkshelf.enabled = true
 
   config.vm.provision "chef_solo" do |chef|

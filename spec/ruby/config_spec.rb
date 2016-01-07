@@ -1,9 +1,9 @@
-require_relative '../../lib/dashboard' 
+require_relative '../../lib/ju' 
 require 'rspec'
 require 'json'
 require 'fileutils'
 
-describe Dashboard::Config do
+describe Ju::Config do
   before :each do
     ENV['DATA_PATH'] = 'spec/data'
   end
@@ -14,13 +14,13 @@ describe Dashboard::Config do
 
   it 'should create default config if it does not exist' do
     FileUtils.rm_f 'spec/data/config/default.json'
-    config = Dashboard::Config.get_board_config('default')
+    config = Ju::Config.get_board_config('default')
     expect(config['board']).to eq('default')
     expect(File.exists?('spec/data/config/default.json')).to be(true)
   end
 
   it 'should get board config' do
-    config = Dashboard::Config.get_board_config('boo')
+    config = Ju::Config.get_board_config('boo')
 
     expect(config['board']).to eq('boo')
     expect(config['widges'][0]['id']).to eq('foo')
@@ -31,7 +31,7 @@ describe Dashboard::Config do
   end
 
   it 'should get widge config' do
-    config = Dashboard::Config.get_widge_config('boo', 'foo')
+    config = Ju::Config.get_widge_config('boo', 'foo')
 
     expect(config['name']).to eq('foo')
     expect(config['id']).to eq('foo')
@@ -41,7 +41,7 @@ describe Dashboard::Config do
   it 'should save layout' do
     FileUtils.rm_f 'spec/data/layout/temp.json' 
     data = {"widge1" => {"row" => 1, "col" => 2}}
-    Dashboard::Config.save_layout('temp', data)
+    Ju::Config.save_layout('temp', data)
 
     expect(File.read('spec/data/layout/temp.json')).to eq(data.to_json)
   end

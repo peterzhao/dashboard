@@ -1,6 +1,6 @@
 require 'fileutils'
 require 'json'
-module Dashboard
+module Ju
   class Config
     class << self
       def get_board_config(board)

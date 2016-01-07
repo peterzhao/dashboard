@@ -1,4 +1,4 @@
-module Dashboard
+module Ju
   class Plugin
 
     def initialize(options)

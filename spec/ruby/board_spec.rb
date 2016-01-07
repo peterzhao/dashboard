@@ -1,7 +1,7 @@
-require_relative '../../lib/dashboard' 
+require_relative '../../lib/ju' 
 require 'rspec'
 
-describe Dashboard::Widge do
+describe Ju::Board do
   it 'should fill template and style for each widges on the board' do
     curl_template = double('curl_template')
     gocd_template = double('gocd_template')
@@ -13,12 +13,12 @@ describe Dashboard::Widge do
        {'name' => 'foo', 'type' => 'gocd'} 
     ]}
 
-    expect(Dashboard::Plugin).to receive(:template).with('curl', board_config['widges'][0]).and_return(curl_template)
-    expect(Dashboard::Plugin).to receive(:style).with('curl', board_config['widges'][0]).and_return(curl_style)
-    expect(Dashboard::Plugin).to receive(:template).with('gocd', board_config['widges'][1]).and_return(gocd_template)
-    expect(Dashboard::Plugin).to receive(:style).with('gocd', board_config['widges'][1]).and_return(gocd_style)
+    expect(Ju::Plugin).to receive(:template).with('curl', board_config['widges'][0]).and_return(curl_template)
+    expect(Ju::Plugin).to receive(:style).with('curl', board_config['widges'][0]).and_return(curl_style)
+    expect(Ju::Plugin).to receive(:template).with('gocd', board_config['widges'][1]).and_return(gocd_template)
+    expect(Ju::Plugin).to receive(:style).with('gocd', board_config['widges'][1]).and_return(gocd_style)
 
-    Dashboard::Widge.fill_template_and_style(board_config)
+    Ju::Board.fill_template_and_style(board_config)
     
     expect(board_config['widges'][0]['template']).to eq(curl_template)
     expect(board_config['widges'][1]['template']).to eq(gocd_template)
