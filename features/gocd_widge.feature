@@ -1,4 +1,3 @@
-@javascript
 Feature: display pipelines with gocd widge 
 As a user, I would like to see status of build pipelines via gocd widge so that I will be notified when the status of the pipelines are changed.
 

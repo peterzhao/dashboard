@@ -1,5 +1,7 @@
 require 'capybara/cucumber'
 require 'headless'
+require 'fileutils'
+require_relative '../../lib/ju/mb_stub'
 
 Capybara.app_host = "http://localhost:4567"
 Capybara.default_driver = :selenium
@@ -16,7 +18,7 @@ Before do
       $headless.start
     end
     system 'DATA_PATH=spec/data rake restart'
-    system 'rm -rf screenshots/*'
+    FileUtils.rm_rf(Dir.glob("screenshots/*"))
     $setup = true
   end
 end
