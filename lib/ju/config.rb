@@ -4,7 +4,7 @@ module Ju
   class Config
     class << self
       def get_board_config(board)
-        create_default_board_if_missing if board == 'default'
+        create_default_board_if_missing if board == 'Default'
         config = JSON.load(File.read("#{data_path}/config/#{board}.json"))
         config['board'] = board 
         config['widges'].each do |widge|
@@ -55,10 +55,10 @@ EOS
       end
       
       def create_default_board_if_missing
-        path = "#{data_path}/config/default.json"
+        path = "#{data_path}/config/Default.json"
         return if(File.exists?(path))
         template = File.expand_path('../../../data/templates/default.json', __FILE__)
-        FileUtils.cp(template, "#{data_path}/config/")
+        FileUtils.cp(template, "#{data_path}/config/Default.json")
       end
     end
   end

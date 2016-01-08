@@ -13,10 +13,10 @@ describe Ju::Config do
   end
 
   it 'should create default config if it does not exist' do
-    FileUtils.rm_f 'spec/data/config/default.json'
-    config = Ju::Config.get_board_config('default')
-    expect(config['board']).to eq('default')
-    expect(File.exists?('spec/data/config/default.json')).to be(true)
+    FileUtils.rm_f 'spec/data/config/Default.json'
+    config = Ju::Config.get_board_config('Default')
+    expect(config['board']).to eq('Default')
+    expect(File.exists?('spec/data/config/Default.json')).to be(true)
   end
 
   it 'should get board config' do

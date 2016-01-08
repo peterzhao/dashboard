@@ -12,10 +12,10 @@ describe 'Ju App' do
     Sinatra::Application
   end
 
-  it "should redirect to /boards/default when getting /" do
+  it "should redirect to /boards/Default when getting /" do
     get '/'
     expect(last_response.status).to eq(302)
-    expect(last_response.header['Location']).to match(/boards\/default$/) 
+    expect(last_response.header['Location']).to match(/boards\/Default$/) 
   end
 
   it "should get board" do
@@ -56,15 +56,32 @@ describe 'Ju App' do
   end
 
   it "should create a new board" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['foo', 'moo'])
     expect(Ju::Config).to receive(:new_board).with('waha')
     post '/board', :board_name => 'waha'
     expect(last_response.status).to eq(303)
     expect(last_response.header['Location']).to match(/boards\/waha$/) 
   end
 
+  it "should create a new board whose name contains space" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['foo', 'moo'])
+    expect(Ju::Config).to receive(:new_board).with('waha ha')
+    post '/board', :board_name => 'waha ha'
+    expect(last_response.status).to eq(303)
+    expect(last_response.header['Location']).to match(/boards\/waha%20ha$/) 
+  end
+
 
   it "should not create a new board if given name is blank" do
     post '/board', :board_name => ''
+    expect(last_response.status).to eq(303)
+    expect(last_response.header['Location']).to match(/board\/new/) 
+  end
+
+  it "should not create a new board if given board already exists" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['foo', 'moo'])
+    expect(Ju::Config).not_to receive(:new_board).with('foo')
+    post '/board', :board_name => 'foo'
     expect(last_response.status).to eq(303)
     expect(last_response.header['Location']).to match(/board\/new/) 
   end

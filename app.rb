@@ -16,7 +16,7 @@ before do
 end
 
 get '/' do
-  redirect to('/boards/default')
+  redirect to('/boards/Default')
 end
 
 get '/boards/:board_name' do
@@ -35,8 +35,13 @@ post '/board' do
     flash[:'error-message'] = 'Dashboard name cannot be empty!'
     redirect to("/board/new"), 303  
   else
-    Ju::Config.new_board params['board_name']
-    redirect to("/boards/#{params['board_name']}"), 303  
+    if Ju::Config.get_all_boards.include?(params['board_name'])
+      flash[:'error-message'] = "Dashboard #{params['board_name']} already exists!"
+      redirect to("/board/new"), 303  
+    else
+      Ju::Config.new_board params['board_name']
+      redirect to("/boards/#{URI.escape(params['board_name'])}"), 303  
+    end
   end
 end
 
