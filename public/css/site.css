@@ -185,11 +185,25 @@ label {
   float: right;
 }
 
-.board-link {
+.current-board-link {
   font-size: 135%;
   font-weight: 400;
 }
 
 .other-board-link {
   background-color: #2d3e50;
+  padding-left: 3em;
+}
+
+.pure-menu-children li a:hover,
+.pure-menu-children li a:focus {
+    background: #555555;
+}
+
+.flash {
+  margin-left: 1em;
+}
+
+.error-message {
+  color: red;  
 }

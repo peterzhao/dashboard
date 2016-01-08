@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 gem 'sinatra'
 gem 'rest-client'
+gem 'sinatra-flash'
 
 group :test do
  gem 'rake'

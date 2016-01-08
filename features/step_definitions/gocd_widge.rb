@@ -1,5 +1,5 @@
 Given(/^a broken gocd pipeline running on a gocd server$/) do
-     JU.mb_stub 'spec/mb-fixtures/gocd-foo-failed.json'
+     Ju.mb_stub 'spec/mb-fixtures/gocd-foo-failed.json'
 end 
 
 When(/^I visit "([^"]*)"$/) do |path|
@@ -12,7 +12,7 @@ Then(/^I should see the widge of "([^"]*)" is broken$/) do |title|
 end
 
 Given(/^a building gocd pipeline running on a gocd server$/) do
-      JU.mb_stub 'spec/mb-fixtures/gocd-foo-in-progress.json'
+      Ju.mb_stub 'spec/mb-fixtures/gocd-foo-in-progress.json'
 end
 
 Then(/^I should see the widge of "([^"]*)" is in process$/) do |title|
@@ -21,7 +21,7 @@ Then(/^I should see the widge of "([^"]*)" is in process$/) do |title|
 end 
 
 Given(/^a passed gocd pipeline running on a gocd server$/) do
-      JU.mb_stub 'spec/mb-fixtures/gocd-foo-passed.json'
+      Ju.mb_stub 'spec/mb-fixtures/gocd-foo-passed.json'
 end
 
 Then(/^I should see the widge of "([^"]*)" is passed$/) do |title|

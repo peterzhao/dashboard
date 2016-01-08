@@ -62,4 +62,11 @@ describe 'Ju App' do
     expect(last_response.header['Location']).to match(/boards\/waha$/) 
   end
 
+
+  it "should not create a new board if given name is blank" do
+    post '/board', :board_name => ''
+    expect(last_response.status).to eq(303)
+    expect(last_response.header['Location']).to match(/board\/new/) 
+  end
+
 end
