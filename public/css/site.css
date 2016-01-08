@@ -49,8 +49,8 @@ label {
 .home-menu a {
     color: #6FBEF3;
 }
-.home-menu li a:hover,
-.home-menu li a:focus {
+.home-menu a:hover,
+.home-menu a:focus {
     background: none;
     border: none;
     color: #AECFE5;

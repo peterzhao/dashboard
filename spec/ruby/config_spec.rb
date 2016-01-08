@@ -49,4 +49,5 @@ describe Ju::Config do
   it 'should get all dashboard names' do
     expect(Ju::Config.get_all_boards).to include('boo')
   end
+
 end

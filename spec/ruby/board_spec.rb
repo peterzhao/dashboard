@@ -26,4 +26,34 @@ describe Ju::Board do
     expect(board_config['styles']['gocd']).to eq(gocd_style)
 
   end
+
+  it 'should create a new dashboard' do
+    expect(Ju::Config).to receive(:new_board).with('foo')
+    Ju::Board.create('foo')
+  end
+
+  context 'validation of dashboard name' do
+    it 'should give errors if dashboard name is empty' do
+      expect(Ju::Board.validate('  ')).to eq('Dashboard name cannot be empty!')
+      expect(Ju::Board.validate(nil)).to eq('Dashboard name cannot be empty!')
+    end
+
+    it 'should give errors if dashboard name contains special characters' do
+      expect(Ju::Board.validate('ab/cd ')).to eq('Dashboard name cannot contain any special characters!')
+      expect(Ju::Board.validate('ab&!@#$%^&*():cd ')).to eq('Dashboard name cannot contain any special characters!')
+    end
+
+    it 'should give errors if same name dashboard exists' do
+      allow(Ju::Config).to receive(:get_all_boards).and_return(['foo', 'moo'])
+
+      expect(Ju::Board.validate('foo')).to eq('The dashboard foo already exists!')
+      expect(Ju::Board.validate('Foo')).to eq('The dashboard Foo already exists!')
+    end
+
+    it 'should give no errors if board name is valid' do
+      allow(Ju::Config).to receive(:get_all_boards).and_return(['foo', 'moo'])
+
+      expect(Ju::Board.validate('Production Applications')).to be_empty 
+    end
+  end
 end

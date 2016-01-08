@@ -55,33 +55,21 @@ describe 'Ju App' do
     expect(last_response.body).to match(/New Dashboard/) 
   end
 
-  it "should create a new board" do
-    allow(Ju::Config).to receive(:get_all_boards).and_return(['foo', 'moo'])
-    expect(Ju::Config).to receive(:new_board).with('waha')
-    post '/board', :board_name => 'waha'
-    expect(last_response.status).to eq(303)
-    expect(last_response.header['Location']).to match(/boards\/waha$/) 
-  end
 
   it "should create a new board whose name contains space" do
-    allow(Ju::Config).to receive(:get_all_boards).and_return(['foo', 'moo'])
-    expect(Ju::Config).to receive(:new_board).with('waha ha')
-    post '/board', :board_name => 'waha ha'
+    expect(Ju::Board).to receive(:validate).with('good one').and_return([])
+    expect(Ju::Board).to receive(:create).with('good one')
+    post '/board', :board_name => 'good one'
     expect(last_response.status).to eq(303)
-    expect(last_response.header['Location']).to match(/boards\/waha%20ha$/) 
+    expect(last_response.header['Location']).to match(/boards\/good%20one$/) 
   end
 
 
-  it "should not create a new board if given name is blank" do
-    post '/board', :board_name => ''
-    expect(last_response.status).to eq(303)
-    expect(last_response.header['Location']).to match(/board\/new/) 
-  end
+  it "should not create a new board if the board validate has errors" do
+    expect(Ju::Board).to receive(:validate).with('bad one').and_return(['not good'])
+    expect(Ju::Board).not_to receive(:create).with('bad one')
+    post '/board', :board_name => 'bad one'
 
-  it "should not create a new board if given board already exists" do
-    allow(Ju::Config).to receive(:get_all_boards).and_return(['foo', 'moo'])
-    expect(Ju::Config).not_to receive(:new_board).with('foo')
-    post '/board', :board_name => 'foo'
     expect(last_response.status).to eq(303)
     expect(last_response.header['Location']).to match(/board\/new/) 
   end

@@ -16,12 +16,14 @@ before do
 end
 
 get '/' do
+  redirect to("/boards/#{URI.escape(session['last_board'])}") if session['last_board'] && Ju::Config.get_all_boards.include?(session['last_board'])
   redirect to('/boards/Default')
 end
 
 get '/boards/:board_name' do
   config = Ju::Config.get_board_config(params['board_name'])
   other_boards = Ju::Config.get_all_boards - [params['board_name']]
+  session['last_board'] = params['board_name']
   Ju::Board.fill_template_and_style(config)
   erb :home, :locals => {:config => config, :other_boards => other_boards}
 end
@@ -31,17 +33,13 @@ get '/board/new' do
 end
 
 post '/board' do
-  if "#{params['board_name']}".strip.empty? 
-    flash[:'error-message'] = 'Dashboard name cannot be empty!'
-    redirect to("/board/new"), 303  
+  errors = Ju::Board.validate(params['board_name'])
+  if errors.empty? 
+    Ju::Board.create params['board_name']
+    redirect to("/boards/#{URI.escape(params['board_name'])}"), 303  
   else
-    if Ju::Config.get_all_boards.include?(params['board_name'])
-      flash[:'error-message'] = "Dashboard #{params['board_name']} already exists!"
-      redirect to("/board/new"), 303  
-    else
-      Ju::Config.new_board params['board_name']
-      redirect to("/boards/#{URI.escape(params['board_name'])}"), 303  
-    end
+    flash["error-message"] = errors
+    redirect to("/board/new"), 303  
   end
 end
 
