@@ -10,3 +10,4 @@ spec/data/layout/foo.json
 screenshots
 spec/data/layout/default.json
 spec/data/config/Default.json
+spec/data/config/temp.json

@@ -7,7 +7,7 @@
       <div class="menus">
         <ul class="pure-menu-list board-list">
           <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-              <a href="#" id="menuLink1" class="pure-menu-link board-link current-board-link"><%= config['board'] %></a>
+              <a href="#" id="menuLink-boards" class="pure-menu-link board-link current-board-link"><%= config['board'] %></a>
               <ul class="pure-menu-children">
                 <% other_boards.each do |board_name| %>
                   <li class="pure-menu-item"><a href="/boards/<%= URI.escape(board_name) %>" class="pure-menu-link board-link other-board-link"><%= board_name.capitalize %></a></li>
@@ -16,8 +16,15 @@
           </li>
         </ul>
         <ul class="pure-menu-list right-header-menu">
-          <li class="pure-menu-item"><a href="#" class="pure-menu-link" title="Create Widge"><img src="/images/add-widge.png"/></a></li>
-          <li class="pure-menu-item"><a href="/boards/new" class="pure-menu-link" title="Create Board"><img src="/images/add-board.png"/></a></li>
+          <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+              <a href="#" id="menuLink-widges" class="pure-menu-link">Create Widge</a>
+              <ul class="pure-menu-children">
+                <% widge_types.each do |widge_type| %>
+                  <li class="pure-menu-item"><a href="/boards/<%= URI.escape(config['board']) %>/widges/new/<%= URI.escape(widge_type) %>" class="pure-menu-link child-widge-link">Create <%= widge_type.gsub('_', ' ').gsub('-', ' ')%> Widge</a></li>
+                <% end %>
+              </ul>
+          </li>
+          <li class="pure-menu-item"><a href="/boards/new" class="pure-menu-link">Create Board</a></li>
         </ul>
       </div>
     </div>

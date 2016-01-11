@@ -29,7 +29,7 @@ get '/boards/:board_name' do
   other_boards = Ju::Config.get_all_boards - [params['board_name']]
   session['last_board'] = params['board_name']
   Ju::Board.fill_template_and_style(config)
-  erb :home, :locals => {:config => config, :other_boards => other_boards}
+  erb :home, :locals => {:config => config, :other_boards => other_boards, :widge_types => Ju::Plugin.types}
 end
 
 
@@ -43,6 +43,10 @@ post '/boards' do
     status 400
     erb :new_board
   end
+end
+
+get '/boards/:board_name/widges/new/:widge_type' do
+  'Creating Widge is Under Construction!'
 end
 
 get '/boards/:board_name/widges/:widge_name/edit' do

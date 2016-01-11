@@ -15,25 +15,29 @@ module Ju
         @plugin_classes[type] = plugin_class
       end
 
+      def types
+        @plugin_classes.keys
+      end
+
       def check(type, options) 
         plugin(type, options).send :check
       end
       
-      def template(type, options)
-        plugin(type, options).send :template
+      def template(type)
+        plugin(type).send :template
       end
 
-      def style(type, options)
-        plugin(type, options).send :style
+      def style(type)
+        plugin(type).send :style
       end
 
-      def config(type, options)
-        plugin(type, options).send :config
+      def config(type)
+        plugin(type).send :config
       end
 
       private 
 
-      def plugin(type, options)
+      def plugin(type, options={})
         raise "Could not find the plugin #{type}!" unless @plugin_classes[type]
         @plugin_classes[type].new options
       end
