@@ -3,7 +3,7 @@
       <div class="heading">
         <img src="/images/ju138.png" height="36" width="36"/>
       </div>
-      <div class="heading heading-title"><a href="/" class="pure-menu-link">JU</a></div>
+      <div class="heading heading-title"><a href="/" class="pure-menu-link main-title">JU</a></div>
       <div class="menus">
         <ul class="pure-menu-list board-list">
           <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
@@ -16,8 +16,8 @@
           </li>
         </ul>
         <ul class="pure-menu-list right-header-menu">
-          <li class="pure-menu-item"><a href="#" class="pure-menu-link">Config this dashboard</a></li>
-          <li class="pure-menu-item"><a href="/board/new" class="pure-menu-link">Create a new dashboard</a></li>
+          <li class="pure-menu-item"><a href="#" class="pure-menu-link" title="Create Widge"><img src="/images/add-widge.png"/></a></li>
+          <li class="pure-menu-item"><a href="/boards/new" class="pure-menu-link" title="Create Board"><img src="/images/add-board.png"/></a></li>
         </ul>
       </div>
     </div>
@@ -31,17 +31,24 @@
     <div class="gridster">
       <ul>
         <% config['widges'].each do |widge| %> 
-          <li class="dashboard-widge" id="<%= widge['id'] %>" data-row="<%= widge['row'] %>" data-col="<%= widge['col'] %>" data-sizex="<%= widge['sizex'] %>" data-sizey="<%= widge['sizey'] %>" pull-inteval="<%= widge['pull-inteval'] || 5000 %>" data-bind="css: {error: hasError()}">
-            <div data-bind="ifnot: hasError">
-              <div data-bind="with: data">
-                <%= widge['template'] %>
+          <li class="dashboard-widge" id="<%= widge['name'].gsub(' ', '-') %>" data-row="<%= widge['row'] %>" data-col="<%= widge['col'] %>" data-sizex="<%= widge['sizex'] %>" data-sizey="<%= widge['sizey'] %>" pull-inteval="<%= widge['pull-inteval'] || 5000 %>" data-bind="css: {error: hasError()}">
+          <div class="dashboard-widge-content">
+              <div data-bind="ifnot: hasError">
+                <div data-bind="with: data">
+                  <%= widge['template'] %>
+                </div>
               </div>
-            </div>
-            <div data-bind="if: hasError">
-              <div class="widge-title"><%= widge['id'] %></div>
-              <div class="error-message"> 
-                <span>Error: </span>
-                <span data-bind="text: error"></span>
+              <div data-bind="if: hasError">
+                <div class="widge-title"><%= widge['name'] %></div>
+                <div class="error-message"> 
+                  <span>Error: </span>
+                  <span data-bind="text: error"></span>
+                </div>
+              </div>
+              <div class="widge-edit-link">
+                <a href="/boards/<%= URI.escape(config['board']) %>/widges/<%= URI.escape(widge['name']) %>/edit" title="Edit Widge">
+                  <img src="/images/edit.png" class="widge-edit-icon" alt="edit"/>
+                </a>
               </div>
             </div>
           </li>

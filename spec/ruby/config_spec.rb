@@ -23,7 +23,7 @@ describe Ju::Config do
     config = Ju::Config.get_board_config('boo')
 
     expect(config['board']).to eq('boo')
-    expect(config['widges'][0]['id']).to eq('foo')
+    expect(config['widges'][0]['name']).to eq('foo')
     expect(config['widges'][0]['row']).to eq(1)
     expect(config['widges'][0]['col']).to eq(2)
     expect(config['widges'][0]['sizex']).to eq(3)
@@ -34,7 +34,7 @@ describe Ju::Config do
     config = Ju::Config.get_widge_config('boo', 'foo')
 
     expect(config['name']).to eq('foo')
-    expect(config['id']).to eq('foo')
+    expect(config['name']).to eq('foo')
     expect(config['type']).to eq('gocd_pipeline')
   end
   

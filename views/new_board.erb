@@ -3,15 +3,15 @@
       <div class="heading">
       <img src="/images/ju138.png" height="36" width="36"/>
     </div>
-      <div class="heading heading-title"><a href="/" class="pure-menu-link">JU</a></div>
+      <div class="heading heading-title"><a href="/" class="pure-menu-link main-title">JU</a></div>
       <div class="pure-menu-heading">New Dashboard</div>
     </div>
 </div>
 <%= styled_flash %>
-<form class="pure-form new-board" action="/board" method="POST">
+<form class="pure-form new-board" action="/boards" method="POST">
     <fieldset>
         <legend>Create a new bashboard</legend>
-        <input name="board_name" type="text"  placeholder="Name"></input>
+        <input name="board_name" type="text"  placeholder="Name" value="<%= params['board_name']%>"></input>
         <button type="submit" class="pure-button pure-button-primary">Create</button>
         <a  href="/" class="pure-button">Cancel</a>
     </fieldset>

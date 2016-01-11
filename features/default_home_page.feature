@@ -4,5 +4,5 @@ As a dashboard user I would like to see a default home page displayed when first
 Scenario: Open the default page 
 When I visit the path '/'
 Then I should see the home page with a title "Default"
-And I should see a link "Config this dashboard" on the page
-And I should see a link "Create a new dashboard" on the page
+And I should see a link with the title "Create Board" on the page
+And I should see a link with the title "Create Widge" on the page

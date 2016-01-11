@@ -1,9 +1,1 @@
-{
-  "foo":
-  {
-    "row": 1,
-    "col": 2,
-    "sizex": 3,
-    "sizey": 4
-  }
-}
+{"foo":{"row":1,"col":2,"sizex":3,"sizey":4}}

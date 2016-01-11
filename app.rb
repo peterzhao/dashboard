@@ -20,6 +20,10 @@ get '/' do
   redirect to('/boards/Default')
 end
 
+get '/boards/new' do
+  erb :new_board
+end
+
 get '/boards/:board_name' do
   config = Ju::Config.get_board_config(params['board_name'])
   other_boards = Ju::Config.get_all_boards - [params['board_name']]
@@ -28,23 +32,25 @@ get '/boards/:board_name' do
   erb :home, :locals => {:config => config, :other_boards => other_boards}
 end
 
-get '/board/new' do
-  erb :new_board
-end
 
-post '/board' do
+post '/boards' do
   errors = Ju::Board.validate(params['board_name'])
   if errors.empty? 
     Ju::Board.create params['board_name']
     redirect to("/boards/#{URI.escape(params['board_name'])}"), 303  
   else
-    flash["error-message"] = errors
-    redirect to("/board/new"), 303  
+    flash.now["error-message"] = errors
+    status 400
+    erb :new_board
   end
 end
 
-get '/boards/:board_name/widges/:widge_id' do
-  widge = Ju::Config.get_widge_config(params['board_name'], params['widge_id'])
+get '/boards/:board_name/widges/:widge_name/edit' do
+  'Under Construction!'
+end
+
+get '/boards/:board_name/widges/:widge_name' do
+  widge = Ju::Config.get_widge_config(params['board_name'], params['widge_name'])
   Ju::Plugin.check(widge['type'], widge)
 end
 
