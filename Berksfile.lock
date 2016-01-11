@@ -1,7 +1,7 @@
 DEPENDENCIES
   tools
     git: https://github.com/peterzhao/tools_cookbook.git
-    revision: c51ad0cf0f18d8d0951bfaacaadb51ea4017a007
+    revision: 57d08b79cb6a4395c21631e648ab9de42c0c2e5b
 
 GRAPH
   7-zip (1.0.2)

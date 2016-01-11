@@ -14,6 +14,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "chef_solo" do |chef|
     chef.add_recipe "tools::rbenv"
     chef.add_recipe "tools::mounte_bank"
+    chef.add_recipe "tools::tmate"
     chef.add_recipe "tools::vim"
     chef.add_recipe "tools::phantomjs_libs"
     chef.add_recipe "tools::xvfb"
