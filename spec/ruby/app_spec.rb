@@ -73,4 +73,67 @@ describe 'Ju App' do
     expect(last_response.status).to eq(400)
   end
 
+  it "should get a new widge form" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['boo'])
+    allow(Ju::Plugin).to receive(:types).and_return(['gocd_pipeline'])
+    expect(Ju::Plugin).to receive(:config).with('gocd_pipeline').and_return([])
+    get '/boards/boo/widges/new/gocd_pipeline'
+    expect(last_response.status).to eq(200)
+  end
+
+  it "should get an error when getting a new widge form for an unexisting board" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['Default'])
+    get '/boards/boo/widges/new/gocd_pipeline'
+    expect(last_response.status).to eq(400)
+  end
+
+  it "should get an error when getting a new widge form of an unexisting widge type" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['boo'])
+    allow(Ju::Plugin).to receive(:types).and_return(['curl'])
+    get '/boards/boo/widges/new/gocd_pipeline'
+    expect(last_response.status).to eq(400)
+  end
+
+  it "should get an error when creating a new widge of an unexisting board" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return([])
+    post '/boards/boo/widges/gocd_pipeline'
+    expect(last_response.status).to eq(400)
+  end
+
+  it "should get an error when creating a new widge of an unexisting widge type" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['boo'])
+    allow(Ju::Plugin).to receive(:types).and_return(['curl'])
+    post '/boards/boo/widges/gocd_pipeline'
+    expect(last_response.status).to eq(400)
+  end
+
+  it "should create a new widge" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['boo'])
+    allow(Ju::Plugin).to receive(:types).and_return(['curl'])
+
+    settings = [{'name' => 'url'}]
+    params = {'name' => 'mywidge'}
+    allow(Ju::Plugin).to receive(:config).with('curl').and_return(settings)
+    allow(Ju::Widge).to receive(:validate).with(settings, anything).and_return([])
+    expect(Ju::Widge).to receive(:create).with('boo', 'curl', settings, anything)
+    post '/boards/boo/widges/curl', params
+
+    expect(last_response.status).to eq(303)
+    expect(last_response.header['Location']).to match(/boards\/boo$/) 
+  end
+
+  it "should not create a new widge when validation failed" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['boo'])
+    allow(Ju::Plugin).to receive(:types).and_return(['curl'])
+
+    settings = [{'name' => 'url'}]
+    params = {'name' => 'mywidge'}
+    allow(Ju::Plugin).to receive(:config).with('curl').and_return(settings)
+    allow(Ju::Widge).to receive(:validate).with(settings, anything).and_return(['something wrong'])
+    expect(Ju::Widge).not_to receive(:create)
+
+    post '/boards/boo/widges/curl', params
+
+    expect(last_response.status).to eq(400)
+  end
 end

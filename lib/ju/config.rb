@@ -32,6 +32,15 @@ EOS
       def get_all_boards
         Dir.glob("#{data_path}/config/*.json").select{ |e| File.file? e }.map{|f| File.basename(f, '.json')} 
       end
+
+      def save_widge(board, widge_type, data)
+        board_config = get_board_config(board)
+        data['type'] = widge_type
+        widge = board_config['widges'].find{|widge| widge['name'] == data['name']}
+        board_config['widges'].delete(widge) if widge
+        board_config['widges'] << data
+        File.open("#{data_path}/config/#{board}.json", 'w') { |file| file.write(board_config.to_json) }
+      end
       
       private 
      

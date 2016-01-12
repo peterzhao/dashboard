@@ -118,7 +118,7 @@ label {
   text-align: center;
   color: white;
   font-size: 20px;
-  background-color: red;
+  background-color: grey;
 }
 .display-content {
   color: black;
@@ -186,7 +186,7 @@ label {
  100% { box-shadow: 0 5px 5px rgba(255, 255, 255, .7) inset, 0 -5px 5px rgba(255, 255, 255, .7) inset;}
  }
 
-.new-board {
+.new-board, .new-widge {
   margin-left: 1em;
 }
 

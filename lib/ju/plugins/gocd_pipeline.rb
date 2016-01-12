@@ -94,36 +94,34 @@ EOS
     end
 
     def config
-      {
-        'settings' =>[
+        [
           {
             'name' => 'name',
             'description' => 'Widge Name',
             'validate' => '^[0-9a-zA-Z\-_ ]+$',
-            'valiation_message' => 'Widge Name cannot be empty or contain special characters'
+            'validation_message' => 'Widge Name cannot be empty or contain special characters'
           },
           {
             'name' => 'base_url',
             'description' => 'Server Base URL',
-            'validate' => '^[0-9a-zA-Z\-_:/]+$',
-            'valiation_message' => 'Server base URL is not a valid URL'
+            'validate' => '^[0-9a-zA-Z\-_:/.]+$',
+            'validation_message' => 'Server base URL is not a valid URL'
           },
           {
             'name' => 'pull_inteval',
             'description' => 'Pull Inteval',
             'validate' => '^[0-9]+$',
-            'valiation_message' => 'Pull Inteval must be digits',
+            'validation_message' => 'Pull Inteval must be digits',
             'default' => 5
           },
           {
             'name' => 'number_of_instances',
             'description' => 'Number of Instances',
             'validate' => '^[0-9]+$',
-            'valiation_message' => 'Number of Instances must be digits',
+            'validation_message' => 'Number of Instances must be digits',
             'default' => 3
           }
       ]
-      }
     end
   end
 end

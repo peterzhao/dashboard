@@ -89,5 +89,33 @@ describe Ju::Config do
     expect(config['widges'][5]['row']).to eq("2")
     expect(config['widges'][5]['col']).to eq("3")
   end
+ 
+  context 'saving widge' do
+    before :each do
+      FileUtils.rm_f 'spec/data/config/temp.json' 
+      FileUtils.rm_f 'spec/data/layout/temp.json' 
+      config_data = {'widges' => [
+        {'name' => "widge1", 'url' => 'abc', 'type' => 'curl'},
+        {'name' => "widge2", 'url' => 'def', 'type' => 'gocd'}
+      ]}
+      File.open("spec/data/config/temp.json", 'w') { |file| file.write(config_data.to_json) }
+    end
 
+    it 'should add new widge' do
+      data = {'name' => 'widge3', 'url' => 'ghi'}
+      Ju::Config.save_widge('temp', 'gocd', data)
+      expect(Ju::Config.get_widge_config('temp', 'widge3')['url']).to eq('ghi')
+      expect(Ju::Config.get_widge_config('temp', 'widge1')['url']).to eq('abc')
+      expect(Ju::Config.get_widge_config('temp', 'widge2')['url']).to eq('def')
+      expect(Ju::Config.get_widge_config('temp', 'widge3')['type']).to eq('gocd')
+    end
+
+    it 'should update widge' do
+      data = {'name' => 'widge2', 'url' => 'ghi'}
+      Ju::Config.save_widge('temp', 'gocd', data)
+      expect(Ju::Config.get_widge_config('temp', 'widge2')['url']).to eq('ghi')
+      expect(Ju::Config.get_widge_config('temp', 'widge1')['url']).to eq('abc')
+    end
+
+  end
 end

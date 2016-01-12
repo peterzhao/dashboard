@@ -1,0 +1,25 @@
+<div class="header">
+    <div class="home-menu pure-menu pure-menu-horizontal">
+      <div class="heading">
+      <img src="/images/ju138.png" height="36" width="36"/>
+    </div>
+      <div class="heading heading-title"><a href="/" class="pure-menu-link main-title">JU</a></div>
+      <div class="pure-menu-heading">New Widge</div>
+    </div>
+</div>
+<%= styled_flash %>
+<form class="pure-form pure-form-aligned new-widge" action="/boards/<%= URI.escape(params['board_name']) %>/widges/<%= URI.escape(params['widge_type']) %>" method="POST">
+    <fieldset>
+      <legend>Create a new <%= params['widge_type'] %> widge</legend>
+        <% settings.each do |setting| %>
+          <div class="pure-control-group">
+            <label for="<%= setting['name']%>"><%= setting['description'] || setting['name']%></label>
+            <input type="text" name="<%= setting['name'] %>" value="<%= params[setting['name']] || setting['default'] %>" placeholder="<%= setting['description'] || setting['name'] %>"></input>
+        </div>
+        <% end %>
+        <div class="pure-controls">
+          <button type="submit" class="pure-button pure-button-primary">Create</button>
+          <a  href="/" class="pure-button">Cancel</a>
+       </div>
+    </fieldset>
+</form>

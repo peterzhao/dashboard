@@ -46,7 +46,27 @@ post '/boards' do
 end
 
 get '/boards/:board_name/widges/new/:widge_type' do
-  'Creating Widge is Under Construction!'
+  halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
+  halt 400 unless Ju::Plugin.types.include?(params['widge_type'])
+  erb :new_widge, :locals =>{:settings => Ju::Plugin.config(params['widge_type'])}
+end
+
+post '/boards/:board_name/widges/:widge_type' do
+  halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
+  halt 400 unless Ju::Plugin.types.include?(params['widge_type'])
+  settings = Ju::Plugin.config(params['widge_type'])
+  errors = Ju::Widge.validate(settings, params)
+  if errors.empty? 
+    Ju::Widge.create(params['board_name'], params['widge_type'], settings, params)
+    redirect to("/boards/#{URI.escape(params['board_name'])}"), 303  
+  else
+    errors.each_with_index do |error, index|
+      flash.now["error-message flash-#{index}"] = error
+    end
+    status 400
+    erb :new_widge, :locals => { :settings => settings }
+  end
+
 end
 
 get '/boards/:board_name/widges/:widge_name/edit' do
