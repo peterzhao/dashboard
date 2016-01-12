@@ -23,12 +23,12 @@ describe Ju::Plugin do
 
   it 'should get ui template from plugin' do
     expect(test_plugin).to receive(:template)
-    Ju::Plugin.template('test_plugin')
+    Ju::Plugin.template('test_plugin', options)
   end
 
   it 'should get style from plugin' do
     expect(test_plugin).to receive(:style)
-    Ju::Plugin.style('test_plugin')
+    Ju::Plugin.style('test_plugin', options)
   end
 
   it 'should get config ui from plugin' do

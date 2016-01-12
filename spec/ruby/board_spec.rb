@@ -13,10 +13,10 @@ describe Ju::Board do
        {'name' => 'foo', 'type' => 'gocd'} 
     ]}
 
-    expect(Ju::Plugin).to receive(:template).with('curl').and_return(curl_template)
-    expect(Ju::Plugin).to receive(:style).with('curl').and_return(curl_style)
-    expect(Ju::Plugin).to receive(:template).with('gocd').and_return(gocd_template)
-    expect(Ju::Plugin).to receive(:style).with('gocd').and_return(gocd_style)
+    expect(Ju::Plugin).to receive(:template).with('curl', board_config['widges'][0]).and_return(curl_template)
+    expect(Ju::Plugin).to receive(:style).with('curl', board_config['widges'][0]).and_return(curl_style)
+    expect(Ju::Plugin).to receive(:template).with('gocd', board_config['widges'][1]).and_return(gocd_template)
+    expect(Ju::Plugin).to receive(:style).with('gocd', board_config['widges'][1]).and_return(gocd_style)
 
     Ju::Board.fill_template_and_style(board_config)
     
@@ -24,7 +24,6 @@ describe Ju::Board do
     expect(board_config['widges'][1]['template']).to eq(gocd_template)
     expect(board_config['styles']['curl']).to eq(curl_style)
     expect(board_config['styles']['gocd']).to eq(gocd_style)
-
   end
 
   it 'should create a new dashboard' do

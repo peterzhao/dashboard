@@ -23,12 +23,12 @@ module Ju
         plugin(type, options).send :check
       end
       
-      def template(type)
-        plugin(type).send :template
+      def template(type, options)
+        plugin(type, options).send :template
       end
 
-      def style(type)
-        plugin(type).send :style
+      def style(type, options)
+        plugin(type, options).send :style
       end
 
       def config(type)
