@@ -109,16 +109,15 @@ label {
 }
 
 .dashboard-widge .error-message {
-  color: #222222;
+  color: #aaaaaa;
   text-align: center;
   margin-top: 5px;
 }
 
 .widge-title {
+  color: #aaaaaa;
   text-align: center;
-  color: white;
-  font-size: 20px;
-  background-color: grey;
+  font-size: 120%;
 }
 .display-content {
   color: black;

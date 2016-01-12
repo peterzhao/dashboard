@@ -38,7 +38,7 @@
     <div class="gridster">
       <ul>
         <% config['widges'].each do |widge| %> 
-          <li class="dashboard-widge" id="<%= widge['name'].gsub(' ', '-') %>" data-row="<%= widge['row'] %>" data-col="<%= widge['col'] %>" data-sizex="<%= widge['sizex'] %>" data-sizey="<%= widge['sizey'] %>" pull-inteval="<%= widge['pull-inteval'] || 5000 %>" data-bind="css: {error: hasError()}">
+          <li class="dashboard-widge" id="<%= widge['name'].gsub(' ', '-') %>" widge-name="<%= widge['name'] %>" data-row="<%= widge['row'] %>" data-col="<%= widge['col'] %>" data-sizex="<%= widge['sizex'] %>" data-sizey="<%= widge['sizey'] %>" pull-inteval="<%= widge['pull-inteval'] || 5000 %>" data-bind="css: {error: hasError()}">
           <div class="dashboard-widge-content">
               <div data-bind="ifnot: hasError">
                 <div data-bind="with: data">
@@ -65,9 +65,9 @@
 </div>
 <script type="text/javascript">
 
-  widge_models = {};
-  base_width = 280;
-  base_height = 140;
+  var widge_models = {};
+  var base_width = 280;
+  var base_height = 140;
 
   $(function(){
     $('.gridster ul').gridster({
@@ -82,8 +82,9 @@
       }
     });
     $('.dashboard-widge').each(function(index, widge){
-      loader = new Dashboard.WidgeLoader("<%=config['board'] %>", widge.id, base_width, base_height, $(widge).attr('pull-inteval'), $(widge).attr('data-sizex'), $(widge).attr('data-sizey'));
-      widge_models[widge.id] = loader;
+      var id = $(widge).attr('widge-name')
+      var loader = new Dashboard.WidgeLoader("<%=config['board'] %>", id, base_width, base_height, $(widge).attr('pull-inteval'), $(widge).attr('data-sizex'), $(widge).attr('data-sizey'));
+      widge_models[id] = loader;
       ko.applyBindings(loader, widge);
       loader.startPull();
     });

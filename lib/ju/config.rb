@@ -48,19 +48,24 @@ EOS
         path = "#{data_path}/layout/#{config['board']}.json"
         if File.exists?(path)
           layout = JSON.load(File.read(path))
-          return unless layout
-          config['widges'].each do |widge|
-            widge_layout = layout[widge['name']]
-            widge_layout.keys.each{ |prop| widge[prop] = widge_layout[prop] } if widge_layout
+          if layout.keys.count == config['widges'].length
+            config['widges'].each do |widge|
+              widge_layout = layout[widge['name']]
+              widge_layout.keys.each{ |prop| widge[prop] = widge_layout[prop] } if widge_layout
+            end
+          return
           end
-        else
-          config['widges'].each_with_index do |widge, index|
-            widge['row'] = ((index/3) + 1).to_s 
-            widge['col'] = ((index%3) + 1).to_s 
-            widge['sizex'] = "1" 
-            widge['sizey'] = "1" 
-          end 
         end
+        set_default_layout(config)
+      end
+
+      def set_default_layout(config)
+        config['widges'].each_with_index do |widge, index|
+          widge['row'] = ((index/3) + 1).to_s 
+          widge['col'] = ((index%3) + 1).to_s 
+          widge['sizex'] = "1" 
+          widge['sizey'] = "1" 
+        end 
       end
 
       def data_path

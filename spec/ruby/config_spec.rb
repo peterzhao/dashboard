@@ -89,6 +89,28 @@ describe Ju::Config do
     expect(config['widges'][5]['row']).to eq("2")
     expect(config['widges'][5]['col']).to eq("3")
   end
+
+  it 'should set default layout if number of widges are not matched when loading board config' do
+    FileUtils.rm_f 'spec/data/layout/temp.json' 
+    FileUtils.rm_f 'spec/data/config/temp.json' 
+    config_data = {'widges' => [
+      {'name' => "widge0"},
+      {'name' => "widge1"}
+    ]}
+    layout = {'widge0' => {'row' => 2, 'col' => 1, 'sizex' => 2, 'sizey' => 3}}
+    File.open("spec/data/config/temp.json", 'w') { |file| file.write(config_data.to_json) }
+    File.open("spec/data/layout/temp.json", 'w') { |file| file.write(layout.to_json) }
+    config = Ju::Config.get_board_config('temp')
+    expect(config['widges'][0]['name']).to eq('widge0')
+    expect(config['widges'][0]['row']).to eq("1")
+    expect(config['widges'][0]['col']).to eq("1")
+    expect(config['widges'][0]['sizex']).to eq("1")
+    expect(config['widges'][0]['sizey']).to eq("1")
+
+    expect(config['widges'][1]['name']).to eq('widge1')
+    expect(config['widges'][1]['row']).to eq("1")
+    expect(config['widges'][1]['col']).to eq("2")
+  end
  
   context 'saving widge' do
     before :each do
@@ -116,6 +138,5 @@ describe Ju::Config do
       expect(Ju::Config.get_widge_config('temp', 'widge2')['url']).to eq('ghi')
       expect(Ju::Config.get_widge_config('temp', 'widge1')['url']).to eq('abc')
     end
-
   end
 end

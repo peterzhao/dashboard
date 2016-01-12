@@ -1,13 +1,13 @@
 if(typeof(Dashboard) === "undefined") Dashboard = {}
 Dashboard.layoutChangeHandler = function(board){
-  widges = $('.dashboard-widge');
+  var widges = $('.dashboard-widge');
   for(i=0; i<widges.length; i++){
-    id = widges[i].id;
-    model = widge_models[id];
-    sizex = $(widges[i]).attr('data-sizex')
-    sizey = $(widges[i]).attr('data-sizey')
-    row = $(widges[i]).attr('data-row')
-    col = $(widges[i]).attr('data-col')
+    var id = $(widges[i]).attr('widge-name');
+    var model = widge_models[id];
+    var sizex = $(widges[i]).attr('data-sizex')
+    var sizey = $(widges[i]).attr('data-sizey')
+    var row = $(widges[i]).attr('data-row')
+    var col = $(widges[i]).attr('data-col')
     model.changeSize(sizex, sizey, row, col);
     model.pull();
   };

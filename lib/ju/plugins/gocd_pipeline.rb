@@ -7,7 +7,7 @@ module Ju
     TITLE_PADDING_TOP = '3'
     LABEL_WIDTH = '30'
     def check
-      params = { method: :get, url: "#{options['base_url']}/go/api/pipelines/#{options['name']}/history"}
+      params = { method: :get, url: "#{options['base_url']}/go/api/pipelines/#{URI.escape(options['name'])}/history"}
       if options['user']
         params[:user] = options['user']
         params[:password] = options['password']
@@ -24,7 +24,7 @@ module Ju
     def template
 <<EOS
 <div class="gocd">
-  <div class="gocd-title">#{options['name']}</div>
+  <div class="gocd-title" data-bind="text: $root.id"></div>
   <div class="gocd-pipelines" data-bind="style: { height: ($root.base_height * $root.sizey - #{TITLE_HEIGHT} - #{TITLE_PADDING_TOP}) + 'px'}">
     <!-- ko foreach: pipelines -->
       <div class="gocd-pipeline-wrapper" data-bind="style: { height: (1/($parent.pipelines.length)*100 - 1 ) + '%' }">
@@ -130,7 +130,7 @@ private
 
 def transform(response_str, number_of_instances)
   response = JSON.parse(response_str)
-  response['pipelines'] = response['pipelines'][0..(number_of_instances - 1)] 
+  response['pipelines'] = response['pipelines'][0..(number_of_instances.to_i - 1)] 
   response['pipelines'].each do |pipeline|
     pipeline['stages'].each do |stage|
       transform_stage(stage)
