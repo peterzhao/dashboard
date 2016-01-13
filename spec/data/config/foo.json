@@ -1,5 +1,5 @@
 {
-  "widges":[
+  "widgets":[
     {
       "name": "foo",
       "type": "gocd_pipeline",

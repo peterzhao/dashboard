@@ -17,10 +17,10 @@
         </ul>
         <ul class="pure-menu-list right-header-menu">
           <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-              <a href="#" id="menuLink-widges" class="pure-menu-link">Create Widge</a>
+              <a href="#" id="menuLink-widgets" class="pure-menu-link">Create widget</a>
               <ul class="pure-menu-children">
-                <% widge_types.each do |widge_type| %>
-                  <li class="pure-menu-item"><a href="/boards/<%= URI.escape(config['board']) %>/widges/new/<%= URI.escape(widge_type) %>" class="pure-menu-link child-widge-link">Create <%= widge_type.gsub('_', ' ').gsub('-', ' ')%> Widge</a></li>
+                <% widget_types.each do |widget_type| %>
+                  <li class="pure-menu-item"><a href="/boards/<%= URI.escape(config['board']) %>/widgets/new/<%= URI.escape(widget_type) %>" class="pure-menu-link child-widget-link">Create <%= widget_type.gsub('_', ' ').gsub('-', ' ')%> widget</a></li>
                 <% end %>
               </ul>
           </li>
@@ -37,24 +37,24 @@
 <div class="content-wrapper">
     <div class="gridster">
       <ul>
-        <% config['widges'].each do |widge| %> 
-          <li class="dashboard-widge" id="<%= widge['name'].gsub(' ', '-') %>" widge-name="<%= widge['name'] %>" data-row="<%= widge['row'] %>" data-col="<%= widge['col'] %>" data-sizex="<%= widge['sizex'] %>" data-sizey="<%= widge['sizey'] %>" pull-inteval="<%= widge['pull-inteval'] || 5000 %>" data-bind="css: {error: hasError()}">
-          <div class="dashboard-widge-content">
+        <% config['widgets'].each do |widget| %> 
+          <li class="dashboard-widget" id="<%= widget['name'].gsub(' ', '-') %>" widget-name="<%= widget['name'] %>" data-row="<%= widget['row'] %>" data-col="<%= widget['col'] %>" data-sizex="<%= widget['sizex'] %>" data-sizey="<%= widget['sizey'] %>" pull-inteval="<%= widget['pull-inteval'] || 5000 %>" data-bind="css: {error: hasError()}">
+          <div class="dashboard-widget-content">
               <div data-bind="ifnot: hasError">
                 <div data-bind="with: data">
-                  <%= widge['template'] %>
+                  <%= widget['template'] %>
                 </div>
               </div>
               <div data-bind="if: hasError">
-                <div class="widge-title"><%= widge['name'] %></div>
+                <div class="widget-title"><%= widget['name'] %></div>
                 <div class="error-message"> 
                   <span>Error: </span>
                   <span data-bind="text: error"></span>
                 </div>
               </div>
-              <div class="widge-edit-link">
-                <a href="/boards/<%= URI.escape(config['board']) %>/widges/<%= URI.escape(widge['name']) %>/edit" title="Edit Widge">
-                  <img src="/images/edit.png" class="widge-edit-icon" alt="edit"/>
+              <div class="widget-edit-link">
+                <a href="/boards/<%= URI.escape(config['board']) %>/widgets/<%= URI.escape(widget['name']) %>/edit" title="Edit widget">
+                  <img src="/images/edit.png" class="widget-edit-icon" alt="edit"/>
                 </a>
               </div>
             </div>
@@ -65,7 +65,7 @@
 </div>
 <script type="text/javascript">
 
-  var widge_models = {};
+  var widget_models = {};
   var base_width = 280;
   var base_height = 140;
 
@@ -81,11 +81,11 @@
         stop: function(){Dashboard.layoutChangeHandler("<%=config['board'] %>");}
       }
     });
-    $('.dashboard-widge').each(function(index, widge){
-      var id = $(widge).attr('widge-name')
-      var loader = new Dashboard.WidgeLoader("<%=config['board'] %>", id, base_width, base_height, $(widge).attr('pull-inteval'), $(widge).attr('data-sizex'), $(widge).attr('data-sizey'));
-      widge_models[id] = loader;
-      ko.applyBindings(loader, widge);
+    $('.dashboard-widget').each(function(index, widget){
+      var id = $(widget).attr('widget-name')
+      var loader = new Dashboard.WidgetLoader("<%=config['board'] %>", id, base_width, base_height, $(widget).attr('pull-inteval'), $(widget).attr('data-sizex'), $(widget).attr('data-sizey'));
+      widget_models[id] = loader;
+      ko.applyBindings(loader, widget);
       loader.startPull();
     });
   }); 

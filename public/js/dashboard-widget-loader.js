@@ -1,5 +1,5 @@
 if(typeof(Dashboard) === "undefined") Dashboard = {}
-Dashboard.WidgeLoader = function(board, id, base_width, base_height, pull_inteval, sizex, sizey){
+Dashboard.WidgetLoader = function(board, id, base_width, base_height, pull_inteval, sizex, sizey){
   var self = this;
   self.board = board,
   self.id = id;
@@ -24,7 +24,7 @@ Dashboard.WidgeLoader = function(board, id, base_width, base_height, pull_inteva
   self.pull = function(){
     if(typeof(debug) != "undefined" && debug == true) return;
     jQuery.ajax({
-      url: "/boards/" + encodeURI(self.board) + "/widges/" + encodeURI(id),
+      url: "/boards/" + encodeURI(self.board) + "/widgets/" + encodeURI(id),
       contentType: "application/json; charset=utf-8",
       type: "get",
       dataType: "json",

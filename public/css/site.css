@@ -84,37 +84,37 @@ label {
   list-style-type: none;
 }
 
-.dashboard-widge-content {
+.dashboard-widget-content {
   position: relative;
 }
 
-.widge-edit-link {
+.widget-edit-link {
   display: none;
   position: absolute;
   top: 0px;
   right: 0px;
 }
 
-.widge-edit-icon {
+.widget-edit-icon {
   width: 16px;
   height: 16px;
 }
 
-.dashboard-widge-content:hover .widge-edit-link {
+.dashboard-widget-content:hover .widget-edit-link {
  display: block;
 }
 
-.dashboard-widge.error {
+.dashboard-widget.error {
   background-color: #eeeeee;
 }
 
-.dashboard-widge .error-message {
+.dashboard-widget .error-message {
   color: #aaaaaa;
   text-align: center;
   margin-top: 5px;
 }
 
-.widge-title {
+.widget-title {
   color: #aaaaaa;
   text-align: center;
   font-size: 120%;
@@ -185,7 +185,7 @@ label {
  100% { box-shadow: 0 5px 5px rgba(255, 255, 255, .7) inset, 0 -5px 5px rgba(255, 255, 255, .7) inset;}
  }
 
-.new-board, .new-widge {
+.new-board, .new-widget {
   margin-left: 1em;
 }
 
@@ -209,7 +209,7 @@ label {
   font-weight: 400;
 }
 
-.other-board-link, .child-widge-link {
+.other-board-link, .child-widget-link {
   background-color: #2d3e50;
   padding-left: 3em;
 }

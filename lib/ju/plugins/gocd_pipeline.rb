@@ -97,9 +97,9 @@ EOS
         [
           {
             'name' => 'name',
-            'description' => 'Widge Name',
+            'description' => 'widget Name',
             'validate' => '^[0-9a-zA-Z\-_ ]+$',
-            'validation_message' => 'Widge Name cannot be empty or contain special characters'
+            'validation_message' => 'widget Name cannot be empty or contain special characters'
           },
           {
             'name' => 'base_url',

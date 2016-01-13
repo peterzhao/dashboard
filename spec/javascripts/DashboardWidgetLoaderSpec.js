@@ -1,4 +1,4 @@
-describe("Dashboard.WidgeLoade", function() {
+describe("Dashboard.WidgetLoade", function() {
   var ajax;
   var ajaxOptions;
   beforeEach(function() {
@@ -13,12 +13,12 @@ describe("Dashboard.WidgeLoade", function() {
   });
 
   it("should pull data successfully", function(){
-    var loader = new Dashboard.WidgeLoader("my Board", "widge 1", "100", "100");
+    var loader = new Dashboard.WidgetLoader("my Board", "widget 1", "100", "100");
     expect(loader.data()).toBe(null);
     loader.pull();
     expect(ajaxOptions.type).toBe("get"); 
     expect(ajaxOptions.dataType).toBe("json"); 
-    expect(ajaxOptions.url).toBe("/boards/my%20Board/widges/widge%201");
+    expect(ajaxOptions.url).toBe("/boards/my%20Board/widgets/widget%201");
 
     var data = {"boo": "foo"}; 
     ajaxOptions.success(data);
@@ -28,12 +28,12 @@ describe("Dashboard.WidgeLoade", function() {
   });
 
   it("should pull data with error", function(){
-    var loader = new Dashboard.WidgeLoader("myBoard", "widge1", "100", "100");
+    var loader = new Dashboard.WidgetLoader("myBoard", "widget1", "100", "100");
     expect(loader.data()).toBe(null);
     loader.pull();
     expect(ajaxOptions.type).toBe("get"); 
     expect(ajaxOptions.dataType).toBe("json"); 
-    expect(ajaxOptions.url).toBe("/boards/myBoard/widges/widge1");
+    expect(ajaxOptions.url).toBe("/boards/myBoard/widgets/widget1");
 
     var data = {"error": "broken connection"}; 
     ajaxOptions.success(data);
@@ -43,12 +43,12 @@ describe("Dashboard.WidgeLoade", function() {
   });
 
   it("should set error when failed to pull data", function(){
-    var loader = new Dashboard.WidgeLoader("myBoard", "widge1", "100", "100");
+    var loader = new Dashboard.WidgetLoader("myBoard", "widget1", "100", "100");
     expect(loader.data()).toBe(null);
     loader.pull();
     expect(ajaxOptions.type).toBe("get"); 
     expect(ajaxOptions.dataType).toBe("json"); 
-    expect(ajaxOptions.url).toBe("/boards/myBoard/widges/widge1");
+    expect(ajaxOptions.url).toBe("/boards/myBoard/widgets/widget1");
 
     ajaxOptions.error();
 

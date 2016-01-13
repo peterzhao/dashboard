@@ -4,13 +4,13 @@
       <img src="/images/ju138.png" height="36" width="36"/>
     </div>
       <div class="heading heading-title"><a href="/" class="pure-menu-link main-title">JU</a></div>
-      <div class="pure-menu-heading">New Widge</div>
+      <div class="pure-menu-heading">New widget</div>
     </div>
 </div>
 <%= styled_flash %>
-<form class="pure-form pure-form-aligned new-widge" action="/boards/<%= URI.escape(params['board_name']) %>/widges/<%= URI.escape(params['widge_type']) %>" method="POST">
+<form class="pure-form pure-form-aligned new-widget" action="/boards/<%= URI.escape(params['board_name']) %>/widgets/<%= URI.escape(params['widget_type']) %>" method="POST">
     <fieldset>
-      <legend>Create a new <%= params['widge_type'] %> widge</legend>
+      <legend>Create a new <%= params['widget_type'] %> widget</legend>
         <% settings.each do |setting| %>
           <div class="pure-control-group">
             <label for="<%= setting['name']%>"><%= setting['description'] || setting['name']%></label>

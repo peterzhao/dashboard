@@ -1,5 +1,5 @@
 module Ju
-  class Widge
+  class Widget
     def self.validate(settings, data)
       errors = []
       settings.each do |setting|
@@ -8,12 +8,12 @@ module Ju
       errors
     end
 
-    def self.create(board_name, widge_type, settings, data)
+    def self.create(board_name, widget_type, settings, data)
       data_to_save = {}
       settings.each do |setting|
         data_to_save[setting['name']] = data[setting['name']]
       end
-      Ju::Config.save_widge(board_name, widge_type, data_to_save)
+      Ju::Config.save_widget(board_name, widget_type, data_to_save)
     end
   end
 end

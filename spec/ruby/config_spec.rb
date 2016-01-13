@@ -23,15 +23,15 @@ describe Ju::Config do
     config = Ju::Config.get_board_config('boo')
 
     expect(config['board']).to eq('boo')
-    expect(config['widges'][0]['name']).to eq('foo')
-    expect(config['widges'][0]['row']).to eq("1")
-    expect(config['widges'][0]['col']).to eq("2")
-    expect(config['widges'][0]['sizex']).to eq("3")
-    expect(config['widges'][0]['sizey']).to eq("4")
+    expect(config['widgets'][0]['name']).to eq('foo')
+    expect(config['widgets'][0]['row']).to eq("1")
+    expect(config['widgets'][0]['col']).to eq("2")
+    expect(config['widgets'][0]['sizex']).to eq("3")
+    expect(config['widgets'][0]['sizey']).to eq("4")
   end
 
-  it 'should get widge config' do
-    config = Ju::Config.get_widge_config('boo', 'foo')
+  it 'should get widget config' do
+    config = Ju::Config.get_widget_config('boo', 'foo')
 
     expect(config['name']).to eq('foo')
     expect(config['name']).to eq('foo')
@@ -40,7 +40,7 @@ describe Ju::Config do
   
   it 'should save layout' do
     FileUtils.rm_f 'spec/data/layout/temp.json' 
-    data = {"widge1" => {"row" => 1, "col" => 2}}
+    data = {"widget1" => {"row" => 1, "col" => 2}}
     Ju::Config.save_layout('temp', data)
 
     expect(File.read('spec/data/layout/temp.json')).to eq(data.to_json)
@@ -53,90 +53,90 @@ describe Ju::Config do
   it 'should set default layout if not exist when loading board config' do
     FileUtils.rm_f 'spec/data/layout/temp.json' 
     FileUtils.rm_f 'spec/data/config/temp.json' 
-    config_data = {'widges' => [
-      {'name' => "widge0"},
-      {'name' => "widge1"},
-      {'name' => "widge2"},
-      {'name' => "widge3"},
-      {'name' => "widge4"},
-      {'name' => "widge5"}
+    config_data = {'widgets' => [
+      {'name' => "widget0"},
+      {'name' => "widget1"},
+      {'name' => "widget2"},
+      {'name' => "widget3"},
+      {'name' => "widget4"},
+      {'name' => "widget5"}
     ]}
     File.open("spec/data/config/temp.json", 'w') { |file| file.write(config_data.to_json) }
     config = Ju::Config.get_board_config('temp')
-    expect(config['widges'][0]['name']).to eq('widge0')
-    expect(config['widges'][0]['row']).to eq("1")
-    expect(config['widges'][0]['col']).to eq("1")
-    expect(config['widges'][0]['sizex']).to eq("1")
-    expect(config['widges'][0]['sizey']).to eq("1")
+    expect(config['widgets'][0]['name']).to eq('widget0')
+    expect(config['widgets'][0]['row']).to eq("1")
+    expect(config['widgets'][0]['col']).to eq("1")
+    expect(config['widgets'][0]['sizex']).to eq("1")
+    expect(config['widgets'][0]['sizey']).to eq("1")
 
-    expect(config['widges'][1]['name']).to eq('widge1')
-    expect(config['widges'][1]['row']).to eq("1")
-    expect(config['widges'][1]['col']).to eq("2")
+    expect(config['widgets'][1]['name']).to eq('widget1')
+    expect(config['widgets'][1]['row']).to eq("1")
+    expect(config['widgets'][1]['col']).to eq("2")
 
-    expect(config['widges'][2]['name']).to eq('widge2')
-    expect(config['widges'][2]['row']).to eq("1")
-    expect(config['widges'][2]['col']).to eq("3")
+    expect(config['widgets'][2]['name']).to eq('widget2')
+    expect(config['widgets'][2]['row']).to eq("1")
+    expect(config['widgets'][2]['col']).to eq("3")
 
-    expect(config['widges'][3]['name']).to eq('widge3')
-    expect(config['widges'][3]['row']).to eq("2")
-    expect(config['widges'][3]['col']).to eq("1")
+    expect(config['widgets'][3]['name']).to eq('widget3')
+    expect(config['widgets'][3]['row']).to eq("2")
+    expect(config['widgets'][3]['col']).to eq("1")
 
-    expect(config['widges'][4]['name']).to eq('widge4')
-    expect(config['widges'][4]['row']).to eq("2")
-    expect(config['widges'][4]['col']).to eq("2")
+    expect(config['widgets'][4]['name']).to eq('widget4')
+    expect(config['widgets'][4]['row']).to eq("2")
+    expect(config['widgets'][4]['col']).to eq("2")
 
-    expect(config['widges'][5]['name']).to eq('widge5')
-    expect(config['widges'][5]['row']).to eq("2")
-    expect(config['widges'][5]['col']).to eq("3")
+    expect(config['widgets'][5]['name']).to eq('widget5')
+    expect(config['widgets'][5]['row']).to eq("2")
+    expect(config['widgets'][5]['col']).to eq("3")
   end
 
-  it 'should set default layout if number of widges are not matched when loading board config' do
+  it 'should set layout for widgetts which have no layout' do
     FileUtils.rm_f 'spec/data/layout/temp.json' 
     FileUtils.rm_f 'spec/data/config/temp.json' 
-    config_data = {'widges' => [
-      {'name' => "widge0"},
-      {'name' => "widge1"}
+    config_data = {'widgets' => [
+      {'name' => "widget0"},
+      {'name' => "widget1"}
     ]}
-    layout = {'widge0' => {'row' => 2, 'col' => 1, 'sizex' => 2, 'sizey' => 3}}
+    layout = {'widget0' => {'row' => 2, 'col' => 1, 'sizex' => 2, 'sizey' => 3}}
     File.open("spec/data/config/temp.json", 'w') { |file| file.write(config_data.to_json) }
     File.open("spec/data/layout/temp.json", 'w') { |file| file.write(layout.to_json) }
     config = Ju::Config.get_board_config('temp')
-    expect(config['widges'][0]['name']).to eq('widge0')
-    expect(config['widges'][0]['row']).to eq("1")
-    expect(config['widges'][0]['col']).to eq("1")
-    expect(config['widges'][0]['sizex']).to eq("1")
-    expect(config['widges'][0]['sizey']).to eq("1")
+    expect(config['widgets'][0]['name']).to eq('widget0')
+    expect(config['widgets'][0]['row']).to eq("1")
+    expect(config['widgets'][0]['col']).to eq("1")
+    expect(config['widgets'][0]['sizex']).to eq("1")
+    expect(config['widgets'][0]['sizey']).to eq("1")
 
-    expect(config['widges'][1]['name']).to eq('widge1')
-    expect(config['widges'][1]['row']).to eq("1")
-    expect(config['widges'][1]['col']).to eq("2")
+    expect(config['widgets'][1]['name']).to eq('widget1')
+    expect(config['widgets'][1]['row']).to eq("1")
+    expect(config['widgets'][1]['col']).to eq("2")
   end
  
-  context 'saving widge' do
+  context 'saving widget' do
     before :each do
       FileUtils.rm_f 'spec/data/config/temp.json' 
       FileUtils.rm_f 'spec/data/layout/temp.json' 
-      config_data = {'widges' => [
-        {'name' => "widge1", 'url' => 'abc', 'type' => 'curl'},
-        {'name' => "widge2", 'url' => 'def', 'type' => 'gocd'}
+      config_data = {'widgets' => [
+        {'name' => "widget1", 'url' => 'abc', 'type' => 'curl'},
+        {'name' => "widget2", 'url' => 'def', 'type' => 'gocd'}
       ]}
       File.open("spec/data/config/temp.json", 'w') { |file| file.write(config_data.to_json) }
     end
 
-    it 'should add new widge' do
-      data = {'name' => 'widge3', 'url' => 'ghi'}
-      Ju::Config.save_widge('temp', 'gocd', data)
-      expect(Ju::Config.get_widge_config('temp', 'widge3')['url']).to eq('ghi')
-      expect(Ju::Config.get_widge_config('temp', 'widge1')['url']).to eq('abc')
-      expect(Ju::Config.get_widge_config('temp', 'widge2')['url']).to eq('def')
-      expect(Ju::Config.get_widge_config('temp', 'widge3')['type']).to eq('gocd')
+    it 'should add new widget' do
+      data = {'name' => 'widget3', 'url' => 'ghi'}
+      Ju::Config.save_widget('temp', 'gocd', data)
+      expect(Ju::Config.get_widget_config('temp', 'widget3')['url']).to eq('ghi')
+      expect(Ju::Config.get_widget_config('temp', 'widget1')['url']).to eq('abc')
+      expect(Ju::Config.get_widget_config('temp', 'widget2')['url']).to eq('def')
+      expect(Ju::Config.get_widget_config('temp', 'widget3')['type']).to eq('gocd')
     end
 
-    it 'should update widge' do
-      data = {'name' => 'widge2', 'url' => 'ghi'}
-      Ju::Config.save_widge('temp', 'gocd', data)
-      expect(Ju::Config.get_widge_config('temp', 'widge2')['url']).to eq('ghi')
-      expect(Ju::Config.get_widge_config('temp', 'widge1')['url']).to eq('abc')
+    it 'should update widget' do
+      data = {'name' => 'widget2', 'url' => 'ghi'}
+      Ju::Config.save_widget('temp', 'gocd', data)
+      expect(Ju::Config.get_widget_config('temp', 'widget2')['url']).to eq('ghi')
+      expect(Ju::Config.get_widget_config('temp', 'widget1')['url']).to eq('abc')
     end
   end
 end

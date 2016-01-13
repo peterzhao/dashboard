@@ -29,7 +29,7 @@ get '/boards/:board_name' do
   other_boards = Ju::Config.get_all_boards - [params['board_name']]
   session['last_board'] = params['board_name']
   Ju::Board.fill_template_and_style(config)
-  erb :home, :locals => {:config => config, :other_boards => other_boards, :widge_types => Ju::Plugin.types}
+  erb :home, :locals => {:config => config, :other_boards => other_boards, :widget_types => Ju::Plugin.types}
 end
 
 
@@ -45,37 +45,37 @@ post '/boards' do
   end
 end
 
-get '/boards/:board_name/widges/new/:widge_type' do
+get '/boards/:board_name/widgets/new/:widget_type' do
   halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
-  halt 400 unless Ju::Plugin.types.include?(params['widge_type'])
-  erb :new_widge, :locals =>{:settings => Ju::Plugin.config(params['widge_type'])}
+  halt 400 unless Ju::Plugin.types.include?(params['widget_type'])
+  erb :new_widget, :locals =>{:settings => Ju::Plugin.config(params['widget_type'])}
 end
 
-post '/boards/:board_name/widges/:widge_type' do
+post '/boards/:board_name/widgets/:widget_type' do
   halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
-  halt 400 unless Ju::Plugin.types.include?(params['widge_type'])
-  settings = Ju::Plugin.config(params['widge_type'])
-  errors = Ju::Widge.validate(settings, params)
+  halt 400 unless Ju::Plugin.types.include?(params['widget_type'])
+  settings = Ju::Plugin.config(params['widget_type'])
+  errors = Ju::Widget.validate(settings, params)
   if errors.empty? 
-    Ju::Widge.create(params['board_name'], params['widge_type'], settings, params)
+    Ju::Widget.create(params['board_name'], params['widget_type'], settings, params)
     redirect to("/boards/#{URI.escape(params['board_name'])}"), 303  
   else
     errors.each_with_index do |error, index|
       flash.now["error-message flash-#{index}"] = error
     end
     status 400
-    erb :new_widge, :locals => { :settings => settings }
+    erb :new_widget, :locals => { :settings => settings }
   end
 
 end
 
-get '/boards/:board_name/widges/:widge_name/edit' do
+get '/boards/:board_name/widgets/:widget_name/edit' do
   'Under Construction!'
 end
 
-get '/boards/:board_name/widges/:widge_name' do
-  widge = Ju::Config.get_widge_config(params['board_name'], params['widge_name'])
-  Ju::Plugin.check(widge['type'], widge)
+get '/boards/:board_name/widgets/:widget_name' do
+  widget = Ju::Config.get_widget_config(params['board_name'], params['widget_name'])
+  Ju::Plugin.check(widget['type'], widget)
 end
 
 post '/boards/:board_name/layout' do

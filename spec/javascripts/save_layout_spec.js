@@ -13,11 +13,11 @@ describe("Dashboard.saveLayout", function() {
   });
 
   it("should save layout successfully", function(){
-    var widges = {'widge1':{ row: 1, col:1, sizex:2, sizey: 2 }, 'widge2':{row: 1, col:2, sizex:1, sizey: 3 }} 
-    Dashboard.saveLayout("my Board", widges);
+    var widgets = {'widget1':{ row: 1, col:1, sizex:2, sizey: 2 }, 'widget2':{row: 1, col:2, sizex:1, sizey: 3 }} 
+    Dashboard.saveLayout("my Board", widgets);
     expect(ajaxOptions.type).toBe("post"); 
     expect(ajaxOptions.dataType).toBe("json"); 
     expect(ajaxOptions.url).toBe("/boards/my%20Board/layout");
-    expect(ajaxOptions.data).toBe('{"widge1":{"row":1,"col":1,"sizex":2,"sizey":2},"widge2":{"row":1,"col":2,"sizex":1,"sizey":3}}');
+    expect(ajaxOptions.data).toBe('{"widget1":{"row":1,"col":1,"sizex":2,"sizey":2},"widget2":{"row":1,"col":2,"sizex":1,"sizey":3}}');
   });
 });

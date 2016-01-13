@@ -11,9 +11,9 @@ module Ju
         config
       end
       
-      def get_widge_config(board, widge_name)
+      def get_widget_config(board, widget_name)
         config = get_board_config(board)
-        config['widges'].find{ |widge| widge['name'] == widge_name }
+        config['widgets'].find{ |widget| widget['name'] == widget_name }
       end
 
       def save_layout(board, data)
@@ -23,7 +23,7 @@ module Ju
       def new_board(board_name)
         data = <<EOS
 {
-  "widges": []
+  "widgets": []
 }
 EOS
         File.open("#{data_path}/config/#{board_name}.json", 'w') { |file| file.write(data) }
@@ -33,12 +33,12 @@ EOS
         Dir.glob("#{data_path}/config/*.json").select{ |e| File.file? e }.map{|f| File.basename(f, '.json')} 
       end
 
-      def save_widge(board, widge_type, data)
+      def save_widget(board, widget_type, data)
         board_config = get_board_config(board)
-        data['type'] = widge_type
-        widge = board_config['widges'].find{|widge| widge['name'] == data['name']}
-        board_config['widges'].delete(widge) if widge
-        board_config['widges'] << data
+        data['type'] = widget_type
+        widget = board_config['widgets'].find{|widget| widget['name'] == data['name']}
+        board_config['widgets'].delete(widget) if widget
+        board_config['widgets'] << data
         File.open("#{data_path}/config/#{board}.json", 'w') { |file| file.write(board_config.to_json) }
       end
       
@@ -48,10 +48,10 @@ EOS
         path = "#{data_path}/layout/#{config['board']}.json"
         if File.exists?(path)
           layout = JSON.load(File.read(path))
-          if layout.keys.count == config['widges'].length
-            config['widges'].each do |widge|
-              widge_layout = layout[widge['name']]
-              widge_layout.keys.each{ |prop| widge[prop] = widge_layout[prop] } if widge_layout
+          if layout.keys.count == config['widgets'].length
+            config['widgets'].each do |widget|
+              widget_layout = layout[widget['name']]
+              widget_layout.keys.each{ |prop| widget[prop] = widget_layout[prop] } if widget_layout
             end
           return
           end
@@ -60,11 +60,11 @@ EOS
       end
 
       def set_default_layout(config)
-        config['widges'].each_with_index do |widge, index|
-          widge['row'] = ((index/3) + 1).to_s 
-          widge['col'] = ((index%3) + 1).to_s 
-          widge['sizex'] = "1" 
-          widge['sizey'] = "1" 
+        config['widgets'].each_with_index do |widget, index|
+          widget['row'] = ((index/3) + 1).to_s 
+          widget['col'] = ((index%3) + 1).to_s 
+          widget['sizex'] = "1" 
+          widget['sizey'] = "1" 
         end 
       end
 

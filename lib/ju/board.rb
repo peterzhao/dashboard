@@ -2,9 +2,9 @@ module Ju
   class Board
     def self.fill_template_and_style(board_config)
       board_config['styles'] = {}
-      board_config['widges'].each do |widge|
-        widge['template'] = Ju::Plugin.template(widge['type'], widge)
-        board_config['styles'][widge['type']] = Ju::Plugin.style(widge['type'], widge) unless board_config['styles'][widge['type']]
+      board_config['widgets'].each do |widget|
+        widget['template'] = Ju::Plugin.template(widget['type'], widget)
+        board_config['styles'][widget['type']] = Ju::Plugin.style(widget['type'], widget) unless board_config['styles'][widget['type']]
       end
     end
 
