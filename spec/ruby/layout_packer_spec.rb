@@ -25,15 +25,15 @@ describe Ju::LayoutPacker do
 
   it 'should pack the given widget to next row' do
     widgets = [
-     { 'name' => 'widget1', 'row' => 1, 'col' => '1', 'sizex' => 1, 'sizey' => 1 },
+     { 'name' => 'widget1', 'row' => 1, 'col' => '1', 'sizex' => 2, 'sizey' => 1 },
      { 'name' => 'widget2', 'row' => 1, 'col' => '3', 'sizex' => 1, 'sizey' => 2 },
      { 'name' => 'widget3', 'row' => 4, 'col' => '1', 'sizex' => 2, 'sizey' => 1 },
      { 'name' => 'widget'}
     ]
     Ju::LayoutPacker.pack widgets
     widget = widgets.find{ |w| w['name'] == 'widget' }
-    expect(widget['row']).to eq(4)
-    expect(widget['col']).to eq(3)
+    expect(widget['row']).to eq(2)
+    expect(widget['col']).to eq(1)
     expect(widget['sizex']).to eq(1)
     expect(widget['sizey']).to eq(1)
   end
@@ -42,14 +42,14 @@ describe Ju::LayoutPacker do
     widgets = [
      { 'name' => 'widget1', 'row' => 1, 'col' => '1', 'sizex' => 1, 'sizey' => 1 },
      { 'name' => 'widget2', 'row' => 1, 'col' => '2', 'sizex' => 2, 'sizey' => 1 },
-     { 'name' => 'widget3', 'row' => 2, 'col' => '1', 'sizex' => 2, 'sizey' => 2 },
-     { 'name' => 'widget4', 'row' => 4, 'col' => '1', 'sizex' => 1, 'sizey' => 1 },
+     { 'name' => 'widget3', 'row' => 2, 'col' => '1', 'sizex' => 1, 'sizey' => 2 },
+     { 'name' => 'widget4', 'row' => 2, 'col' => '3', 'sizex' => 1, 'sizey' => 1 },
      { 'name' => 'widget'}
     ]
-    Ju::LayoutPacker.pack widgets
+    Ju::LayoutPacker.pack(widgets)
     widget = widgets.find{ |w| w['name'] == 'widget' }
     expect(widget['row']).to eq(2)
-    expect(widget['col']).to eq(3)
+    expect(widget['col']).to eq(2)
     expect(widget['sizex']).to eq(1)
     expect(widget['sizey']).to eq(1)
   end

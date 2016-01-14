@@ -24,7 +24,7 @@ module Ju
         sizey = (widget['sizey'] || 1).to_i
         (widget_row..(widget_row + sizey -1 )).each do |row|
           flat[row] ||= []
-          (1..(widget_col + sizex -1)).each do |col|
+          (widget_col..(widget_col + sizex -1)).each do |col|
             flat[row] << col
           end
           flat[row].uniq!
@@ -36,8 +36,9 @@ module Ju
     def self.get_next_row_col(flat)
       return 1, 1 if flat.keys.empty?
       for row in flat.keys.sort
-        max_col =  flat[row].max
-        return row, max_col + 1 if max_col < 3
+        for col in 1..3
+          return row, col unless flat[row].include?(col)
+        end
       end
       return flat.keys.max + 1, 1 
     end
