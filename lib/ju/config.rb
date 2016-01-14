@@ -7,7 +7,7 @@ module Ju
         create_default_board_if_missing if board == 'Default'
         config = JSON.load(File.read("#{data_path}/config/#{board}.json"))
         config['board'] = board 
-        get_board_layout(config)
+        Ju::LayoutPacker.pack(config['widgets'])
         config
       end
       
@@ -17,7 +17,12 @@ module Ju
       end
 
       def save_layout(board, data)
-        File.open("#{data_path}/layout/#{board}.json", 'w') { |file| file.write(data.to_json) }
+        board_config = get_board_config(board)
+        board_config['widgets'].each do |widge|
+          layout = data[widge['name']]
+          layout.keys.each {|key| widge[key] = layout[key]} if layout
+        end
+        File.open("#{data_path}/config/#{board}.json", 'w') { |file| file.write(board_config.to_json) }
       end
 
       def new_board(board_name)
@@ -43,31 +48,33 @@ EOS
       end
       
       private 
-     
-      def get_board_layout(config)
-        path = "#{data_path}/layout/#{config['board']}.json"
-        if File.exists?(path)
-          layout = JSON.load(File.read(path))
-          if layout.keys.count == config['widgets'].length
-            config['widgets'].each do |widget|
-              widget_layout = layout[widget['name']]
-              widget_layout.keys.each{ |prop| widget[prop] = widget_layout[prop] } if widget_layout
-            end
-          return
-          end
+
+      def set_layout(config)
+        widget_without_layout = config['widgets'].find{|widget| widget['row'].nil? ||  widget['col'].nil? }
+        return unless widget_without_layout 
+        max_row, max_col = get_max_row_col(config['widgets'].select{ |w| w['row'] && w['col'] }) 
+        if(max_col < 3)
+          widget_without_layout['row'] = max_row
+          widget_without_layout['col'] = max_col + 1
+        else
+          widget_without_layout['row'] = max_row + 1
+          widget_without_layout['col'] = 1
         end
-        set_default_layout(config)
+        widget_without_layout['sizex'] = 1
+        widget_without_layout['sizey'] = 1
+        set_layout(config)
       end
 
-      def set_default_layout(config)
-        config['widgets'].each_with_index do |widget, index|
-          widget['row'] = ((index/3) + 1).to_s 
-          widget['col'] = ((index%3) + 1).to_s 
-          widget['sizex'] = "1" 
-          widget['sizey'] = "1" 
-        end 
+      def get_max_row_col(widgets)
+        return 1, 0 if widgets.empty?
+        bottom_right_points = widgets.map{ |w| [w['row'].to_i * (w['sizey'] || 1).to_i, w['col'].to_i * (w['sizex'] || 1).to_i ] }
+        max_row = 1
+        max_col = 1
+        bottom_right_points.each { |p| max_row = p[0] if p[0] > max_row }
+        bottom_right_points.each { |p| max_col = p[1] if p[1] > max_col && p[0] == max_row }
+        return max_row, max_col
       end
-
+     
       def data_path
         return ENV['DATA_PATH'] if ENV['DATA_PATH']
         'data'
