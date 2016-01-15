@@ -4,13 +4,21 @@
       <img src="/images/ju138.png" height="36" width="36"/>
     </div>
       <div class="heading heading-title"><a href="/" class="pure-menu-link main-title">JU</a></div>
-      <div class="pure-menu-heading">New widget</div>
+      <% if widget_action == 'new' %>
+        <div class="pure-menu-heading">New Widget</div>
+      <% else %>
+        <div class="pure-menu-heading">Edit Widget</div>
+      <% end %>
     </div>
 </div>
 <%= styled_flash %>
 <form class="pure-form pure-form-aligned new-widget" action="/boards/<%= URI.escape(params['board_name']) %>/widgets/<%= URI.escape(params['widget_type']) %>" method="POST">
     <fieldset>
-      <legend>Create a new <%= params['widget_type'] %> widget</legend>
+      <% if widget_action == 'new' %>
+        <legend>Create a new <%= params['widget_type'] %> widget</legend>
+      <% else %>
+        <legend>Edit <%= params['widget_type'] %> widget</legend>
+      <% end %>
         <% settings.each do |setting| %>
           <div class="pure-control-group">
             <label for="<%= setting['name']%>"><%= setting['description'] || setting['name']%></label>
@@ -21,5 +29,6 @@
           <button type="submit" class="pure-button pure-button-primary">Create</button>
           <a  href="/" class="pure-button">Cancel</a>
        </div>
+       <input type="hidden" name="widget_action" value="<%= widget_action %>"/>
     </fieldset>
 </form>

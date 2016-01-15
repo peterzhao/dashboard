@@ -28,7 +28,7 @@ describe Ju::Board do
 
   it 'should create a new dashboard' do
     expect(Ju::Config).to receive(:new_board).with('foo')
-    Ju::Board.create('foo')
+    Ju::Board.create(' foo ')
   end
 
   context 'validation of dashboard name' do
@@ -43,9 +43,9 @@ describe Ju::Board do
     end
 
     it 'should give errors if same name dashboard exists' do
-      allow(Ju::Config).to receive(:get_all_boards).and_return(['foo', 'moo'])
+      allow(Ju::Config).to receive(:get_all_boards).and_return(['foO', 'moo'])
 
-      expect(Ju::Board.validate('foo')).to eq('The dashboard foo already exists!')
+      expect(Ju::Board.validate(' foo ')).to eq('The dashboard  foo  already exists!')
       expect(Ju::Board.validate('Foo')).to eq('The dashboard Foo already exists!')
     end
 

@@ -59,7 +59,7 @@ describe 'Ju App' do
   it "should create a new board whose name contains space" do
     expect(Ju::Board).to receive(:validate).with('good one').and_return([])
     expect(Ju::Board).to receive(:create).with('good one')
-    post '/boards', :board_name => 'good one'
+    post '/boards', :board_name => ' good one'
     expect(last_response.status).to eq(303)
     expect(last_response.header['Location']).to match(/boards\/good%20one$/) 
   end
@@ -112,10 +112,10 @@ describe 'Ju App' do
     allow(Ju::Plugin).to receive(:types).and_return(['curl'])
 
     settings = [{'name' => 'url'}]
-    params = {'name' => 'mywidget'}
+    params = {'name' => 'mywidget', 'widget_action' => 'new'}
     allow(Ju::Plugin).to receive(:config).with('curl').and_return(settings)
     allow(Ju::Widget).to receive(:validate).with(settings, anything).and_return([])
-    expect(Ju::Widget).to receive(:create).with('boo', 'curl', settings, anything)
+    expect(Ju::Widget).to receive(:save).with('boo', 'curl', settings, anything)
     post '/boards/boo/widgets/curl', params
 
     expect(last_response.status).to eq(303)
@@ -127,10 +127,10 @@ describe 'Ju App' do
     allow(Ju::Plugin).to receive(:types).and_return(['curl'])
 
     settings = [{'name' => 'url'}]
-    params = {'name' => 'mywidget'}
+    params = {'name' => 'mywidget', 'widget_action' => 'new'}
     allow(Ju::Plugin).to receive(:config).with('curl').and_return(settings)
     allow(Ju::Widget).to receive(:validate).with(settings, anything).and_return(['something wrong'])
-    expect(Ju::Widget).not_to receive(:create)
+    expect(Ju::Widget).not_to receive(:save)
 
     post '/boards/boo/widgets/curl', params
 

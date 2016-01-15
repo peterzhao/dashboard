@@ -77,7 +77,7 @@ describe Ju::Config do
   context 'saving widget' do
     it 'should add new widget' do
       data = {'name' => 'widget3', 'url' => 'http://woo.com'}
-      Ju::Config.save_widget('temp', 'travis', data)
+      Ju::Config.save_widget('temp', 'travis', data, nil)
       expect(Ju::Config.get_widget_config('temp', 'widget3')['type']).to eq('travis')
       expect(Ju::Config.get_widget_config('temp', 'widget3')['url']).to eq('http://woo.com')
       expect(Ju::Config.get_widget_config('temp', 'widget1')['type']).to eq('gocd_pipeline')
@@ -86,10 +86,19 @@ describe Ju::Config do
 
     it 'should update widget' do
       data = {'name' => 'widget2', 'url' => 'http://woo.com'}
-      Ju::Config.save_widget('temp', 'travis', data)
+      Ju::Config.save_widget('temp', 'travis', data, 'widget2')
       expect(Ju::Config.get_widget_config('temp', 'widget2')['type']).to eq('travis')
       expect(Ju::Config.get_widget_config('temp', 'widget1')['type']).to eq('gocd_pipeline')
       expect(Ju::Config.get_widget_config('temp', 'widget2')['url']).to eq('http://woo.com')
+    end
+
+    it 'should  new name widget' do
+      data = {'name' => 'widget3', 'url' => 'http://woo.com'}
+      Ju::Config.save_widget('temp', 'travis', data, 'Widget2')
+      expect(Ju::Config.get_widget_config('temp', 'widget3')['type']).to eq('travis')
+      expect(Ju::Config.get_widget_config('temp', 'widget3')['url']).to eq('http://woo.com')
+      expect(Ju::Config.get_widget_config('temp', 'widget1')['type']).to eq('gocd_pipeline')
+      expect(Ju::Config.get_board_config('temp')['widgets'].find{|w| w['name'] == 'widget2'}).to be_nil
     end
   end
 end
