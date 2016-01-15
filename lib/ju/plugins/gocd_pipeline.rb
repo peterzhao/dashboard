@@ -97,7 +97,7 @@ EOS
         [
           {
             'name' => 'name',
-            'description' => 'widget Name',
+            'description' => 'Widget Name',
             'validate' => '^[0-9a-zA-Z\-_ ]+$',
             'validation_message' => 'widget Name cannot be empty or contain special characters'
           },
