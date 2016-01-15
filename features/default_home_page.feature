@@ -5,4 +5,4 @@ Scenario: Open the default page
 When I visit the path '/'
 Then I should see the home page with a title "Default"
 And I should see a link "Create Board" on the page
-And I should see a link "Create widget" on the page
+And I should see a link "Create Widget" on the page
