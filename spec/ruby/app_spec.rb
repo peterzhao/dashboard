@@ -136,4 +136,13 @@ describe 'Ju App' do
 
     expect(last_response.status).to eq(400)
   end
+
+  it "should get an edit widget form" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['boo'])
+    allow(Ju::Config).to receive(:get_board_config).and_return({'widgets' => [{'name' => 'widget1', 'type' => 'gocd_pipeline'}]})
+    allow(Ju::Plugin).to receive(:types).and_return(['gocd_pipeline'])
+    expect(Ju::Plugin).to receive(:config).with('gocd_pipeline').and_return([])
+    get '/boards/boo/widgets/widget1/edit'
+    expect(last_response.status).to eq(200)
+  end
 end

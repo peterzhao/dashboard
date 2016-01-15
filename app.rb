@@ -71,7 +71,17 @@ post '/boards/:board_name/widgets/:widget_type' do
 end
 
 get '/boards/:board_name/widgets/:widget_name/edit' do
-  'Under Construction!'
+  halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
+  widget_config = Ju::Config.get_board_config(params['board_name'])['widgets'].find{ |w| w['name'] == params['widget_name'] }
+  halt 400 unless widget_config
+  widget_type = widget_config['type']
+  halt 400 unless Ju::Plugin.types.include?(widget_type)
+  params['widget_type'] = widget_type
+  settings = Ju::Plugin.config(widget_type)
+  settings.each do |setting|
+    params[setting['name']] = widget_config[setting['name']]
+  end
+  erb :new_widget, :locals =>{:settings => settings , :widget_action => 'edit'}
 end
 
 get '/boards/:board_name/widgets/:widget_name' do

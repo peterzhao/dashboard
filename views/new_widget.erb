@@ -18,6 +18,7 @@
         <legend>Create a new <%= params['widget_type'] %> widget</legend>
       <% else %>
         <legend>Edit <%= params['widget_type'] %> widget</legend>
+        <input type="hidden" name="old_widget_name" value="<%= params['name'] %>"/>
       <% end %>
         <% settings.each do |setting| %>
           <div class="pure-control-group">
@@ -26,7 +27,7 @@
         </div>
         <% end %>
         <div class="pure-controls">
-          <button type="submit" class="pure-button pure-button-primary">Create</button>
+          <button type="submit" class="pure-button pure-button-primary"><%= widget_action == 'new' ? 'Create' : 'Save' %></button>
           <a  href="/" class="pure-button">Cancel</a>
        </div>
        <input type="hidden" name="widget_action" value="<%= widget_action %>"/>
