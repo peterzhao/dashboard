@@ -41,13 +41,12 @@ EOS
       def save_widget(board, widget_type, data, old_widget_name)
         board_config = get_board_config(board)
         data['type'] = widget_type
-        widgets_to_delete = [data['name']]
-        widgets_to_delete << old_widget_name if old_widget_name
-        widgets_to_delete.each do |widget_to_delete|
-          widget = board_config['widgets'].find{|widget| widget['name'].strip.downcase == widget_to_delete.strip.downcase }
-          board_config['widgets'].delete(widget) if widget
+        if old_widget_name
+          old_widget = board_config['widgets'].find{|widget| widget['name'].strip.downcase == old_widget_name.strip.downcase }
+          old_widget.merge!(data)
+        else
+          board_config['widgets'] << data
         end
-        board_config['widgets'] << data
         File.open("#{data_path}/config/#{board}.json", 'w') { |file| file.write(board_config.to_json) }
       end
       
