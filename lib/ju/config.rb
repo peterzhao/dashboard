@@ -49,6 +49,13 @@ EOS
         end
         File.open("#{data_path}/config/#{board}.json", 'w') { |file| file.write(board_config.to_json) }
       end
+
+      def delete_widget(board, widget)
+        board_config = get_board_config(board)
+        widget = board_config['widgets'].find{ |w| w['name'] == widget }
+        board_config['widgets'].delete(widget)
+        File.open("#{data_path}/config/#{board}.json", 'w') { |file| file.write(board_config.to_json) }
+      end
       
       private 
 

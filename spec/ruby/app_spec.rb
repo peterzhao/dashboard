@@ -145,4 +145,19 @@ describe 'Ju App' do
     get '/boards/boo/widgets/widget1/edit'
     expect(last_response.status).to eq(200)
   end
+
+  it 'should delete a widge' do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['boo'])
+    expect(Ju::Config).to receive(:delete_widget).with('boo', 'widget1')
+    delete '/boards/boo/widgets/widget1'
+    expect(last_response.status).to eq(303)
+    expect(last_response.header['Location']).to match(/boards\/boo$/) 
+  end
+
+  it 'should get an error when deleting a widge from an non-existing board' do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['foo'])
+    expect(Ju::Config).not_to receive(:delete_widget).with('boo', 'widget1')
+    delete '/boards/boo/widgets/widget1'
+    expect(last_response.status).to eq(400)
+  end
 end

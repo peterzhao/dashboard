@@ -52,7 +52,6 @@ describe Ju::Widget do
         data = {'name' => 'newName', 'base_url' => 'http://abc.com/gocd', 'board_name' => 'foo', 'widget_action' => 'edit', 'old_widget_name' => 'mywidget'}
         expect(Ju::Widget.validate(settings, data)).to eq(['Widget newName already exists!'])
       end
-
     end
   end
 

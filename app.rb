@@ -2,6 +2,7 @@ require 'sinatra'
 require 'json'
 require 'sinatra/flash'
 
+use Rack::MethodOverride
 enable :sessions
 set :bind, '0.0.0.0'
 
@@ -70,9 +71,15 @@ post '/boards/:board_name/widgets/:widget_type' do
 
 end
 
-get '/boards/:board_name/widgets/:widget_name/edit' do
+delete '/boards/:board_name/widgets/:name' do
   halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
-  widget_config = Ju::Config.get_board_config(params['board_name'])['widgets'].find{ |w| w['name'] == params['widget_name'] }
+  Ju::Config.delete_widget(params['board_name'], params['name'])
+  redirect to("/boards/#{URI.escape(params['board_name'])}"), 303
+end
+
+get '/boards/:board_name/widgets/:name/edit' do
+  halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
+  widget_config = Ju::Config.get_board_config(params['board_name'])['widgets'].find{ |w| w['name'] == params['name'] }
   halt 400 unless widget_config
   widget_type = widget_config['type']
   halt 400 unless Ju::Plugin.types.include?(widget_type)

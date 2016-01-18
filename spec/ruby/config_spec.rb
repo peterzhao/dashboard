@@ -19,6 +19,11 @@ describe Ju::Config do
     FileUtils.rm_f 'spec/data/config/temp.json' 
   end
 
+  it 'should delete widiget' do
+    Ju::Config.delete_widget('temp', 'widget2')
+    expect(Ju::Config.get_board_config('temp')['widgets'].find{ |w| w['name'] == 'widget2' }).to be_nil
+  end
+
   it 'should create default config if it does not exist' do
     FileUtils.rm_f 'spec/data/config/Default.json'
     config = Ju::Config.get_board_config('Default')
