@@ -40,5 +40,6 @@ describe Ju::TimeConverter do
     expect(Ju::TimeConverter.ago_in_words((Time.now.utc.to_i - 60) * 1000)).to eq('1 minute')
     expect(Ju::TimeConverter.ago_in_words((Time.now.utc.to_i - 60*60*12) * 1000)).to eq('12 hours')
     expect(Ju::TimeConverter.ago_in_words((Time.now.utc.to_i - 60*60*24*3) * 1000)).to eq('3 days')
+    expect(Ju::TimeConverter.ago_in_words((Time.now.utc.to_i - 60*60*24*30*2) * 1000).to_s).to eq('2 months')
   end
 end

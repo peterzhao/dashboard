@@ -3,9 +3,11 @@ require 'json'
 
 module Ju
   class GocdPipeline < Ju::Plugin
+
     TITLE_HEIGHT = '27'
     TITLE_PADDING_TOP = '3'
-    LABEL_WIDTH = '30'
+    LABEL_WIDTH = '80'
+
     def check
       params = { method: :get, url: "#{options['base_url']}/go/api/pipelines/#{URI.escape(options['name'])}/history"}
       if options['user']
@@ -24,17 +26,26 @@ module Ju
     def template
 <<EOS
 <div class="gocd">
-  <div class="gocd-title" data-bind="text: $root.id"></div>
+  <div class="gocd-title" data-bind="text: $root.id, attr:{ title: 'Pipeline name: ' + $root.id }"></div>
   <div class="gocd-pipelines" data-bind="style: { height: ($root.base_height * $root.sizey - #{TITLE_HEIGHT} - #{TITLE_PADDING_TOP}) + 'px'}">
     <!-- ko foreach: pipelines -->
-      <div class="gocd-pipeline-wrapper" data-bind="style: { height: (1/($parent.pipelines.length)*100 - 1 ) + '%' }">
+      <div class="gocd-pipeline-wrapper" data-bind="style: { height: (1/($parent.pipelines.length)*100 - 1 ) + '%', 'max-height': (1/($parent.pipelines.length)*100 - 1 ) + '%' }">
         <div class="gocd-pipeline">
-          <div class="gocd-build-label" data-bind="text: label"></div>
+          <div class="vertical-align-block gocd-build-label">
+            <div class="gocd-build-number" data-bind="text: label, attr:{ title: 'Build label:' + label }"></div>
+            <div class="ellipseis gocd-build-label-details" data-bind="text: triggered_by, attr: { title: 'Triggered ' + triggered_by }"></div>
+          </div>
           <div class="gocd-stages" data-bind="style: { width: ($root.base_width * $root.sizex - #{LABEL_WIDTH}) + 'px' }">
             <!-- ko foreach: stages -->
               <div class="gocd-stage-wrapper" data-bind="style: { width: (1/($parent.stages.length)*100 - 1 ) + '%'}">
                 <div class="gocd-stage" data-bind="css: {passed: result == 'Passed', failed: result == 'Failed', scheduled: state == 'Scheduled', building: state == 'Building', unscheduled: state == 'Unscheduled'}">
-                  <div class="display-content" data-bind="text: name"></div>
+                  <div class="vertical-align-block">
+                    <div class="ellipseis gocd-stage-name" data-bind="text: name, attr:{ title: 'Stage: ' + name }"></div>
+
+                    <!-- ko ifnot: typeof(scheduled_time) == 'undefined' -->
+                    <div class="ellipseis gocd-stage-details" data-bind="text: scheduled_time, attr:{ title: 'Started ' + scheduled_time }"></div>
+                    <!-- /ko -->
+                  </div>
                 </div>
               </div>
             <!-- /ko --> 
@@ -69,12 +80,14 @@ EOS
 }
 .gocd-build-label {
   float: left;
-  text-align: center;
   width: #{LABEL_WIDTH}px;
   font-size: 80%;
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+  line-height: normal; 
+  overflow: hidden;
+}
+.gocd-build-number {
+  font-weight: 600;
+  font-size: 120%;
 }
 .gocd-stages {
   float: left;
@@ -88,6 +101,14 @@ EOS
   height: 100%;
   width: 98%;
   border-radius: 3px;
+  line-height: normal; 
+}
+.gocd-stage-name {
+ font-size: 120%;
+}
+.gocd-stage-details {
+  font-size: 80%;
+  color: #333333;
 }
 
 EOS
@@ -106,6 +127,18 @@ EOS
             'description' => 'Server Base URL',
             'validate' => '^[0-9a-zA-Z\-_:/.]+$',
             'validation_message' => 'Server base URL is not a valid URL'
+          },
+          {
+            'name' => 'user',
+            'description' => 'User Name',
+            'validate' => '^.*$',
+            'validation_message' => 'User Name can be any characters'
+          },
+          {
+            'name' => 'password',
+            'description' => 'Password',
+            'validate' => '^.*$',
+            'validation_message' => 'Password can be any characters'
           },
           {
             'name' => 'pull_inteval',
@@ -132,6 +165,7 @@ def transform(response_str, number_of_instances)
   response = JSON.parse(response_str)
   response['pipelines'] = response['pipelines'][0..(number_of_instances.to_i - 1)] 
   response['pipelines'].each do |pipeline|
+    pipeline['triggered_by'] = "by #{pipeline['stages'].first['approved_by']}"
     pipeline['stages'].each do |stage|
       transform_stage(stage)
     end
@@ -149,6 +183,7 @@ def transform_stage(stage)
     else
       stage['state'] = 'Scheduled'
     end
+    stage['scheduled_time'] = "#{Ju::TimeConverter.ago_in_words(stage['jobs'].map{|j| j['scheduled_date']}.min)} ago"
   else
       stage['state'] = 'Unscheduled'
   end

@@ -17,7 +17,7 @@ module Ju
     end
     
     def self.ago_in_words(epoch_ms)
-      seconds_in_words(Time.now.utc.to_i - epoch_ms/1000)
+      seconds_in_words(Time.now.utc.to_i - epoch_ms.to_i/1000)
     end
   end
 end

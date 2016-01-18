@@ -119,12 +119,17 @@ label {
   text-align: center;
   font-size: 120%;
 }
-.display-content {
+.vertical-align-block {
   color: black;
   text-align: center;
   position: relative;
   top: 50%;
   transform: translateY(-50%);
+}
+.ellipseis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .passed {
   background-color: green;

@@ -23,7 +23,7 @@
         <% settings.each do |setting| %>
           <div class="pure-control-group">
             <label for="<%= setting['name']%>"><%= setting['description'] || setting['name']%></label>
-            <input type="text" name="<%= setting['name'] %>" value="<%= params[setting['name']] || setting['default'] %>" placeholder="<%= setting['description'] || setting['name'] %>"></input>
+            <input type="<%= setting['name'].include?('password') ? 'password' : 'text' %>" name="<%= setting['name'] %>" value="<%= params[setting['name']] || setting['default'] %>" placeholder="<%= setting['description'] || setting['name'] %>"></input>
         </div>
         <% end %>
         <div class="pure-controls">
