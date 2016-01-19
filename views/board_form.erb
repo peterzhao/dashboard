@@ -6,9 +6,9 @@ if action == 'new'
   post_action = '/boards'
 else
   title = 'Eidt Dashboard'
-  legend = "Edit dashboard #{params['board_name']}"
+  legend = "Edit dashboard #{params['old_board_name']}"
   button_title = 'Save'
-  post_action = "/boards/#{URI.escape(params['board_name'])}"
+  post_action = "/boards/#{URI.escape(params['old_board_name'])}"
 end
 %>
 <div class="header">

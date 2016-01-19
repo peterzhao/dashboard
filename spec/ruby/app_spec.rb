@@ -67,9 +67,9 @@ describe 'Ju App' do
 
 
   it "should not create a new board if the board validate has errors" do
-    params = {:board_name => 'bad one', :sizex => '280', :sizey => '140'}
-    expect(Ju::Board).to receive(:validate).with('bad one', '280', '140', nil).and_return(['not good'])
-    expect(Ju::Board).not_to receive(:create).with('bad one', '280', '140')
+    params = {:board_name => 'bad_board', :sizex => '280', :sizey => '140', :action => 'new'}
+    expect(Ju::Board).to receive(:validate).with('bad_board', '280', '140', nil).and_return(['not good'])
+    expect(Ju::Board).not_to receive(:create).with('bad_board', '280', '140')
     post '/boards', params 
 
     expect(last_response.status).to eq(400)
@@ -114,11 +114,11 @@ describe 'Ju App' do
     allow(Ju::Plugin).to receive(:types).and_return(['curl'])
 
     settings = [{'name' => 'url'}]
-    params = {'name' => 'mywidget', 'widget_action' => 'new'}
+    params = {'name' => 'mywidget', 'action' => 'new', 'widget_type' => 'curl'}
     allow(Ju::Plugin).to receive(:config).with('curl').and_return(settings)
     allow(Ju::Widget).to receive(:validate).with(settings, anything).and_return([])
     expect(Ju::Widget).to receive(:save).with('boo', 'curl', settings, anything)
-    post '/boards/boo/widgets/curl', params
+    post '/boards/boo/widgets', params
 
     expect(last_response.status).to eq(303)
     expect(last_response.header['Location']).to match(/boards\/boo$/) 
@@ -129,12 +129,42 @@ describe 'Ju App' do
     allow(Ju::Plugin).to receive(:types).and_return(['curl'])
 
     settings = [{'name' => 'url'}]
-    params = {'name' => 'mywidget', 'widget_action' => 'new'}
+    params = {'name' => 'mywidget', 'action' => 'new', 'widget_type' => 'curl'}
     allow(Ju::Plugin).to receive(:config).with('curl').and_return(settings)
     allow(Ju::Widget).to receive(:validate).with(settings, anything).and_return(['something wrong'])
     expect(Ju::Widget).not_to receive(:save)
 
-    post '/boards/boo/widgets/curl', params
+    post '/boards/boo/widgets', params
+
+    expect(last_response.status).to eq(400)
+  end
+
+  it "should save a widget" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['boo'])
+    allow(Ju::Plugin).to receive(:types).and_return(['curl'])
+
+    settings = [{'name' => 'url'}]
+    params = {'name' => 'mywidget', 'action' => 'new', 'widget_type' => 'curl'}
+    allow(Ju::Plugin).to receive(:config).with('curl').and_return(settings)
+    allow(Ju::Widget).to receive(:validate).with(settings, anything).and_return([])
+    expect(Ju::Widget).to receive(:save).with('boo', 'curl', settings, anything)
+    post '/boards/boo/widgets/mywidget', params
+
+    expect(last_response.status).to eq(303)
+    expect(last_response.header['Location']).to match(/boards\/boo$/) 
+  end
+
+  it "should not save a widget when validation failed" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['boo'])
+    allow(Ju::Plugin).to receive(:types).and_return(['curl'])
+
+    settings = [{'name' => 'url'}]
+    params = {'name' => 'mywidget', 'action' => 'new', 'widget_type' => 'curl'}
+    allow(Ju::Plugin).to receive(:config).with('curl').and_return(settings)
+    allow(Ju::Widget).to receive(:validate).with(settings, anything).and_return(['something wrong'])
+    expect(Ju::Widget).not_to receive(:save)
+
+    post '/boards/boo/widgets/mywdiget', params
 
     expect(last_response.status).to eq(400)
   end

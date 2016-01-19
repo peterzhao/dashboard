@@ -3,10 +3,12 @@ if action == 'new'
   title = 'New Widget'
   button_title = 'Create'
   legend = "Create a new #{params['widget_type']} widget"
+  form_action="/boards/#{URI.escape(params['board_name'])}/widgets"
 else
   title = 'Edit Widget'
   button_title = 'Save'
-  legend = "Edit the #{params['widget_type']} widget"
+  legend = "Edit widget #{params['old_widget_name']}"
+  form_action = "/boards/#{URI.escape(params['board_name'])}/widgets/#{URI.escape(params['old_name'])}"
 end
 %>
 <div class="header">
@@ -19,12 +21,9 @@ end
     </div>
 </div>
 <%= styled_flash %>
-<form class="pure-form pure-form-aligned new-widget" action="/boards/<%= URI.escape(params['board_name']) %>/widgets/<%= URI.escape(params['widget_type']) %>" method="POST">
+<form class="pure-form pure-form-aligned new-widget" action="<%= form_action %>" method="POST">
     <fieldset>
       <legend><%= legend %></legend>
-      <% if params['name'] %>
-        <input type="hidden" name="old_widget_name" value="<%= params['name'] %>"/>
-      <% end %>
         <% settings.each do |setting| %>
           <div class="pure-control-group">
             <label for="<%= setting['name']%>"><%= setting['description'] || setting['name']%></label>
@@ -36,6 +35,7 @@ end
           <a  href="/" class="pure-button">Cancel</a>
        </div>
        <input type="hidden" name="action" value="<%= action %>"/>
+       <input type="hidden" name="widget_type" value="<%= params['widget_type'] %>"/>
     </fieldset>
 </form>
 <% if action != 'new' %>

@@ -28,6 +28,23 @@ helpers do
       erb :board_form, :locals => {:action => params['action']}
     end
   end
+
+  def save_widget
+    halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
+    halt 400 unless Ju::Plugin.types.include?(params['widget_type'])
+    settings = Ju::Plugin.config(params['widget_type'])
+    errors = Ju::Widget.validate(settings, params)
+    if errors.empty? 
+      Ju::Widget.save(params['board_name'], params['widget_type'], settings, params)
+      redirect to("/boards/#{URI.escape(params['board_name'])}"), 303  
+    else
+      errors.each_with_index do |error, index|
+        flash.now["error-message flash-#{index}"] = error
+      end
+      status 400
+      erb :widget_form, :locals => { :settings => settings, :action => params['action'] }
+    end
+  end
 end
 
 before do
@@ -46,20 +63,21 @@ get '/boards/new' do
   erb :board_form, :locals => {:action => 'new'}
 end
 
-get '/boards/:board_name/edit' do
-  halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
-  config = Ju::Config.get_board_config(params['board_name'])
-  params['sizex'] = config['base_sizex']
-  params['sizey'] = config['base_sizey']
-  erb :board_form, :locals => {:action => 'edit'}
-end
-
 get '/boards/:board_name' do
   config = Ju::Config.get_board_config(params['board_name'])
   other_boards = Ju::Config.get_all_boards - [params['board_name']]
   session['last_board'] = params['board_name']
   Ju::Board.fill_template_and_style(config)
   erb :home, :locals => {:config => config, :other_boards => other_boards, :widget_types => Ju::Plugin.types}
+end
+
+get '/boards/:board_name/edit' do
+  halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
+  config = Ju::Config.get_board_config(params['board_name'])
+  params['sizex'] = config['base_sizex']
+  params['sizey'] = config['base_sizey']
+  params['old_board_name'] = params['board_name']
+  erb :board_form, :locals => {:action => 'edit'}
 end
 
 post '/boards/:old_board_name' do
@@ -78,21 +96,27 @@ get '/boards/:board_name/widgets/new/:widget_type' do
   erb :widget_form, :locals =>{:settings => Ju::Plugin.config(params['widget_type']), :action => 'new'}
 end
 
-post '/boards/:board_name/widgets/:widget_type' do
+get '/boards/:board_name/widgets/:name/edit' do
+  params['old_name'] = params['name']
   halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
-  halt 400 unless Ju::Plugin.types.include?(params['widget_type'])
-  settings = Ju::Plugin.config(params['widget_type'])
-  errors = Ju::Widget.validate(settings, params)
-  if errors.empty? 
-    Ju::Widget.save(params['board_name'], params['widget_type'], settings, params)
-    redirect to("/boards/#{URI.escape(params['board_name'])}"), 303  
-  else
-    errors.each_with_index do |error, index|
-      flash.now["error-message flash-#{index}"] = error
-    end
-    status 400
-    erb :widget_form, :locals => { :settings => settings, :action => params['action'] }
+  widget_config = Ju::Config.get_board_config(params['board_name'])['widgets'].find{ |w| w['name'] == params['name'] }
+  halt 400 unless widget_config
+  widget_type = widget_config['type']
+  halt 400 unless Ju::Plugin.types.include?(widget_type)
+  params['widget_type'] = widget_type
+  settings = Ju::Plugin.config(widget_type)
+  settings.each do |setting|
+    params[setting['name']] = widget_config[setting['name']]
   end
+  erb :widget_form, :locals =>{:settings => settings , :action => 'edit'}
+end
+
+post '/boards/:board_name/widgets/:old_name' do
+  save_widget
+end
+
+post '/boards/:board_name/widgets' do
+  save_widget
 end
 
 delete '/boards/:board_name' do
@@ -107,19 +131,6 @@ delete '/boards/:board_name/widgets/:name' do
   redirect to("/boards/#{URI.escape(params['board_name'])}"), 303
 end
 
-get '/boards/:board_name/widgets/:name/edit' do
-  halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
-  widget_config = Ju::Config.get_board_config(params['board_name'])['widgets'].find{ |w| w['name'] == params['name'] }
-  halt 400 unless widget_config
-  widget_type = widget_config['type']
-  halt 400 unless Ju::Plugin.types.include?(widget_type)
-  params['widget_type'] = widget_type
-  settings = Ju::Plugin.config(widget_type)
-  settings.each do |setting|
-    params[setting['name']] = widget_config[setting['name']]
-  end
-  erb :widget_form, :locals =>{:settings => settings , :action => 'edit'}
-end
 
 get '/boards/:board_name/widgets/:widget_name' do
   widget = Ju::Config.get_widget_config(params['board_name'], params['widget_name'])

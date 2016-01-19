@@ -34,15 +34,9 @@ module Ju
         Dir.glob("#{data_path}/config/*.json").select{ |e| File.file? e }.map{|f| File.basename(f, '.json')} 
       end
 
-      def save_widget(board, widget_type, data, old_widget_name)
+      def save_widget(board, data)
         board_config = get_board_config(board)
-        data['type'] = widget_type
-        if old_widget_name
-          old_widget = board_config['widgets'].find{|widget| widget['name'].downcase == old_widget_name.downcase }
-          old_widget.merge!(data)
-        else
-          board_config['widgets'] << data
-        end
+        board_config['widgets'] << data
         File.open("#{data_path}/config/#{board}.json", 'w') { |file| file.write(board_config.to_json) }
       end
 
