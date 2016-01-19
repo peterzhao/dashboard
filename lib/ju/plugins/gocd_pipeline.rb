@@ -104,7 +104,7 @@ EOS
   line-height: normal; 
 }
 .gocd-stage-name {
- font-size: 120%;
+ font-size: 100%;
 }
 .gocd-stage-details {
   font-size: 80%;

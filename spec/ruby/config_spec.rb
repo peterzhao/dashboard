@@ -9,7 +9,10 @@ describe Ju::Config do
     config_data = {'widgets' => [
       {'name' => "widget1", "type" => "gocd_pipeline", "url" => "http://abc.com/", "col" => 1, "row" => 1, "sizex" => 2, "sizey" => 3},
       {'name' => "widget2", "type" => "curl", "url" => "http://cde.com/", "col" => 2, "row" => 1, "sizex" => 2, "sizey" => 3}
-    ]}
+    ],
+    'base_sizex' => '280',
+    'base_sizey' => '140'
+    }
     File.open("spec/data/config/temp.json", 'w') { |file| file.write(config_data.to_json) }
     config = Ju::Config.get_board_config('temp')
   end
@@ -17,6 +20,11 @@ describe Ju::Config do
   after :each do
     ENV['DATA_PATH'] = nil
     FileUtils.rm_f 'spec/data/config/temp.json' 
+  end
+
+  it 'should delete board' do
+    Ju::Config.delete_board('temp')
+    expect(Ju::Config.get_all_boards).not_to include('temp')
   end
 
   it 'should delete widiget' do
@@ -107,5 +115,26 @@ describe Ju::Config do
       expect(Ju::Config.get_widget_config('temp', 'widget1')['type']).to eq('gocd_pipeline')
       expect(Ju::Config.get_board_config('temp')['widgets'].find{|w| w['name'] == 'widget2'}).to be_nil
     end
+  end
+
+  it 'should save a board' do
+    FileUtils.rm_f 'spec/data/config/temp.json' 
+    Ju::Config.save_board('temp', '330', '200')
+    config = Ju::Config.get_board_config('temp')
+    expect(config['board']).to eq('temp')
+    expect(config['base_sizex']).to eq('330')
+    expect(config['base_sizey']).to eq('200')
+    expect(config['widgets']).to eq([])
+  end
+
+  it 'should save a board with widgets' do
+    widgets = [{'name' => 'widget1'}]
+    FileUtils.rm_f 'spec/data/config/temp.json' 
+    Ju::Config.save_board('temp', '330', '200', widgets)
+    config = Ju::Config.get_board_config('temp')
+    expect(config['board']).to eq('temp')
+    expect(config['base_sizex']).to eq('330')
+    expect(config['base_sizey']).to eq('200')
+    expect(config['widgets'][0]['name']).to eq(widgets[0]['name'])
   end
 end

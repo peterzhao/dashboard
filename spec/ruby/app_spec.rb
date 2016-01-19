@@ -57,18 +57,20 @@ describe 'Ju App' do
 
 
   it "should create a new board whose name contains space" do
-    expect(Ju::Board).to receive(:validate).with('good one').and_return([])
-    expect(Ju::Board).to receive(:create).with('good one')
-    post '/boards', :board_name => ' good one'
+    params = {:board_name => ' good one', :sizex => '280', :sizey => '140'}
+    expect(Ju::Board).to receive(:validate).with('good one', '280', '140', nil).and_return([])
+    expect(Ju::Board).to receive(:save).with('good one', '280', '140', nil, nil)
+    post '/boards', params
     expect(last_response.status).to eq(303)
     expect(last_response.header['Location']).to match(/boards\/good%20one$/) 
   end
 
 
   it "should not create a new board if the board validate has errors" do
-    expect(Ju::Board).to receive(:validate).with('bad one').and_return(['not good'])
-    expect(Ju::Board).not_to receive(:create).with('bad one')
-    post '/boards', :board_name => 'bad one'
+    params = {:board_name => 'bad one', :sizex => '280', :sizey => '140'}
+    expect(Ju::Board).to receive(:validate).with('bad one', '280', '140', nil).and_return(['not good'])
+    expect(Ju::Board).not_to receive(:create).with('bad one', '280', '140')
+    post '/boards', params 
 
     expect(last_response.status).to eq(400)
   end
@@ -158,6 +160,63 @@ describe 'Ju App' do
     allow(Ju::Config).to receive(:get_all_boards).and_return(['foo'])
     expect(Ju::Config).not_to receive(:delete_widget).with('boo', 'widget1')
     delete '/boards/boo/widgets/widget1'
+    expect(last_response.status).to eq(400)
+  end
+  
+  it "should get an edit board form" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['boo'])
+    expect(Ju::Config).to receive(:get_board_config).and_return({'widgets' => [{'name' => 'widget1', 'type' => 'gocd_pipeline'}], 'base_sizex' => 220, 'base_sizey' => 110})
+    get '/boards/boo/edit'
+    expect(last_response.status).to eq(200)
+  end
+
+  it "should get errors when getting an un-existing board form" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['foo'])
+    expect(Ju::Config).not_to receive(:get_board_config)
+    get '/boards/boo/edit'
+    expect(last_response.status).to eq(400)
+  end
+
+  it "should get errors when posting an un-existing board form" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['foo'])
+    post '/boards/boo'
+    expect(last_response.status).to eq(400)
+  end
+
+  it "should get errors when posting an invalid board form" do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['boo'])
+    widgets = [{'name' => 'widget1'}]
+    allow(Ju::Config).to receive(:get_board_config).with('boo').and_return({'widgets' => widgets, 'base_sizex' => '100', 'base_sizey' => '200'})
+    expect(Ju::Board).to receive(:validate).with('boo', '220', '110', 'boo').and_return(['something wrong'])
+    params= {:sizex => '220', :sizey => '110', :board_name => 'boo'}
+    post '/boards/boo', params
+    expect(last_response.status).to eq(400)
+  end
+
+  it "should save a board form" do
+    widgets = [{'name' => 'widget1'}]
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['boo'])
+    allow(Ju::Config).to receive(:get_board_config).with('boo').and_return({'widgets' => widgets, 'base_sizex' => '100', 'base_sizey' => '200'})
+    expect(Ju::Board).to receive(:validate).with('boo', '220', '110', 'boo').and_return([])
+    expect(Ju::Board).to receive(:save).with('boo', '220', '110', 'boo', widgets)
+    params= {:sizex => '220', :sizey => '110', :board_name => 'boo'}
+    post '/boards/boo', params
+    expect(last_response.status).to eq(303)
+    expect(last_response.header['Location']).to match(/boards\/boo$/) 
+  end
+
+  it 'should delete a board' do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['boo'])
+    expect(Ju::Config).to receive(:delete_board).with('boo')
+    delete '/boards/boo'
+    expect(last_response.status).to eq(303)
+    expect(last_response.header['Location']).to match(/\/$/) 
+  end
+
+  it 'should get an error when deleting an non-existing board' do
+    allow(Ju::Config).to receive(:get_all_boards).and_return(['foo'])
+    expect(Ju::Config).not_to receive(:delete_board)
+    delete '/boards/boo'
     expect(last_response.status).to eq(400)
   end
 end

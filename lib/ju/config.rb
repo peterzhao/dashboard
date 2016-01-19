@@ -25,12 +25,8 @@ module Ju
         File.open("#{data_path}/config/#{board}.json", 'w') { |file| file.write(board_config.to_json) }
       end
 
-      def new_board(board_name)
-        data = <<EOS
-{
-  "widgets": []
-}
-EOS
+      def save_board(board_name, base_sizex, base_sizey, widgets = nil)
+        data = {'widgets' => widgets || [], 'base_sizex' => base_sizex, 'base_sizey' => base_sizey}.to_json 
         File.open("#{data_path}/config/#{board_name}.json", 'w') { |file| file.write(data) }
       end
 
@@ -42,12 +38,16 @@ EOS
         board_config = get_board_config(board)
         data['type'] = widget_type
         if old_widget_name
-          old_widget = board_config['widgets'].find{|widget| widget['name'].strip.downcase == old_widget_name.strip.downcase }
+          old_widget = board_config['widgets'].find{|widget| widget['name'].downcase == old_widget_name.downcase }
           old_widget.merge!(data)
         else
           board_config['widgets'] << data
         end
         File.open("#{data_path}/config/#{board}.json", 'w') { |file| file.write(board_config.to_json) }
+      end
+
+      def delete_board(board)
+        FileUtils.rm_f("#{data_path}/config/#{board}.json")
       end
 
       def delete_widget(board, widget)

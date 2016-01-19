@@ -27,32 +27,60 @@ describe Ju::Board do
   end
 
   it 'should create a new dashboard' do
-    expect(Ju::Config).to receive(:new_board).with('foo')
-    Ju::Board.create(' foo ')
+    expect(Ju::Config).to receive(:save_board).with('foo', '280', '140', nil)
+    Ju::Board.save('foo', '280', '140')
   end
 
-  context 'validation of dashboard name' do
+  it 'should save a dashboard' do
+    widgets = [{'name' => 'widget1'}]
+    expect(Ju::Config).to receive(:save_board).with('foo', '280', '140', widgets)
+    Ju::Board.save('foo', '280', '140', 'foo', widgets)
+  end
+
+  it 'should rename a dashboard' do
+    widgets = [{'name' => 'widget1'}]
+    expect(Ju::Config).to receive(:delete_board).with('boo')
+    expect(Ju::Config).to receive(:save_board).with('foo', '280', '140', widgets)
+    Ju::Board.save('foo', '280', '140', 'boo', widgets)
+  end
+  context 'validation of dashboard' do
     it 'should give errors if dashboard name is empty' do
-      expect(Ju::Board.validate('  ')).to eq('Dashboard name cannot be empty!')
-      expect(Ju::Board.validate(nil)).to eq('Dashboard name cannot be empty!')
+      expect(Ju::Board.validate('', '280', '140')).to eq(['Dashboard name cannot be empty!'])
     end
 
     it 'should give errors if dashboard name contains unexpected characters' do
-      expect(Ju::Board.validate('ab/cd ')).to eq('Dashboard name can only contain letters, digits, space, hyphen and underscore!')
-      expect(Ju::Board.validate('ab&!@#$%^&*():cd ')).to eq('Dashboard name can only contain letters, digits, space, hyphen and underscore!')
+      expect(Ju::Board.validate('ab/cd', '280', '140')).to eq(['Dashboard name can only contain letters, digits, space, hyphen and underscore!'])
+      expect(Ju::Board.validate('ab&!@#$%^&*():cd', '280', '140')).to eq(['Dashboard name can only contain letters, digits, space, hyphen and underscore!'])
     end
 
     it 'should give errors if same name dashboard exists' do
       allow(Ju::Config).to receive(:get_all_boards).and_return(['foO', 'moo'])
+      expect(Ju::Board.validate('Foo', '280', '140')).to eq(['The dashboard Foo already exists!'])
+    end
 
-      expect(Ju::Board.validate(' foo ')).to eq('The dashboard  foo  already exists!')
-      expect(Ju::Board.validate('Foo')).to eq('The dashboard Foo already exists!')
+    it 'should not give errors if validating an existing board' do
+      allow(Ju::Config).to receive(:get_all_boards).and_return(['foO', 'moo'])
+      expect(Ju::Board.validate('Foo', '280', '140', 'Foo')).to be_empty 
+    end
+
+    it 'should give errors if sizex is invalid' do
+      allow(Ju::Config).to receive(:get_all_boards).and_return(['foo', 'moo'])
+      expect(Ju::Board.validate('boo', 'abc', '140')).to eq(['Base Widget Size X can only be digits!'])
+      expect(Ju::Board.validate('boo', '', '140')).to eq(['Base Widget Size X can only be digits!'])
+      expect(Ju::Board.validate('boo', '99', '140')).to eq(['Base Widget Size X must be greater than 100.'])
+    end
+
+    it 'should give errors if sizey is invalid' do
+      allow(Ju::Config).to receive(:get_all_boards).and_return(['foo', 'moo'])
+      expect(Ju::Board.validate('boo', '200', '140pix')).to eq(['Base Widget Size Y can only be digits!'])
+      expect(Ju::Board.validate('boo', '200', '')).to eq(['Base Widget Size Y can only be digits!'])
+      expect(Ju::Board.validate('boo', '199', '40')).to eq(['Base Widget Size Y must be greater than 100.'])
     end
 
     it 'should give no errors if board name is valid' do
       allow(Ju::Config).to receive(:get_all_boards).and_return(['foo', 'moo'])
 
-      expect(Ju::Board.validate('Production Applications')).to be_empty 
+      expect(Ju::Board.validate('Production Applications', '280', '140')).to be_empty 
     end
   end
 end

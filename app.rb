@@ -10,10 +10,31 @@ helpers do
   def load_plugins
     load File.expand_path("../lib/ju.rb", __FILE__)
   end
+
+  def save_board(widgets = nil)
+    board_name = params['board_name']
+    sizex = params['sizex']
+    sizey = params['sizey']
+    old_name = params['old_board_name']
+    errors = Ju::Board.validate(board_name, sizex, sizey, old_name)
+    if errors.empty? 
+      Ju::Board.save(board_name, sizex, sizey, old_name, widgets)
+      redirect to("/boards/#{URI.escape(board_name)}"), 303  
+    else
+      errors.each_with_index do |error, index|
+        flash.now["error-message flash-#{index}"] = error
+      end
+      status 400
+      erb :board_form, :locals => {:action => params['action']}
+    end
+  end
 end
 
 before do
   load_plugins
+  params.each do |key, value|
+    params[key] = value.strip
+  end
 end
 
 get '/' do
@@ -22,7 +43,15 @@ get '/' do
 end
 
 get '/boards/new' do
-  erb :new_board
+  erb :board_form, :locals => {:action => 'new'}
+end
+
+get '/boards/:board_name/edit' do
+  halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
+  config = Ju::Config.get_board_config(params['board_name'])
+  params['sizex'] = config['base_sizex']
+  params['sizey'] = config['base_sizey']
+  erb :board_form, :locals => {:action => 'edit'}
 end
 
 get '/boards/:board_name' do
@@ -33,24 +62,20 @@ get '/boards/:board_name' do
   erb :home, :locals => {:config => config, :other_boards => other_boards, :widget_types => Ju::Plugin.types}
 end
 
+post '/boards/:old_board_name' do
+  halt 400 unless Ju::Config.get_all_boards.include?(params['old_board_name'])
+  widgets = Ju::Config.get_board_config(params['old_board_name'])['widgets']
+  save_board widgets
+end
 
 post '/boards' do
-  board_name = params['board_name'].strip
-  errors = Ju::Board.validate(board_name)
-  if errors.empty? 
-    Ju::Board.create(board_name)
-    redirect to("/boards/#{URI.escape(board_name)}"), 303  
-  else
-    flash.now["error-message"] = errors
-    status 400
-    erb :new_board
-  end
+  save_board
 end
 
 get '/boards/:board_name/widgets/new/:widget_type' do
   halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
   halt 400 unless Ju::Plugin.types.include?(params['widget_type'])
-  erb :new_widget, :locals =>{:settings => Ju::Plugin.config(params['widget_type']), :widget_action => 'new'}
+  erb :widget_form, :locals =>{:settings => Ju::Plugin.config(params['widget_type']), :action => 'new'}
 end
 
 post '/boards/:board_name/widgets/:widget_type' do
@@ -66,9 +91,14 @@ post '/boards/:board_name/widgets/:widget_type' do
       flash.now["error-message flash-#{index}"] = error
     end
     status 400
-    erb :new_widget, :locals => { :settings => settings, :widget_action => params['widget_action'] }
+    erb :widget_form, :locals => { :settings => settings, :action => params['action'] }
   end
+end
 
+delete '/boards/:board_name' do
+  halt 400 unless Ju::Config.get_all_boards.include?(params['board_name'])
+  Ju::Config.delete_board(params['board_name'])
+  redirect to("/"), 303
 end
 
 delete '/boards/:board_name/widgets/:name' do
@@ -88,7 +118,7 @@ get '/boards/:board_name/widgets/:name/edit' do
   settings.each do |setting|
     params[setting['name']] = widget_config[setting['name']]
   end
-  erb :new_widget, :locals =>{:settings => settings , :widget_action => 'edit'}
+  erb :widget_form, :locals =>{:settings => settings , :action => 'edit'}
 end
 
 get '/boards/:board_name/widgets/:widget_name' do

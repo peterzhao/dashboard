@@ -34,7 +34,7 @@ describe Ju::Widget do
       end
 
       it 'widget already exists' do
-        allow(Ju::Config).to receive(:get_board_config).with('foo').and_return({'widgets' => [{'name'=> 'myWidget '}]})
+        allow(Ju::Config).to receive(:get_board_config).with('foo').and_return({'widgets' => [{'name'=> 'myWidget'}]})
         data = {'name' => 'Mywidget', 'base_url' => 'http://abc.com/gocd', 'board_name' => 'foo', 'widget_action' => 'new'}
         expect(Ju::Widget.validate(settings, data)).to eq(['Widget Mywidget already exists!'])
       end
@@ -56,7 +56,7 @@ describe Ju::Widget do
   end
 
   it 'save widget' do
-    data = {'name' => ' mywidget ', 'old_widget_name' => 'old_widget', 'base_url' => ' http://abc.com/gocd', 'other' => 'should not be saved'}
+    data = {'name' => 'mywidget', 'old_widget_name' => 'old_widget', 'base_url' => 'http://abc.com/gocd', 'other' => 'should not be saved'}
     expect(Ju::Config).to receive(:save_widget).with('boo', 'curl', {'name'=> 'mywidget', 'base_url' => 'http://abc.com/gocd'}, 'old_widget')
     Ju::Widget.save('boo', 'curl', settings, data)
   end

@@ -25,6 +25,7 @@
               </ul>
           </li>
           <li class="pure-menu-item"><a href="/boards/new" class="pure-menu-link">Create Board</a></li>
+          <li class="pure-menu-item"><a href="/boards/<%= URI.escape(config['board']) %>/edit" class="pure-menu-link">Edit Board</a></li>
         </ul>
       </div>
     </div>
@@ -66,8 +67,8 @@
 <script type="text/javascript">
 
   var widget_models = {};
-  var base_width = 280;
-  var base_height = 140;
+  var base_width = <%= config['base_sizex'] || 280 %>;
+  var base_height = <%= config['base_sizey'] || 140 %>;
 
   $(function(){
     $('.gridster ul').gridster({

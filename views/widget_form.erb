@@ -1,23 +1,28 @@
+<%
+if action == 'new'
+  title = 'New Widget'
+  button_title = 'Create'
+  legend = "Create a new #{params['widget_type']} widget"
+else
+  title = 'Edit Widget'
+  button_title = 'Save'
+  legend = "Edit the #{params['widget_type']} widget"
+end
+%>
 <div class="header">
     <div class="home-menu pure-menu pure-menu-horizontal">
       <div class="heading">
       <img src="/images/ju138.png" height="36" width="36"/>
     </div>
       <div class="heading heading-title"><a href="/" class="pure-menu-link main-title">JU</a></div>
-      <% if widget_action == 'new' %>
-        <div class="pure-menu-heading">New Widget</div>
-      <% else %>
-        <div class="pure-menu-heading">Edit Widget</div>
-      <% end %>
+      <div class="pure-menu-heading"><%= title %></div>
     </div>
 </div>
 <%= styled_flash %>
 <form class="pure-form pure-form-aligned new-widget" action="/boards/<%= URI.escape(params['board_name']) %>/widgets/<%= URI.escape(params['widget_type']) %>" method="POST">
     <fieldset>
-      <% if widget_action == 'new' %>
-        <legend>Create a new <%= params['widget_type'] %> widget</legend>
-      <% else %>
-        <legend>Edit <%= params['widget_type'] %> widget</legend>
+      <legend><%= legend %></legend>
+      <% if params['name'] %>
         <input type="hidden" name="old_widget_name" value="<%= params['name'] %>"/>
       <% end %>
         <% settings.each do |setting| %>
@@ -27,13 +32,13 @@
         </div>
         <% end %>
         <div class="pure-controls">
-          <button type="submit" class="pure-button pure-button-primary"><%= widget_action == 'new' ? 'Create' : 'Save' %></button>
+          <button type="submit" class="pure-button pure-button-primary"><%= button_title %></button>
           <a  href="/" class="pure-button">Cancel</a>
        </div>
-       <input type="hidden" name="widget_action" value="<%= widget_action %>"/>
+       <input type="hidden" name="action" value="<%= action %>"/>
     </fieldset>
 </form>
-<% if widget_action != 'new' %>
+<% if action != 'new' %>
   <form class="pure-form pure-form-aligned" id="delete-widget-form" action="/boards/<%= URI.escape(params['board_name']) %>/widgets/<%= URI.escape(params['name']) %>" method="POST">
     <fieldset>
         <legend></legend>
