@@ -17,6 +17,7 @@ Before do
       $headless = Headless.new
       $headless.start
     end
+    create_foo_board
     system 'sh stop_server.sh; DATA_PATH=spec/data sh start_server.sh'
     FileUtils.rm_rf(Dir.glob("screenshots/*"))
     $setup = true
@@ -29,4 +30,9 @@ end
 
 at_exit do
   $headless.destroy if $headless
+end
+
+def create_foo_board
+  config = {"widgets"=>[{"name"=>"foo", "type"=>"gocd_pipeline", "base_url"=>"http://localhost:4545", "user"=>nil, "password"=>nil, "pull_inteval"=>5, "number_of_instances"=>3, "row"=>"1", "col"=>"1", "sizex"=>"1", "sizey"=>"1", "pull-inteval"=>10000}], "board"=>"foo"}
+  File.open("spec/data/config/foo.json", 'w') { |file| file.write(config.to_json) }
 end

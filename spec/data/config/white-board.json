@@ -1,1 +1,0 @@
-{"widgets":[{"name":"my-widget","base_url":"http://localhost:4545","user":"","password":"","pull_inteval":"5","number_of_instances":"3","type":"gocd_pipeline"}],"board":"white-board"}

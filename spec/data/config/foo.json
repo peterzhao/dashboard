@@ -1,1 +1,0 @@
-{"widgets":[{"name":"foo","type":"gocd_pipeline","base_url":"http://localhost:4545","user":null,"password":null,"pull_inteval":5,"number_of_instances":3,"row":"1","col":"1","sizex":"1","sizey":"1","pull-inteval":10000}],"board":"foo"}
