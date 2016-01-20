@@ -117,12 +117,6 @@ EOS
     def config
         [
           {
-            'name' => 'name',
-            'description' => 'Widget Name',
-            'validate' => '^[0-9a-zA-Z\-_ ]+$',
-            'validation_message' => 'Widget Name cannot be empty or contain special characters'
-          },
-          {
             'name' => 'base_url',
             'description' => 'Server Base URL',
             'validate' => '^[0-9a-zA-Z\-_:/.]+$',
@@ -139,13 +133,6 @@ EOS
             'description' => 'Password',
             'validate' => '^.*$',
             'validation_message' => 'Password can be any characters'
-          },
-          {
-            'name' => 'pull_inteval',
-            'description' => 'Pull Inteval',
-            'validate' => '^[0-9]+$',
-            'validation_message' => 'Pull Inteval must be digits',
-            'default' => 5
           },
           {
             'name' => 'number_of_instances',

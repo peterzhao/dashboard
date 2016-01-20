@@ -32,8 +32,24 @@ describe Ju::Plugin do
   end
 
   it 'should get config ui from plugin' do
-    expect(test_plugin).to receive(:config)
-    Ju::Plugin.config('test_plugin')
+    expect(test_plugin).to receive(:config).and_return([{'name' => 'url'}])
+    config = Ju::Plugin.config('test_plugin')
+    expect(config.find{ |c| c['name'] == 'url' }).not_to be_nil
+    expect(config.first).to eq(
+          {
+            'name' => 'name',
+            'description' => 'Widget Name',
+            'validate' => '^[0-9a-zA-Z\-_ ]+$',
+            'validation_message' => 'Widget Name cannot be empty or contain special characters'
+          })
+    expect(config.last).to eq(
+          {
+            'name' => 'pull_inteval',
+            'description' => 'Pull Inteval',
+            'validate' => '^[0-9]+$',
+            'validation_message' => 'Pull Inteval must be digits',
+            'default' => 5
+          })
   end
 
   it 'should get error when cannot find the plugin' do
