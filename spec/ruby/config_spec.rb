@@ -14,7 +14,6 @@ describe Ju::Config do
     'base_sizey' => '140'
     }
     File.open("spec/data/config/temp.json", 'w') { |file| file.write(config_data.to_json) }
-    config = Ju::Config.get_board_config('temp')
   end
 
   after :each do
