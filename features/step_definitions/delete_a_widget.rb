@@ -1,5 +1,5 @@
 Given(/^a dashboard named "([^"]*)" with two widgets "([^"]*)" and "([^"]*)"$/) do |board_name,text1, text2|
-  File.open("spec/data/config/#{board_name}.json","w"){|file|file.write({'widgets'=>[{'name'=>"#{text1}","type"=>"gocd_pipeline","url"=>"http://localhost:4545","col"=>1,"row"=>1,"sizex"=>2,"sizey"=>3},{'name'=>"#{text2}","type"=>"gocd_pipeline","url"=>"http://localhost:4545","col"=>2,"row"=>1,"sizex"=>2,"sizey"=>3}]}.to_json)}
+  File.open("spec/data/config/#{board_name}.json","w"){|file|file.write({'widgets'=>[{'name'=>"#{text1}","type"=>"gocd_pipeline","base_url"=>"http://localhost:4545","col"=>1,"row"=>1,"sizex"=>2,"sizey"=>3},{'name'=>"#{text2}","type"=>"gocd_pipeline","base_url"=>"http://localhost:4545","col"=>2,"row"=>1,"sizex"=>2,"sizey"=>3}]}.to_json)}
 end
 
 Then(/^I hover my mouse to the widget "([^"]*)" click edit icon$/) do |element|

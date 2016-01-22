@@ -7,8 +7,8 @@ describe Ju::Config do
   before :each do
     ENV['DATA_PATH'] = 'spec/data'
     config_data = {'widgets' => [
-      {'name' => "widget1", "type" => "gocd_pipeline", "url" => "http://abc.com/", "col" => 1, "row" => 1, "sizex" => 2, "sizey" => 3},
-      {'name' => "widget2", "type" => "curl", "url" => "http://cde.com/", "col" => 2, "row" => 1, "sizex" => 2, "sizey" => 3}
+      {'name' => "widget1", "type" => "gocd_pipeline", "base_url" => "http://abc.com/", "col" => 1, "row" => 1, "sizex" => 2, "sizey" => 3},
+      {'name' => "widget2", "type" => "curl", "base_url" => "http://cde.com/", "col" => 2, "row" => 1, "sizex" => 2, "sizey" => 3}
     ],
     'base_sizex' => '280',
     'base_sizey' => '140'
