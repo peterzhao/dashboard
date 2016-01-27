@@ -9,7 +9,6 @@ Dashboard.layoutChangeHandler = function(board){
     var row = $(widgets[i]).attr('data-row')
     var col = $(widgets[i]).attr('data-col')
     model.changeSize(sizex, sizey, row, col);
-    model.pull();
   };
   Dashboard.saveLayout(board, widget_models);
 };
@@ -25,6 +24,16 @@ Dashboard.saveLayout = function(board, widgets){
     contentType: "application/json; charset=utf-8",
     type: "post",
     dataType: "json",
-    data: JSON.stringify(widgetsData)
+    data: JSON.stringify(widgetsData),
+    success: function(){ 
+      Dashboard.pull(widgets);
+    } 
   });
+};
+
+Dashboard.pull = function(widgets){
+  for(var id in widgets){
+    model = widgets[id];
+    model.pull(); 
+  }
 };
