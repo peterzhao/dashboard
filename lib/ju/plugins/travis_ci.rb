@@ -154,7 +154,7 @@ EOS
           'number' => build['number'],
           'state' => build['state'],
           'author' => commit['author_name'],
-          'started_at' => "#{Ju::TimeConverter.ago_in_words(Time.parse(build['started_at']).to_i * 1000)} ago",
+          'started_at' => build['started_at'] ? "#{Ju::TimeConverter.ago_in_words(Time.parse(build['started_at']).to_i * 1000)} ago" : nil,
           'branch' => commit['branch'],
           'commit_sha' => commit['sha'][0..6]
         }

@@ -12,8 +12,6 @@ describe Ju::TravisCi::Transformer do
       {
         "id" => "3", 
         "number" => "67",
-        "state" => "passed", 
-        "started_at" => one_minute_ago, 
         "commit_id" => "103" 
       },
       {
@@ -58,9 +56,9 @@ describe Ju::TravisCi::Transformer do
     output = Ju::TravisCi::Transformer.transform(data, 2) 
     expect(output['builds'].count).to eq(2)
     expect(output['builds'][0]['number']).to eq('67')
-    expect(output['builds'][0]['state']).to eq('passed')
+    expect(output['builds'][0]['state']).to be_nil 
     expect(output['builds'][0]['author']).to eq('pzhao')
-    expect(output['builds'][0]['started_at']).to eq('1 minute ago')
+    expect(output['builds'][0]['started_at']).to be_nil 
     expect(output['builds'][0]['branch']).to eq('master')
     expect(output['builds'][0]['commit_sha']).to eq('sha3333')
 
