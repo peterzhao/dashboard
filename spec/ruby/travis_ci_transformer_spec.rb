@@ -10,8 +10,16 @@ describe Ju::TravisCi::Transformer do
   let(:data){{
     "builds" => [
       {
+        "id" => "4", 
+        "number" => "68",
+        "state" => "created", 
+        "commit_id" => "104" 
+      },
+      {
         "id" => "3", 
         "number" => "67",
+        "state" => "started",
+        "started_at" => one_minute_ago, 
         "commit_id" => "103" 
       },
       {
@@ -30,6 +38,12 @@ describe Ju::TravisCi::Transformer do
       }
     ],
     "commits" => [
+      {
+        "id" => "104",
+        "sha" => "sha444444444",
+        "branch" => "master",
+        "author_name" => "pzhao"
+      },
       {
         "id" => "103",
         "sha" => "sha33333333333",
@@ -53,21 +67,27 @@ describe Ju::TravisCi::Transformer do
   
 
   it 'should transform data' do
-    output = Ju::TravisCi::Transformer.transform(data, 2) 
-    expect(output['builds'].count).to eq(2)
-    expect(output['builds'][0]['number']).to eq('67')
-    expect(output['builds'][0]['state']).to be_nil 
+    output = Ju::TravisCi::Transformer.transform(data, 3) 
+    expect(output['builds'].count).to eq(3)
+    expect(output['builds'][0]['number']).to eq('68')
+    expect(output['builds'][0]['state']).to eq('scheduled')
     expect(output['builds'][0]['author']).to eq('pzhao')
     expect(output['builds'][0]['started_at']).to be_nil 
     expect(output['builds'][0]['branch']).to eq('master')
-    expect(output['builds'][0]['commit_sha']).to eq('sha3333')
+    expect(output['builds'][0]['commit_sha']).to eq('sha4444')
 
-    expect(output['builds'][1]['number']).to eq('66')
-    expect(output['builds'][1]['state']).to eq('failed')
-    expect(output['builds'][1]['author']).to eq('joe')
-    expect(output['builds'][1]['started_at']).to eq('2 minutes ago')
+    expect(output['builds'][1]['number']).to eq('67')
+    expect(output['builds'][1]['state']).to eq('building')
+    expect(output['builds'][1]['author']).to eq('pzhao')
+    expect(output['builds'][1]['started_at']).to eq('1 minute ago')
     expect(output['builds'][1]['branch']).to eq('master')
-    expect(output['builds'][1]['commit_sha']).to eq('sha2222')
+    expect(output['builds'][1]['commit_sha']).to eq('sha3333')
 
+    expect(output['builds'][2]['number']).to eq('66')
+    expect(output['builds'][2]['state']).to eq('failed')
+    expect(output['builds'][2]['author']).to eq('joe')
+    expect(output['builds'][2]['started_at']).to eq('2 minutes ago')
+    expect(output['builds'][2]['branch']).to eq('master')
+    expect(output['builds'][2]['commit_sha']).to eq('sha2222')
   end
 end

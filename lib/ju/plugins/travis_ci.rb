@@ -152,13 +152,17 @@ EOS
       def self.transform_build(build, commit)
         {
           'number' => build['number'],
-          'state' => build['state'],
+          'state' => state_map(build['state']),
           'author' => commit['author_name'],
           'started_at' => build['started_at'] ? "#{Ju::TimeConverter.ago_in_words(Time.parse(build['started_at']).to_i * 1000)} ago" : nil,
           'branch' => commit['branch'],
           'commit_sha' => commit['sha'][0..6]
         }
       end 
+
+      def self.state_map(state)
+        {'created' => 'scheduled', 'started' => 'building'}[state] || state
+      end
     end
   end
 end
