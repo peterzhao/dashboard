@@ -24,7 +24,7 @@ describe 'Ju App' do
               'widgets' => [ {'type' => 'gocd', 'id' => 'foo', 'name' => 'foo'} ]
               } 
     expect(Ju::Config).to receive(:get_board_config).with('boo').and_return(config)
-    expect(Ju::Board).to receive(:fill_template_and_style).with(config).and_return(config)
+    expect(Ju::Board).to receive(:add_style).with(config).and_return(config)
     expect(Ju::Config).to receive(:get_all_boards).and_return(['test', 'moo'])
     get '/boards/boo'
     expect(last_response).to be_ok 

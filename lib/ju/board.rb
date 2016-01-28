@@ -1,9 +1,8 @@
 module Ju
   class Board
-    def self.fill_template_and_style(board_config)
+    def self.add_style(board_config)
       board_config['styles'] = {}
       board_config['widgets'].each do |widget|
-        widget['template'] = Ju::Plugin.template(widget['type'], widget)
         board_config['styles'][widget['type']] = Ju::Plugin.style(widget['type'], widget) unless board_config['styles'][widget['type']]
       end
     end

@@ -22,10 +22,6 @@ module Ju
       def check(type, options) 
         plugin(type, options).send :check
       end
-      
-      def template(type, options)
-        plugin(type, options).send :template
-      end
 
       def style(type, options)
         plugin(type, options).send :style

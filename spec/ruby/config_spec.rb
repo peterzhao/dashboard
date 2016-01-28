@@ -59,9 +59,10 @@ describe Ju::Config do
 
   it 'should get widget config' do
     config = Ju::Config.get_widget_config('temp', 'widget1')
-
     expect(config['name']).to eq('widget1')
     expect(config['type']).to eq('gocd_pipeline')
+    expect(config['width']).to eq(560)
+    expect(config['height']).to eq(420)
   end
   
   it 'should save layout' do

@@ -13,7 +13,10 @@ module Ju
       
       def get_widget_config(board, widget_name)
         config = get_board_config(board)
-        config['widgets'].find{ |widget| widget['name'] == widget_name }
+        widget = config['widgets'].find{ |widget| widget['name'] == widget_name }
+        widget['width'] = (config['base_sizex'] || '280').to_i * (widget['sizex'] || 1).to_i 
+        widget['height'] = (config['base_sizey'] || '140').to_i * (widget['sizey'] || 1).to_i 
+        widget
       end
 
       def save_layout(board, data)

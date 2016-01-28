@@ -1,10 +1,15 @@
 require 'sinatra'
 require 'json'
 require 'sinatra/flash'
+require_relative 'lib/ju/exception_handling'
 
 use Rack::MethodOverride
+use Ju::ExceptionHandling
 enable :sessions
 set :bind, '0.0.0.0'
+set :dump_errors, false
+set :raise_errors, true
+set :show_exceptions, false
 
 helpers do
   def load_plugins
@@ -67,7 +72,7 @@ get '/boards/:board_name' do
   config = Ju::Config.get_board_config(params['board_name'])
   other_boards = Ju::Config.get_all_boards - [params['board_name']]
   session['last_board'] = params['board_name']
-  Ju::Board.fill_template_and_style(config)
+  Ju::Board.add_style(config)
   erb :home, :locals => {:config => config, :other_boards => other_boards, :widget_types => Ju::Plugin.types}
 end
 

@@ -3,8 +3,6 @@ require 'rspec'
 
 describe Ju::Board do
   it 'should fill template and style for each widgets on the board' do
-    curl_template = double('curl_template')
-    gocd_template = double('gocd_template')
     curl_style = double('curl_style')
     gocd_style = double('gocd_style')
 
@@ -13,15 +11,11 @@ describe Ju::Board do
        {'name' => 'foo', 'type' => 'gocd'} 
     ]}
 
-    expect(Ju::Plugin).to receive(:template).with('curl', board_config['widgets'][0]).and_return(curl_template)
     expect(Ju::Plugin).to receive(:style).with('curl', board_config['widgets'][0]).and_return(curl_style)
-    expect(Ju::Plugin).to receive(:template).with('gocd', board_config['widgets'][1]).and_return(gocd_template)
     expect(Ju::Plugin).to receive(:style).with('gocd', board_config['widgets'][1]).and_return(gocd_style)
 
-    Ju::Board.fill_template_and_style(board_config)
+    Ju::Board.add_style(board_config)
     
-    expect(board_config['widgets'][0]['template']).to eq(curl_template)
-    expect(board_config['widgets'][1]['template']).to eq(gocd_template)
     expect(board_config['styles']['curl']).to eq(curl_style)
     expect(board_config['styles']['gocd']).to eq(gocd_style)
   end

@@ -42,8 +42,8 @@
           <li class="dashboard-widget" id="<%= widget['name'].gsub(' ', '-') %>" widget-name="<%= widget['name'] %>" data-row="<%= widget['row'] %>" data-col="<%= widget['col'] %>" data-sizex="<%= widget['sizex'] %>" data-sizey="<%= widget['sizey'] %>" pull-inteval="<%= widget['pull-inteval'] || 5000 %>" data-bind="css: {error: hasError()}">
           <div class="dashboard-widget-content">
               <div data-bind="ifnot: hasError">
-                <div data-bind="with: data">
-                  <%= widget['template'] %>
+                <div class="pull-result">
+                  loading ...
                 </div>
               </div>
               <div data-bind="if: hasError">
@@ -86,6 +86,9 @@
       var id = $(widget).attr('widget-name')
       var loader = new Dashboard.WidgetLoader("<%=config['board'] %>", id, base_width, base_height, $(widget).attr('pull-inteval'), $(widget).attr('data-sizex'), $(widget).attr('data-sizey'));
       widget_models[id] = loader;
+      loader.pull_success_handler = function(widget_name, html){
+        $("#" + widget_name.replace(' ', '-') + " .pull-result").html(html);
+      };
       ko.applyBindings(loader, widget);
       loader.startPull();
     });

@@ -25,21 +25,19 @@ Dashboard.WidgetLoader = function(board, id, base_width, base_height, pull_intev
     if(typeof(debug) != "undefined" && debug == true) return;
     jQuery.ajax({
       url: "/boards/" + encodeURI(self.board) + "/widgets/" + encodeURI(id),
-      contentType: "application/json; charset=utf-8",
+      contentType: "text/html; charet=utf-8",
       type: "get",
-      dataType: "json",
-      error: function(XMLHttpRequest, textStatus, errorThrown) {
-        self.error("Failed to update data from the dashboard server.");
+      error: function(XMLHttpRequest) {
+        if(typeof(XMLHttpRequest.responseJSON) == "undefined")
+          self.error("Failed to connect to the JU server!");
+        else
+          self.error(XMLHttpRequest.responseJSON.message);
         self.hasError(true);
       },
       success: function(result){
-        if(result.error == null){
-          self.data(result);
-          self.hasError(false);
-        }else{
-          self.error(result.error);
-          self.hasError(true);
-        }
+        if(typeof(self.pull_success_handler) != "undefined")
+           self.pull_success_handler(self.id, result);
+        self.hasError(false);
       }
     });
   };
