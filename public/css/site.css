@@ -139,7 +139,8 @@ label {
 }
 
 /* ref: http://red-team-design.com/stylish-css3-progress-bars/  */
-.scheduled, .building {
+.scheduled, .started, .building {
+  position: relative;
   height: 100%;
   border-radius: 3px;
   transition: width .4s ease-in-out; 
@@ -156,11 +157,7 @@ label {
   0% {background-position: 0 0;} 100% {background-position: 60px 0;}
 }
 
-.building {
-    position: relative;
-}
-
-.building::after {
+.started::after, .building::after {
     content: '';
     opacity: 0;
     position: absolute;
