@@ -5,13 +5,6 @@ require_relative '../../lib/ju'
 describe Ju::GocdPipeline::Transformer do
   let(:one_minute_ago){ (Time.now.utc.to_i - 60 + 10)*1000 }
   let(:two_minutes_ago){ (Time.now.utc.to_i - 60*2 + 10)*1000 }
-  let(:options){{ 
-    'base_url' => 'http://abc.com/gocd',
-    'name' => 'billing pipeline',
-    'user' => 'pzhao',
-    'password' => 'pw',
-    'number_of_instances' => "2"
-   }}
 
   let(:data){{ "pipelines" => [
     {
