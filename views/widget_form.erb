@@ -2,12 +2,12 @@
 if action == 'new'
   title = 'New Widget'
   button_title = 'Create'
-  legend = "Create a new #{params['widget_type']} widget"
+  legend = "Create a new #{params['widget_type'].gsub('_', ' ').gsub('-', ' ')} widget"
   form_action="/boards/#{URI.escape(params['board_name'])}/widgets"
 else
   title = 'Edit Widget'
   button_title = 'Save'
-  legend = "Edit widget #{params['old_widget_name']}"
+  legend = "Edit #{params['widget_type'].gsub('_', ' ').gsub('-', ' ')} widget #{params['old_name']}"
   form_action = "/boards/#{URI.escape(params['board_name'])}/widgets/#{URI.escape(params['old_name'])}"
 end
 %>

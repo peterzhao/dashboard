@@ -1,0 +1,53 @@
+{
+   "builds":[
+      {
+         "building":false,
+         "number":5,
+         "result":"SUCCESS",
+         "timestamp":1454337545178,
+         "url":"http://localhost:8888/job/moo/5/",
+         "changeSet":{
+            "items":[
+               {
+                  "author":{
+                     "fullName":"peter.qs.zhao"
+                  },
+                  "commitId": "a29178967534sd23erer",
+                  "msg":"PZ refactoring unit tests" 
+               }
+
+            ]
+         }
+      },
+      {
+         "building":false,
+         "number":4,
+         "result":"SUCCESS",
+         "timestamp":1454335213383,
+         "url":"http://localhost:8888/job/moo/4/",
+         "changeSet":{
+            "items":[
+               {
+                  "author":{
+                     "fullName":"peter.qs.zhao"
+                  },
+                  "commitId": "b29178967534sd23erer",
+                  "msg":"PZ set widget field as password type if it is a token"
+               }
+            ]
+         }
+      },
+      {
+         "building":false,
+         "number":3,
+         "result":"SUCCESS",
+         "timestamp":1454333772253,
+         "url":"http://localhost:8888/job/moo/3/",
+         "changeSet":{
+            "items":[
+
+            ]
+         }
+      }
+   ]
+}
