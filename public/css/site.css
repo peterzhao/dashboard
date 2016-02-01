@@ -132,10 +132,10 @@ label {
   text-overflow: ellipsis;
 }
 .passed {
-  background-color: green;
+  background-color: #76D258;
 }
 .failed {
-  background-color: red;
+  background-color: #FF5733;
 }
 
 /* ref: http://red-team-design.com/stylish-css3-progress-bars/  */
