@@ -29,14 +29,15 @@ module Ju
           </div>
           <div class="jenkins-build-details vertical-align-block" style="width: <%= options['width'] - const[:build_number_width]%>px">
               <% build['changes'].each do |change| %>
-                <div class="ellipseis jenkins-build-info" title="Author: <%= change['author'] %>, Message: <%= change['message'] %>, Commit ID: <%= change['commitId'] %>">
+                <div class="jenkins-build-info" title="Author: <%= change['author'] %>, Message: <%= change['message'] %>, Commit ID: <%= change['commitId'] %>">
                   <span class="jenkins-build-author"><%= change['author'] %>: </span>
-                  <span class="jenkins-build-message"><%= change['message'] %>, </span>
-                  <span class="jenkins-build-commit-id"><%= change['commitId'] %></span>
+                  <span class="jenkins-build-message"><%= change['message'] %></span>
                 </div>
               <% end %>
               <% if build['changes'].empty? %>
-                <div class="ellipseis jenkins-build-info">No changes </div>
+                <% build['causes'].each do |cause| %>
+                <div class="jenkins-build-info"><%= cause %></div>
+                <% end %>
               <% end %>
           </div>
         </div>
@@ -75,6 +76,7 @@ EOS
 .jenkins-build-info {
   font-size: 80%;
   line-height: normal; 
+  overflow: hidden;
 }
 .jenkins-build-author {
   font-weight: 600;
@@ -90,7 +92,7 @@ EOS
         [
           {
             'name' => 'base_url',
-            'default' => 'https://localhost:8080',
+            'default' => 'http://localhost:8080',
             'description' => 'Server Base URL',
             'validate' => '^[0-9a-zA-Z\-_:/.]+$',
             'validation_message' => 'Server base URL is not a valid URL.'
@@ -126,7 +128,7 @@ EOS
     private 
 
     def call_server
-      tree_param = "builds[number,url,result,timestamp,building,changeSet[items[msg,commitId,author[fullName]]]]{0,#{options['number_of_builds']}}"
+      tree_param = "builds[number,url,result,timestamp,building,actions[causes[shortDescription]],changeSet[items[msg,commitId,author[fullName]]]]{0,#{options['number_of_builds']}}"
       params = { :method =>  :get, 
                  :url =>  "#{options['base_url']}/job/#{URI.escape(options['job'])}/api/json?tree=#{URI.escape(tree_param)}"
                }
@@ -157,13 +159,21 @@ EOS
         response['builds'].each do |build|
           build['state'] = get_state(build['result'], build['building'])
           build['changes'] = get_changes(build['changeSet']['items']) 
+          build['causes'] = get_causes(build['actions'])
           build['started'] = "#{Ju::TimeConverter.ago_in_words(build['timestamp'])} ago" 
         end
         response
       end
 
       private 
-
+      
+      def self.get_causes(actions)
+        causes = []
+        (actions.find{ |a| a['causes'] } || {'causes' => []})['causes'].each do |cause|
+          causes << cause['shortDescription']
+        end
+        causes
+      end
 
       def self.get_state(state, building)
         return 'building' if building

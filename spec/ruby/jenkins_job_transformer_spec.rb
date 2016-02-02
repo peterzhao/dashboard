@@ -12,6 +12,21 @@ describe Ju::JenkinsJob::Transformer do
        "number" => 5,
        "result" => nil, 
        "timestamp" =>  one_minute_ago,
+       "actions" => [  
+              {  
+                 "causes" => [  
+                    {  
+                       "shortDescription" => "Started by user Tom"
+                    },
+                    {  
+                       "shortDescription" => "Started by an SCM change"
+                    }
+                 ]
+              },
+              {},
+              {},
+              {}
+           ],
        "changeSet" => {
           "items" => [
              {
@@ -36,6 +51,18 @@ describe Ju::JenkinsJob::Transformer do
        "number" => 4,
        "result" =>  'SUCCESS',
        "timestamp" =>  two_minutes_ago,
+       "actions" => [  
+              {  
+                 "causes" => [  
+                    {  
+                       "shortDescription" => "Started by an SCM change"
+                    }
+                 ]
+              },
+              {},
+              {},
+              {}
+           ],
        "changeSet" => {
           "items" => [
              {
@@ -53,6 +80,18 @@ describe Ju::JenkinsJob::Transformer do
        "number" => 3,
        "result" =>  'FAILURE',
        "timestamp" =>  two_minutes_ago,
+       "actions" => [  
+              {  
+                 "causes" => [  
+                    {  
+                       "shortDescription" => "Started by an SCM change"
+                    }
+                 ]
+              },
+              {},
+              {},
+              {}
+           ],
        "changeSet" => {
           "items" => [
              {
@@ -73,6 +112,8 @@ describe Ju::JenkinsJob::Transformer do
     expect(pipeline_data['builds'][0]['state']).to eq('building')
     expect(pipeline_data['builds'][0]['number']).to eq(5)
     expect(pipeline_data['builds'][0]['started']).to eq('1 minute ago')
+    expect(pipeline_data['builds'][0]['causes'][0]).to eq('Started by user Tom')
+    expect(pipeline_data['builds'][0]['causes'][1]).to eq('Started by an SCM change')
     expect(pipeline_data['builds'][0]['changes'][0]['author']).to eq('peter')
     expect(pipeline_data['builds'][0]['changes'][0]['message']).to eq('refactoring unit test')
     expect(pipeline_data['builds'][0]['changes'][0]['commitId']).to eq('9291789')
@@ -83,6 +124,7 @@ describe Ju::JenkinsJob::Transformer do
     expect(pipeline_data['builds'][1]['number']).to eq(4)
     expect(pipeline_data['builds'][1]['started']).to eq('2 minutes ago')
     expect(pipeline_data['builds'][1]['state']).to eq('passed')
+    expect(pipeline_data['builds'][1]['causes'][0]).to eq('Started by an SCM change')
 
     expect(pipeline_data['builds'][2]['state']).to eq('failed')
     expect(pipeline_data['builds'][2]['number']).to eq(3)

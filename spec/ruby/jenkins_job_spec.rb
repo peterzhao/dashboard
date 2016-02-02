@@ -64,7 +64,7 @@ describe Ju::JenkinsJob do
   
   it 'should check builds from given server' do
     expect(RestClient::Request).to receive(:execute) do |request|
-      expect(request[:url]).to eq("#{options['base_url']}/job/Moose/api/json?tree=builds[number,url,result,timestamp,building,changeSet[items[msg,commitId,author[fullName]]]]%7B0,3%7D")
+      expect(request[:url]).to eq("#{options['base_url']}/job/Moose/api/json?tree=builds[number,url,result,timestamp,building,actions[causes[shortDescription]],changeSet[items[msg,commitId,author[fullName]]]]%7B0,3%7D")
       expect(request[:method]).to eq(:get)
       expect(request[:user]).to eq(options['user'])
       expect(request[:password]).to eq(options['password'])
