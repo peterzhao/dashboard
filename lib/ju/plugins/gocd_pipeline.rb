@@ -18,7 +18,7 @@ module Ju
   pipelines = data['pipelines'] || []
 %>
 <div class="gocd">
-  <div class="gocd-title" title="Pipeline name: <%= options['name'] %>"><%= options['name'] %></div>
+  <div class="gocd-title" title="Pipeline name: <%= options['pipeline'] %>"><%= options['name'] %></div>
   <div class="gocd-pipelines" style="height: <%= options['height'] - const[:title_height] - const[:title_padding_top] %>px">
     <% pipelines.each do |pipeline| %>
       <div class="gocd-pipeline-wrapper" style="height: <%= 1.0/pipelines.count * 100 - 1 %>%; max-height: <%= 1.0/pipelines.count * 100 -1 %>%">
@@ -108,28 +108,34 @@ EOS
     def config
         [
           {
+            'name' => 'pipeline',
+            'description' => 'Pipeline Name',
+            'validate' => '^[0-9a-zA-Z._]+$',
+            'validation_message' => 'Pipeline Name cannot be empty and should contain only alphanumeric characters, underscore and period.'
+          },
+          {
             'name' => 'base_url',
             'description' => 'Server Base URL',
             'validate' => '^[0-9a-zA-Z\-_:/.]+$',
-            'validation_message' => 'Server base URL is not a valid URL'
+            'validation_message' => 'Server base URL is not a valid URL.'
           },
           {
             'name' => 'user',
             'description' => 'User Name',
             'validate' => '^.*$',
-            'validation_message' => 'User Name can be any characters'
+            'validation_message' => 'User Name can be any characters.'
           },
           {
             'name' => 'password',
             'description' => 'Password',
             'validate' => '^.*$',
-            'validation_message' => 'Password can be any characters'
+            'validation_message' => 'Password can be any characters.'
           },
           {
             'name' => 'number_of_instances',
             'description' => 'Number of Instances',
             'validate' => '^[0-9]+$',
-            'validation_message' => 'Number of Instances must be digits',
+            'validation_message' => 'Number of Instances must be digits.',
             'default' => 3
           }
       ]
@@ -138,7 +144,7 @@ EOS
     private 
 
     def call_server
-      params = { method: :get, url: "#{options['base_url']}/go/api/pipelines/#{URI.escape(options['name'])}/history"}
+      params = { method: :get, url: "#{options['base_url']}/go/api/pipelines/#{URI.escape(options['pipeline'])}/history"}
       if options['user']
         params[:user] = options['user']
         params[:password] = options['password']

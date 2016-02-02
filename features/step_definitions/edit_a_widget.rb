@@ -1,5 +1,5 @@
-Given(/^a dashboard "([^"]*)" with a widget "([^"]*)"$/) do |board_name, element|
-  File.open("spec/data/config/#{board_name}.json","w"){|file|file.write({'widgets'=>[{'name'=>"#{element}","type"=>"gocd_pipeline","base_url"=>"http://localhost:4545","col"=>1,"row"=>1,"sizex"=>2,"sizey"=>3}]}.to_json)}
+Given(/^a dashboard "([^"]*)" with a widget "([^"]*)"$/) do |board_name, widget_name|
+  File.open("spec/data/config/#{board_name}.json","w"){|file|file.write({'widgets'=>[{'name'=>widget_name,"pipeline"=>"build", "type"=>"gocd_pipeline","base_url"=>"http://localhost:4545","col"=>1,"row"=>1,"sizex"=>2,"sizey"=>3}]}.to_json)}
 end
 
 When(/^I go to the dashboard "([^"]*)" page$/) do |board_name|

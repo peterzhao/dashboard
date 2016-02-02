@@ -93,31 +93,31 @@ EOS
             'default' => 'https://localhost:8080',
             'description' => 'Server Base URL',
             'validate' => '^[0-9a-zA-Z\-_:/.]+$',
-            'validation_message' => 'Server base URL is not a valid URL'
+            'validation_message' => 'Server base URL is not a valid URL.'
           },
           {
             'name' => 'job',
             'description' => 'Job Name',
             'validate' => '^[0-9a-zA-Z\-_ ]+$',
-            'validation_message' => 'Job Name can only be letters, digits, spaces, dashes and underscores'
+            'validation_message' => 'Job Name can only contain alphanumeric characters, space, dash and underscore.'
           },
           {
             'name' => 'user',
             'description' => 'User Name',
             'validate' => '^.*$',
-            'validation_message' => 'User Name can be any characters'
+            'validation_message' => 'User Name can be any characters.'
           },
           {
             'name' => 'password',
             'description' => 'Password',
             'validate' => '^.*$',
-            'validation_message' => 'Password can be any characters'
+            'validation_message' => 'Password can be any characters.'
           },
           {
             'name' => 'number_of_builds',
             'description' => 'Number of Builds',
             'validate' => '^[0-9]+$',
-            'validation_message' => 'Number of Builds must be digits',
+            'validation_message' => 'Number of Builds must be digits.',
             'default' => 3
           }
       ]

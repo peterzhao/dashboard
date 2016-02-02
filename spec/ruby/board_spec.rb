@@ -43,8 +43,8 @@ describe Ju::Board do
     end
 
     it 'should give errors if dashboard name contains unexpected characters' do
-      expect(Ju::Board.validate('ab/cd', '280', '140')).to eq(['Dashboard name can only contain letters, digits, space, hyphen and underscore!'])
-      expect(Ju::Board.validate('ab&!@#$%^&*():cd', '280', '140')).to eq(['Dashboard name can only contain letters, digits, space, hyphen and underscore!'])
+      expect(Ju::Board.validate('ab/cd', '280', '140')).to eq(['Dashboard name should only contain alphanumeric characters, space, hyphen and underscore!'])
+      expect(Ju::Board.validate('ab&!@#$%^&*():cd', '280', '140')).to eq(['Dashboard name should only contain alphanumeric characters, space, hyphen and underscore!'])
     end
 
     it 'should give errors if same name dashboard exists' do

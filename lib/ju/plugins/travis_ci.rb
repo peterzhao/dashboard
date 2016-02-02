@@ -84,25 +84,25 @@ EOS
             'default' => 'https://api.travis-ci.org',
             'description' => 'Server Base URL',
             'validate' => '^[0-9a-zA-Z\-_:/.]+$',
-            'validation_message' => 'Server base URL is not a valid URL'
+            'validation_message' => 'Server base URL is not a valid URL.'
           },
           {
             'name' => 'repo_path',
             'description' => 'Repository Path',
             'validate' => '^[0-9a-zA-Z\-_/]+$',
-            'validation_message' => 'Repository Path can only be letters, digits and slash, eg., boo/foo'
+            'validation_message' => 'Repository Path can only contain alphanumeric characters and slash, eg., boo/foo.'
           },
           {
             'name' => 'api_token',
             'description' => 'API Token',
             'validate' => '^[0-9a-zA-Z]+$',
-            'validation_message' => 'API Token can only be letters and digits'
+            'validation_message' => 'API Token can only contain alphanumeric characters.'
           },
           {
             'name' => 'number_of_instances',
             'description' => 'Number of Instances',
             'validate' => '^[0-9]+$',
-            'validation_message' => 'Number of Instances must be digits',
+            'validation_message' => 'Number of Instances must be digits.',
             'default' => 3
           }
       ]

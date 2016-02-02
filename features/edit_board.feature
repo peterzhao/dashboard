@@ -17,7 +17,7 @@ Scenario: invalid board name
   Then I should be on the "Edit dashboard" page
   Then I input "my/board" as the name of the board
   Then I click the button "Save"
-And I should see the error message "Dashboard name can only contain letters, digits, space, hyphen and underscore!"
+And I should see the error message "Dashboard name should only contain alphanumeric characters, space, hyphen and underscore!"
  
 Scenario: board already exists
   Given open a dashboard name "test-board"page

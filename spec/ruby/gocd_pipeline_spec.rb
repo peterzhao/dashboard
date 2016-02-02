@@ -5,7 +5,8 @@ require_relative '../../lib/ju'
 describe Ju::GocdPipeline do
   let(:options){{ 
     'base_url' => 'http://abc.com/gocd',
-    'name' => 'Moose',
+    'name' => 'Moose Widge',
+    'pipeline' => 'Moose',
     'user' => 'pzhao',
     'password' => 'pw',
     'number_of_instances' => "2",
@@ -27,7 +28,7 @@ describe Ju::GocdPipeline do
   
   it 'should check pipelines from given server' do
     expect(RestClient::Request).to receive(:execute) do |request|
-      expect(request[:url]).to eq("#{options['base_url']}/go/api/pipelines/#{URI.escape(options['name'])}/history")
+      expect(request[:url]).to eq("#{options['base_url']}/go/api/pipelines/Moose/history")
       expect(request[:method]).to eq(:get)
       expect(request[:user]).to eq(options['user'])
       expect(request[:password]).to eq(options['password'])

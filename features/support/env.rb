@@ -33,6 +33,6 @@ at_exit do
 end
 
 def create_foo_board
-  config = {"widgets"=>[{"name"=>"foo", "type"=>"gocd_pipeline", "base_url"=>"http://localhost:4545", "user"=>nil, "password"=>nil, "pull_inteval"=>5, "number_of_instances"=>3, "row"=>"1", "col"=>"1", "sizex"=>"1", "sizey"=>"1", "pull-inteval"=>10000}], "board"=>"foo"}
+  config = {"widgets"=>[{"name"=>"foo", "pipeline" => "foo", "type"=>"gocd_pipeline", "base_url"=>"http://localhost:4545", "user"=>nil, "password"=>nil, "pull_inteval"=>5, "number_of_instances"=>3, "row"=>"1", "col"=>"1", "sizex"=>"1", "sizey"=>"1", "pull-inteval"=>10000}], "board"=>"foo"}
   File.open("spec/data/config/foo.json", 'w') { |file| file.write(config.to_json) }
 end

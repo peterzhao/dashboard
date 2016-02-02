@@ -8,7 +8,7 @@ Scenario: empty widget name
   Then I should be on the "EDIT WIDGET" page
   Then I change the widget name to empty
   Then I click the button "Save"
-  And I should see the error message "Widget Name cannot be empty or contain special characters"
+  And I should see the error message "Widget Name cannot be empty and should contain only alphanumeric characters, underscore and hyphen."
 
 Scenario: invalid widget name
   Given a dashboard "my-board" with a widget "widget-1"
@@ -17,7 +17,7 @@ Scenario: invalid widget name
   Then I should be on the "EDIT WIDGET" page
   Then I input "my/widget" as the "Widget Name"
   Then I click the button "Save"
-  And I should see the error message "Widget Name cannot be empty or contain special characters"
+  And I should see the error message "Widget Name cannot be empty and should contain only alphanumeric characters, underscore and hyphen."
  
 Scenario: edit widget successfully
   Given a dashboard "my-board" with a widget "widget-1"

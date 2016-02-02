@@ -2,10 +2,11 @@
   "widgets":[
     {
       "name": "cf-deployer",
+      "pipeline": "cf-deployer",
       "type": "gocd_pipeline",
       "base_url": "http://localhost:8153",
-      "user": null,
-      "password": null,
+      "user": "guest",
+      "password": "1234",
       "pull_inteval": 5,
       "number_of_instances": 3,
       "row": 1,
@@ -15,10 +16,11 @@
     },
     {
       "name": "foo",
+      "pipeline": "foo",
       "type": "gocd_pipeline",
       "base_url": "http://localhost:8153",
-      "user": null,
-      "password": null,
+      "user": "guest",
+      "password": "1234",
       "pull_inteval": 5,
       "number_of_instances": 1,
       "row": 1,

@@ -14,7 +14,7 @@ As a user, I would like to create a new dashboard so that I can organize my widg
     Then I should be in the page with title "NEW DASHBOARD"
     Then I input "my/board" as the name of the board
     Then I click the button "Create"
-    And I should see the error message "Dashboard name can only contain letters, digits, space, hyphen and underscore!"
+    And I should see the error message "Dashboard name should only contain alphanumeric characters, space, hyphen and underscore!"
 
   Scenario: board already exists
     When visit the path '/'
