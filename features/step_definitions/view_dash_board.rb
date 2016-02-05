@@ -7,7 +7,7 @@ end
 end
 
 Given(/^open a dashboard named "([^"]*)" page with widgets "([^"]*)", "([^"]*)" and "([^"]*)"\.$/) do |board_name,w1, w2, w3|
-   File.open("spec/data/config/#{board_name}.json","w"){|file|file.write({'widgets'=>[{'name'=>"#{w1}","type"=>"gocd_pipeline","base_url"=>"http://localhost:4545","col"=>1,"row"=>1,"sizex"=>1,"sizey"=>2},{'name'=>"#{w2}","type"=>"jenkins_job","base_url"=>"http://acb.com","col"=>2,"row"=>1,"sizex"=>1,"sizey"=>2},{'name'=>"#{w3}","type"=>"travis_ci","base_url"=>"http://acb.com","col"=>3,"row"=>1,"sizex"=>1,"sizey"=>2},]}.to_json)}
+   File.open("spec/data/config/#{board_name}.json","w"){|file|file.write({'widgets'=>[{'name'=>"#{w1}","type"=>"gocd_pipeline","base_url"=>"http://localhost:4545","col"=>1,"row"=>1,"sizex"=>1,"sizey"=>2},{'name'=>"#{w2}","type"=>"jenkins_job","base_url"=>"http://localhost:4545","col"=>2,"row"=>1,"sizex"=>1,"sizey"=>2},{'name'=>"#{w3}","type"=>"travis_ci","base_url"=>"http://localhost:4545","col"=>3,"row"=>1,"sizex"=>1,"sizey"=>2},]}.to_json)}
 end
 
 When(/^I go to the "([^"]*)"page$/) do |board_name|
