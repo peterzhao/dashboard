@@ -1,32 +1,48 @@
 {
   "pipelines":[
       {
-         "build_cause":{
-            "approver":"anonymous",
-            "material_revisions":[
-               {
-                  "modifications":[
-                     {
+          "build_cause":{  
+            "approver":"",
+            "material_revisions":[  
+               {  
+                  "modifications":[  
+                     {  
                         "email_address":null,
-                        "id":5,
-                        "modified_time":1444937921583,
-                        "user_name":"Unknown",
-                        "comment":"Unknown",
-                        "revision":"cf-deployer/5/build/1"
+                        "id":42,
+                        "modified_time":1454537842000,
+                        "user_name":"Lindawu",
+                        "comment":"LW added --View dashboard -- cucumber test",
+                        "revision":"58126b9235edd619d4c97a5a3a411e0094702220"
+                     },
+                     {  
+                        "email_address":null,
+                        "id":42,
+                        "modified_time":1454537842000,
+                        "user_name":"PZhao",
+                        "comment":"PZ fix build",
+                        "revision":"56126b9235edd619d4c97a5a3a411e0094702220"
+                     },
+                     {  
+                        "email_address":null,
+                        "id":42,
+                        "modified_time":1454537842000,
+                        "user_name":"Tom",
+                        "comment":"TA refactoring layout to make it nicer and clean up the unit tests as well",
+                        "revision":"56126b9235edd619d4c97a5a3a411e0094702220"
                      }
                   ],
-                  "material":{
-                     "description":"cf-deployer",
-                     "fingerprint":"1c7afcdd4f36ebb29b74e0f0903d1b3f908c7a5cf26f3207d79c318840b3aed6",
-                     "type":"Pipeline",
-                     "id":2
+                  "material":{  
+                     "description":"URL: https://github.com/peterzhao/ju.git, Branch: master",
+                     "fingerprint":"95cf70722fdc1026d3241168f13c5e17495778d7c132b82d388fd2b4112cfa1c",
+                     "type":"Git",
+                     "id":3
                   },
-                  "changed":false
+                  "changed":true
                }
             ],
-            "trigger_forced":true,
-            "trigger_message":"Forced by anonymous"
-         },
+            "trigger_forced":false,
+            "trigger_message":"modified by Lindawu168 \u003Clindawu16898@gmail.com\u003E"
+         }, 
          "name":"foo",
          "natural_order":16.0,
          "can_run":false,
@@ -34,7 +50,7 @@
          "stages":[
             {
                "name":"build",
-               "approved_by":"anonymous",
+               "approved_by":"changes",
                "jobs":[
                   {
                      "name":"build",

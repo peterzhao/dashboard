@@ -1,6 +1,5 @@
 body {
     line-height: 1.7em;
-    color: #7f8c8d;
     font-size: 13px;
 }
 h1,
@@ -120,7 +119,6 @@ label {
   font-size: 120%;
 }
 .vertical-align-block {
-  color: black;
   text-align: center;
   position: relative;
   top: 50%;

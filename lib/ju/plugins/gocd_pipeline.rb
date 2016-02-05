@@ -16,31 +16,42 @@ module Ju
 <<EOS
 <%
   pipelines = data['pipelines'] || []
+  pipelines_height = options['height'] - const[:title_height] - const[:title_padding_top]
+  pipeline_height = 1.0/pipelines.count * pipelines_height - 4
+  stages_height = pipeline_height - const[:label_height] - 4
 %>
 <div class="gocd">
   <div class="gocd-title" title="Pipeline name: <%= options['pipeline'] %>"><%= options['name'] %></div>
-  <div class="gocd-pipelines" style="height: <%= options['height'] - const[:title_height] - const[:title_padding_top] %>px">
+  <div class="gocd-pipelines" style="height: <%= pipelines_height %>px;">
     <% pipelines.each do |pipeline| %>
-      <div class="gocd-pipeline-wrapper" style="height: <%= 1.0/pipelines.count * 100 - 1 %>%; max-height: <%= 1.0/pipelines.count * 100 -1 %>%">
-        <div class="gocd-pipeline">
-          <div class="vertical-align-block gocd-build-label">
-            <div class="gocd-build-number" title="Build label: <%= pipeline['label'] %>"><%= pipeline['label'] %></div>
-            <div class="ellipseis gocd-build-label-details" title="Triggered by: <%= pipeline['triggered_by'] %>"><%= pipeline['triggered_by'] %></div>
-          </div>
-          <div class="gocd-stages" style="width: <%= options['width'] - const[:label_width] %>px">
-            <% (pipeline['stages'] || []).each do |stage| %> 
-              <div class="gocd-stage-wrapper" style="width: <%= 1.0/(pipeline['stages'] || []).count * 100 -1 %>%">
-                <div class="gocd-stage <%= (stage['result'] || '').downcase %> <%= (stage['state'] || '').downcase %>">
-                  <div class="vertical-align-block">
-                    <div class="ellipseis gocd-stage-name" title="Stage: <%= stage['name'] %>"><%= stage['name'] %></div>
-                    <% if stage['scheduled_time'] %>
-                    <div class="ellipseis gocd-stage-details" title="Started <%= stage['scheduled_time'] %>"><%= stage['scheduled_time'] %></div>
-                    <% end %>
-                  </div>
-                </div>
-              </div>
+      <div class="gocd-pipeline" style="height: <%= pipeline_height %>px;">
+        <div class="gocd-build-label">
+          <div class="gocd-build-number" title="Build label: <%= pipeline['label'] %>"><%= pipeline['label'] %></div>
+          <% (pipeline['changes'] || []).each do |change| %>
+            <% if change['author'] && change['revision'] %>
+              <% title = "Author: " + change['author']+ ", Revision: " + change['revision'] %>
             <% end %>
-          </div>
+            <div class="ellipseis gocd-build-label-details" title="<%= title %>"><%= change['message'] %></div>
+          <% end %>
+        </div>
+        <div class="gocd-stages" style="height: <%= stages_height %>px;">
+          <% stage_width = 1.0/(pipeline['stages'] || []).count * 100 - 1 %>
+          <% (pipeline['stages'] || []).each_with_index do |stage, index| %> 
+            <% state = (stage['result'] || '').downcase + ' ' +  (stage['state'] || '').downcase %>
+            <div class="gocd-stage <%= state %>" title="<%= state %>" style="width: <%= stage_width %>%;">
+              <div class="vertical-align-block">
+                <div class="ellipseis gocd-stage-name" title="Stage: <%= stage['name'] %>"><%= stage['name'] %></div>
+                <% if stages_height > 20 %>
+                  <% if stage['scheduled_time'] %>
+                    <div class="gocd-stage-details" title="Started <%= stage['scheduled_time'] %>"><%= stage['scheduled_time'] %></div>
+                  <% end %>
+                  <% if stage['approved_by'] %>
+                    <div class="gocd-stage-details" title="Triggered by <%= stage['approved_by'] %>">by <%= stage['approved_by'] %></div>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
         </div>
       </div>
     <% end %>
@@ -53,53 +64,56 @@ EOS
 <<EOS
 .gocd-title {
  text-align: center;
- color: black;
  font-weight: 600;
  font-size: 120%;
  padding-top: #{const[:title_padding_top]}px;
  height: #{const[:title_height]}px;
 }
 .unscheduled {
- visibility: hidden;
-}
-.gocd-pipeline-wrapper {
-  clear: both;
-  width: 100%;
+  background-color: #cccccc;
+  color: #777777;
 }
 .gocd-pipeline {
-  height: 95%;
+  clear: both;
+  width: 100%;
+  margin: 2px 0px 2px 0px;
+  background-color: #6FBEF3;
+  overflow: hidden;
 }
 .gocd-build-label {
-  float: left;
-  width: #{const[:label_width]}px;
   font-size: 80%;
+  max-height: #{const[:label_height] *2 }px;
+  min-height: #{const[:label_height]}px;
   line-height: normal; 
-  overflow: hidden;
+  overflow: auto;
 }
 .gocd-build-number {
   font-weight: 600;
   font-size: 120%;
+  float: left;
+  margin: 2px 3px 2px 3px;
+}
+.gocd-build-label-details {
+  margin: 2px 2px 2px 2px;
 }
 .gocd-stages {
-  float: left;
-  height: 100%;
-}
-.gocd-stage-wrapper {
-  height: 100%;
-  float: left;
+  clear: both;
 }
 .gocd-stage {
+  float: left;
   height: 100%;
-  width: 98%;
   border-radius: 3px;
   line-height: normal; 
+  margin-right: 2px;
+  overflow: hidden;
 }
 .gocd-stage-name {
- font-size: 100%;
+  font-size: 100%;
+  margin: 2px 2px 2px 2px;
 }
 .gocd-stage-details {
   font-size: 80%;
-  color: #333333;
+  margin: 2px 2px 2px 2px;
 }
 
 EOS
@@ -163,7 +177,8 @@ EOS
       {
         title_height: 27, 
         title_padding_top: 3,
-        label_width: 80
+        label_width: 80,
+        label_height: 15,
       }
     end
 
@@ -171,7 +186,7 @@ EOS
       def self.transform(response, number_of_instances)
         response['pipelines'] = response['pipelines'][0..(number_of_instances.to_i - 1)] 
         response['pipelines'].each do |pipeline|
-          pipeline['triggered_by'] = "by #{pipeline['stages'].first['approved_by']}"
+          pipeline['changes'] = transform_changes(pipeline)
           pipeline['stages'].each do |stage|
             transform_stage(stage)
           end
@@ -180,6 +195,29 @@ EOS
       end
 
       private 
+
+      def self.transform_changes(pipeline)
+        changes = []
+        pipeline['build_cause'] ||= {}
+        revisions = (pipeline['build_cause']['material_revisions'] || []).select{ |r| r['changed'] == true }
+        revisions.each do |revision|
+          revision['modifications'].each do |modification|
+            type = revision['material']['type']
+            change = { 'type' => type }
+            if type == 'Pipeline'
+              change['message'] = modification['revision']
+            else
+              change['message'] = modification['comment']
+              change['author'] = modification['user_name']
+              change['revision'] = modification['revision']
+              change['revision'] = change['revision'][0..6] if change['type'] == 'Git'
+            end
+            changes << change
+          end
+        end
+        changes << {'message' => 'no change'} if changes.empty?
+        changes
+      end
 
       def self.transform_stage(stage)
         stage['result'] = 'Unknown' unless stage['result']

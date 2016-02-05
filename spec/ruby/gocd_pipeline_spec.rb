@@ -40,18 +40,13 @@ describe Ju::GocdPipeline do
     
     expect(pipeline_data).to include('<div class="gocd">') 
     expect(pipeline_data).to include('title="Pipeline name: Moose"') 
-    expect(pipeline_data).to include('title="Triggered by: Peter"') 
     expect(pipeline_data).to include('title="Started 2 minutes ago"') 
     expect(pipeline_data).to include('title="Build label: 16"') 
     expect(pipeline_data).to include('title="Build label: 17"') 
     expect(pipeline_data).to include('title="Stage: build"') 
     expect(pipeline_data).to include('title="Stage: deploy"') 
-    expect(pipeline_data).to include('style="height: 170px"') 
-    expect(pipeline_data).to include('style="width: 320px"') 
     expect(pipeline_data).to include('class="gocd-stage unknown building"') 
     expect(pipeline_data).to include('class="gocd-stage failed "') 
-    expect(pipeline_data).to include('style="height: 49.0%; max-height: 49.0%"') 
-    expect(pipeline_data).to include('style="width: 49.0%"') 
     expect(@plugin.data).to eq(transformer_response)
   end
 
