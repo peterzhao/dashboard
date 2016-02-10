@@ -40,7 +40,8 @@ module Ju
             <% state = (stage['result'] || '').downcase + ' ' +  (stage['state'] || '').downcase %>
             <div class="gocd-stage <%= state %>" title="<%= state %>" style="width: <%= stage_width %>%;">
               <div class="vertical-align-block">
-                <div class="ellipseis gocd-stage-name" title="Stage: <%= stage['name'] %>"><%= stage['name'] %></div>
+                <% stage_name_style = stages_height > 20 ? "" : "font-size: 70%; margin: 0px;" %>
+                <div class="ellipseis gocd-stage-name" style="<%= stage_name_style %>" title="Stage: <%= stage['name'] %>"><%= stage['name'] %></div>
                 <% if stages_height > 20 %>
                   <% if stage['scheduled_time'] %>
                     <div class="gocd-stage-details" title="Started <%= stage['scheduled_time'] %>"><%= stage['scheduled_time'] %></div>
