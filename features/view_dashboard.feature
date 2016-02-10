@@ -6,30 +6,15 @@
   When I go to the "white-board" page
    Then I shouldn't see any "widget" box.
   
-   Scenario: a pipeline widget is correctly shown on a dash-board page.
-     Given open a dashboard named "Test-board" page with a widget table
+   Scenario: widgets are correctly shown on a dash-board page.
+   Given a dashboard named "test-board" page with widgets
      |widget         | type         |
-     |Pipeline_widget| gocd_pipeline|
-  When I go to the "Test-board"page
-  Then I should see the widgets table
-       |widget         |
-       |Pipeline_widget|
-
- Scenario: a jekins widget is correctly shown on a dash-board page.
-      Given open a dashboard named "Test-board" page with a widget table
-      |widget         | type         |
-      |Jekins_widget  | jenkins_job  |
-   When I go to the "Test-board"page
-   Then I should see the widgets table
-        |widget         |
-        |Jekins_widget|
-
- Scenario: a travis widget is correctly shown on a dash-board page.
-      Given open a dashboard named "Test-board" page with a widget table
-      |widget         | type         |
-      |Travis_widget  | travis_ci    |
-   When I go to the "Test-board"page
-   Then I should see the widgets table
-        |widget         |
-        |Travis_widget  |
-
+     |gocd           | gocd_pipeline|
+     |jenkins        | jenkins_job|
+     |travis         | travis_ci|
+   When I go to the "test-board"page
+   Then I should see the widgets
+       |widget       |
+       |gocd         |
+       |jenkins      |
+       |travis       |
