@@ -6,13 +6,6 @@ Then(/^I shouldn't see any "([^"]*)" box\.$/) do |text|
   expect(page).not_to have_content(text)
 end
 
-Transform /^table:widget $/ do |table|
-   table.map_headers!{|header|header.downcase.to_sym}
-   table.map_column!(:widget){|widget|widget.find_by_name(widget)}
-   table.map_column!(:type){|type|type.find_by_name(type)}
-   table
-end
-
 Given(/^a dashboard named "([^"]*)" page with widgets$/) do |board_name, table|
   widgets = []
   table.hashes.each_with_index do |row, index|
