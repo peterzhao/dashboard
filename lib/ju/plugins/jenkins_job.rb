@@ -30,8 +30,7 @@ module Ju
           <div class="jenkins-build-details vertical-align-block" style="width: <%= options['width'] - const[:build_number_width]%>px">
               <% build['changes'].each do |change| %>
                 <div class="jenkins-build-info" title="Author: <%= change['author'] %>, Message: <%= change['message'] %>, Commit ID: <%= change['commitId'] %>">
-                  <span class="jenkins-build-author"><%= change['author'] %>: </span>
-                  <span class="jenkins-build-message"><%= change['message'] %></span>
+                  <%= change['message'] %>
                 </div>
               <% end %>
               <% if build['changes'].empty? %>
@@ -65,6 +64,7 @@ EOS
 .jenkins-build {
   height: 95%;
   overflow: hidden;
+  border-radius: 3px;
 }
 .jenkins-build-title{
   float: left;
@@ -77,9 +77,6 @@ EOS
   font-size: 80%;
   line-height: normal; 
   overflow: hidden;
-}
-.jenkins-build-author {
-  font-weight: 600;
 }
 .jenkins-build-number {
   font-weight: 600;

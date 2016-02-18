@@ -25,12 +25,11 @@ module Ju
         <div class="travis-build <%= build['state'] %>">
           <div class="travis-build-title vertical-align-block">
               <div class="travis-build-number" title="Build number: <%= build['number'] %>"><%= build['number'] %></div>
-              <div class="ellipseis travis-build-info" title="Triggered by: <%= build['author'] %>">by <%= build['author'] %></div>
+              <div class="ellipseis travis-build-info" title="Started <%= build['started_at'] %>"><%= build['started_at'] %></div>
           </div>
           <div class="travis-build-details vertical-align-block">
-              <div class="ellipseis travis-build-info" title="Started <%= build['started_at'] %>"><%= build['started_at'] %></div>
-              <div class="ellipseis travis-build-info">commit: <%= build['commit_sha'] %></div>
-              <div class="ellipseis travis-build-info">branch: <%= build['branch'] %></div>
+              <div class="ellipseis travis-build-info" title="Triggered by: <%= build['author'] %>"><%= build['message'] %></div>
+              <div class="ellipseis travis-build-info">commit: <%= build['commit_sha'] %> branch: <%= build['branch'] %></div>
           </div>
         </div>
       </div>
@@ -57,6 +56,7 @@ EOS
 .travis-build {
   height: 95%;
   overflow: hidden;
+  border-radius: 3px;
 }
 .travis-build-title{
   float: left;
@@ -156,7 +156,8 @@ EOS
           'author' => commit['author_name'],
           'started_at' => build['started_at'] ? "#{Ju::TimeConverter.ago_in_words(Time.parse(build['started_at']).to_i * 1000)} ago" : nil,
           'branch' => commit['branch'],
-          'commit_sha' => commit['sha'][0..6]
+          'commit_sha' => commit['sha'][0..6],
+          'message' => commit['message']
         }
       end 
 
