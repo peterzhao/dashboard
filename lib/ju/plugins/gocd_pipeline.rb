@@ -18,7 +18,7 @@ module Ju
   pipelines = data['pipelines'] || []
   pipelines_height = options['height'] - const[:title_height] - const[:title_padding_top]
   pipeline_height = 1.0/pipelines.count * pipelines_height - 4
-  stages_height = pipeline_height - const[:label_height] - 8
+  stages_height = pipeline_height - const[:label_height] - 18 
 %>
 <div class="gocd">
   <div class="gocd-title" title="Pipeline name: <%= options['pipeline'] %>"><%= options['name'] %></div>
@@ -35,22 +35,20 @@ module Ju
           <% end %>
         </div>
         <div class="gocd-stages" style="height: <%= stages_height %>px;">
-          <% stage_width = 1.0/(pipeline['stages'] || []).count * 100 - 1 %>
+          <% stage_width = 1.0/(pipeline['stages'] || []).count * options['width'] - 3 %>
           <% (pipeline['stages'] || []).each_with_index do |stage, index| %> 
             <% state = (stage['result'] || '').downcase + ' ' +  (stage['state'] || '').downcase %>
-            <div class="gocd-stage <%= state %>" title="<%= state %>" style="width: <%= stage_width %>%;">
-              <div class="vertical-align-block">
-                <% stage_name_style = stages_height > 20 ? "" : "font-size: 70%; margin: 0px;" %>
-                <div class="ellipseis gocd-stage-name" style="<%= stage_name_style %>" title="Stage: <%= stage['name'] %>"><%= stage['name'] %></div>
-                <% if stages_height > 20 %>
-                  <% if stage['scheduled_time'] %>
-                    <div class="gocd-stage-details" title="Started <%= stage['scheduled_time'] %>"><%= stage['scheduled_time'] %></div>
-                  <% end %>
-                  <% if stage['approved_by'] %>
-                    <div class="gocd-stage-details" title="Triggered by <%= stage['approved_by'] %>">by <%= stage['approved_by'] %></div>
-                  <% end %>
+            <div class="gocd-stage <%= state %>" title="Result: <%= stage['result'] %>" style="width: <%= stage_width %>px;%">
+              <% stage_name_style = stages_height > 20 ? "" : "font-size: 70%; margin: 0px;" %>
+              <div class="ellipseis gocd-stage-name" style="<%= stage_name_style %>" title="Stage: <%= stage['name'] %>"><%= stage['name'] %></div>
+              <% if stages_height > 20 %>
+                <% if stage['approved_by'] && stage['approved_by'] != 'changes' %>
+                  <div class="gocd-stage-details" title="Triggered by <%= stage['approved_by'] %>">by <%= stage['approved_by'] %></div>
                 <% end %>
-              </div>
+                <% if stage['scheduled_time'] %>
+                  <div class="gocd-stage-details" title="Started <%= stage['scheduled_time'] %>"><%= stage['scheduled_time'] %></div>
+                <% end %>
+              <% end %>
             </div>
           <% end %>
         </div>
@@ -77,9 +75,10 @@ EOS
 .gocd-pipeline {
   clear: both;
   width: 100%;
-  margin: 2px 0px 2px 0px;
+  margin: 2px 0px 3px 0px;
   background-color: #6FBEF3;
   overflow: hidden;
+  border-radius: 3px;
 }
 .gocd-build-label {
   font-size: 80%;
@@ -106,7 +105,7 @@ EOS
   height: 100%;
   border-radius: 3px;
   line-height: normal; 
-  margin-right: 2px;
+  margin-right: 4px;
   overflow: hidden;
 }
 .gocd-stage-name {
@@ -116,6 +115,8 @@ EOS
 .gocd-stage-details {
   font-size: 80%;
   margin: 2px 2px 2px 2px;
+  float: left;
+  line-height: 70%; 
 }
 
 EOS
