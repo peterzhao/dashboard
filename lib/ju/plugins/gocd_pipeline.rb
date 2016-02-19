@@ -18,7 +18,7 @@ module Ju
   pipelines = data['pipelines'] || []
   pipelines_height = options['height'] - const[:title_height] - const[:title_padding_top]
   pipeline_height = 1.0/pipelines.count * pipelines_height - 4
-  stages_height = pipeline_height - const[:label_height] - 18 
+  stages_height = pipeline_height - const[:label_height] - 8 
 %>
 <div class="gocd">
   <div class="gocd-title" title="Pipeline name: <%= options['pipeline'] %>"><%= options['name'] %></div>
@@ -75,7 +75,7 @@ EOS
 .gocd-pipeline {
   clear: both;
   width: 100%;
-  margin: 2px 0px 3px 0px;
+  margin: 2px 0px 4px 0px;
   background-color: #6FBEF3;
   overflow: hidden;
   border-radius: 3px;
@@ -110,11 +110,11 @@ EOS
 }
 .gocd-stage-name {
   font-size: 100%;
-  margin: 2px 2px 2px 2px;
+  margin: 2px 2px 2px 4px;
 }
 .gocd-stage-details {
   font-size: 80%;
-  margin: 2px 2px 2px 2px;
+  margin: 2px 2px 2px 4px;
   float: left;
   line-height: 70%; 
 }

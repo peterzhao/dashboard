@@ -60,11 +60,10 @@ EOS
 }
 .travis-build-title{
   float: left;
-  width: 50%
+  padding: 3px;
 }
 .travis-build-details{
   float: left;
-  width: 50%;
 }
 .travis-build-info {
   font-size: 80%;
