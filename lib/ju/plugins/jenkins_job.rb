@@ -27,9 +27,9 @@ module Ju
               <div class="jenkins-build-number" title="Build number: <%= build['number'] %>"><%= build['number'] %></div>
               <div class="ellipseis jenkins-build-info" title="Started <%= build['started'] %>"><%= build['started'] %></div>
           </div>
-          <div class="jenkins-build-details vertical-align-block" style="width: <%= options['width'] - const[:build_number_width]%>px">
+          <div class="jenkins-build-details vertical-align-block" style="width: <%= options['width'] - const[:build_number_width] - 3 %>px">
               <% build['changes'].each do |change| %>
-                <div class="jenkins-build-info" title="Author: <%= change['author'] %>, Message: <%= change['message'] %>, Commit ID: <%= change['commitId'] %>">
+                <div class="jenkins-build-info jenkins-change-message" title="Author: <%= change['author'] %>, Message: <%= change['message'] %>, Commit ID: <%= change['commitId'] %>">
                   <%= change['message'] %>
                 </div>
               <% end %>
@@ -72,15 +72,19 @@ EOS
 }
 .jenkins-build-details{
   float: left;
+  overflow: hidden;
 }
 .jenkins-build-info {
-  font-size: 80%;
+  font-size: 90%;
   line-height: normal; 
   overflow: hidden;
 }
 .jenkins-build-number {
   font-weight: 600;
-  font-size: 120%;
+  font-size: 140%;
+}
+.jenkins-change-message {
+  font-size: 100%;
 }
 EOS
     end

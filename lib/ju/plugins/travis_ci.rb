@@ -27,9 +27,9 @@ module Ju
               <div class="travis-build-number" title="Build number: <%= build['number'] %>"><%= build['number'] %></div>
               <div class="ellipseis travis-build-info" title="Started <%= build['started_at'] %>"><%= build['started_at'] %></div>
           </div>
-          <div class="travis-build-details vertical-align-block">
-              <div class="ellipseis travis-build-info" title="Triggered by: <%= build['author'] %>"><%= build['message'] %></div>
-              <div class="ellipseis travis-build-info">commit: <%= build['commit_sha'] %> branch: <%= build['branch'] %></div>
+          <div class="travis-build-details vertical-align-block" style="width: <%= options['width'] - const[:build_title_width] - 4 %>px">
+              <div class="travis-build-info travis-change-message" title="Triggered by: <%= build['author'] %>"><%= build['message'] %></div>
+              <div class="travis-build-info">commit: <%= build['commit_sha'] %> branch: <%= build['branch'] %></div>
           </div>
         </div>
       </div>
@@ -59,19 +59,24 @@ EOS
   border-radius: 3px;
 }
 .travis-build-title{
+  width: #{const[:build_title_width]}px;
   float: left;
   padding: 3px;
 }
 .travis-build-details{
   float: left;
+  overflow: hidden;
 }
 .travis-build-info {
-  font-size: 80%;
+  font-size: 90%;
   line-height: normal; 
 }
 .travis-build-number {
   font-weight: 600;
-  font-size: 120%;
+  font-size: 140%;
+}
+.travis-change-message {
+  font-size: 100%;
 }
 EOS
     end
@@ -131,6 +136,7 @@ EOS
     def const
       {
         title_height: 27, 
+        build_title_width: 80, 
         title_padding_top: 3
       }
     end
