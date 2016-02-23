@@ -87,7 +87,7 @@
       var loader = new Dashboard.WidgetLoader("<%=config['board'] %>", id, base_width, base_height, $(widget).attr('pull-inteval'), $(widget).attr('data-sizex'), $(widget).attr('data-sizey'));
       widget_models[id] = loader;
       loader.pull_success_handler = function(widget_name, html){
-        $("#" + widget_name.replace(' ', '-') + " .pull-result").html(html);
+        $("#" + widget_name.replace(/ /g, '-') + " .pull-result").html(html);
       };
       ko.applyBindings(loader, widget);
       loader.startPull();
