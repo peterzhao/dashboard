@@ -77,7 +77,6 @@ EOS
 .jenkins-build-info {
   font-size: 90%;
   line-height: normal; 
-  overflow: hidden;
 }
 .jenkins-build-number {
   font-weight: 600;
@@ -150,7 +149,7 @@ EOS
     def const
       {
         title_height: 27, 
-        build_number_width: 80,
+        build_number_width: 84,
         title_padding_top: 3
       }
     end

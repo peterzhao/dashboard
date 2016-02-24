@@ -136,7 +136,7 @@ EOS
     def const
       {
         title_height: 27, 
-        build_title_width: 80, 
+        build_title_width: 84, 
         title_padding_top: 3
       }
     end
