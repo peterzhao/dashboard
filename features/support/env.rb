@@ -18,7 +18,7 @@ Before do
       $headless.start
     end
     create_foo_board
-    system 'sh stop_server.sh; DATA_PATH=spec/data sh start_server.sh'
+    system 'sh stop_server.sh; no_cache=true DATA_PATH=spec/data sh start_server.sh'
     FileUtils.rm_rf(Dir.glob("screenshots/*"))
     $setup = true
   end

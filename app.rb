@@ -71,7 +71,7 @@ get '/boards/new' do
 end
 
 get '/boards/:board_name' do
-  cache_control :public, :max_age => 3
+  cache_control :public, :max_age => 3 unless ENV['no_cache'] == 'true'
   config = Ju::Config.get_board_config(params['board_name'])
   other_boards = Ju::Config.get_all_boards - [params['board_name']]
   session['last_board'] = params['board_name']
@@ -141,7 +141,7 @@ end
 
 
 get '/boards/:board_name/widgets/:widget_name' do
-  cache_control :public, :max_age => 3 # to avoid too much pull to the remote server
+  cache_control :public, :max_age => 3 unless ENV['no_cache'] == 'true' # to avoid too much pull to the remote server
   widget = Ju::Config.get_widget_config(params['board_name'], params['widget_name'])
   Ju::Plugin.check(widget['type'], widget)
 end
