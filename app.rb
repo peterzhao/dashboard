@@ -1,10 +1,12 @@
 require 'sinatra'
 require 'json'
 require 'sinatra/flash'
+require 'rack/cache'
 require_relative 'lib/ju/exception_handling'
 
 use Rack::MethodOverride
 use Ju::ExceptionHandling
+use Rack::Cache
 enable :sessions
 set :bind, '0.0.0.0'
 set :dump_errors, false
@@ -69,6 +71,7 @@ get '/boards/new' do
 end
 
 get '/boards/:board_name' do
+  cache_control :public, :max_age => 3
   config = Ju::Config.get_board_config(params['board_name'])
   other_boards = Ju::Config.get_all_boards - [params['board_name']]
   session['last_board'] = params['board_name']
@@ -138,6 +141,7 @@ end
 
 
 get '/boards/:board_name/widgets/:widget_name' do
+  cache_control :public, :max_age => 3 # to avoid too much pull to the remote server
   widget = Ju::Config.get_widget_config(params['board_name'], params['widget_name'])
   Ju::Plugin.check(widget['type'], widget)
 end
