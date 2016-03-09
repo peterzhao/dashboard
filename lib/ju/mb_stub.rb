@@ -2,13 +2,17 @@ require 'rest-client'
 
 module Ju
   def self.mb_stub(json_file, port = nil)
+    json = File.read(json_file)
+    mb_stub_from_json(json, port)
+  end
+    
+  def self.mb_stub_from_json(json, port = nil)
     port ||= (ENV['port'] || 4545)
-    json_response = File.read(json_file)
     data = {
       'port' => port,
       'protocol' => 'http',
       'stubs' => [{
-        'responses' => [{ 'is' => { 'body' => json_response } }]
+        'responses' => [{ 'is' => { 'body' => json } }]
       }]
     }
 
