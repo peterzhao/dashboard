@@ -13,8 +13,9 @@ end
 
 When(/^the widget 'my\-widget' should contain the build info$/) do |table|
   table.hashes.each do |row|
-    expect(page).to have_css('.gocd-build-number', text:"#{row[:build_label]}")
-    expect(page).to have_css('.gocd-stage-name', text:"#{row[:result]}")
-    expect(page).to have_css('.gocd-build-label-details',text:"#{row[:commit_message]}")
+    within(find('.gocd-build-number',text:"#{row[:build_label]}").find(:xpath, "..").find(:xpath,"..")) do
+      expect(find('.gocd-build-label-details')).to have_text(row[:commit_message])
+      expect(find('.gocd-stage.'"#{row[:result]}")).not_to be_nil
+    end
   end
 end
