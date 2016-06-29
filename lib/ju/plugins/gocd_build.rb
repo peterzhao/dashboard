@@ -3,7 +3,7 @@ require 'json'
 require 'erb'
 
 module Ju
-  class GocdPipeline < Ju::Plugin
+  class GocdBuild < Ju::Plugin
     attr_reader :data
 
     def check
@@ -15,45 +15,31 @@ module Ju
     def template
 <<EOS
 <%
-  pipelines = data['pipelines'] || []
-  pipelines_height = options['height'] - const[:title_height] - const[:title_padding_top]
-  pipeline_height = 1.0/pipelines.count * pipelines_height - 4
-  stages_height = pipeline_height - const[:label_height] - 16 
+  pipeline = data || []
+  stage = pipeline['stage'] || []
+  build_height = options['height'] - const[:title_height] - const[:title_padding_top]
+  state = (stage['result'] || '').downcase + ' ' +  (stage['state'] || '').downcase
 %>
-<div class="gocd">
-  <div class="gocd-title" title="Pipeline name: <%= options['pipeline'] %>"><%= options['name'] %></div>
-  <div class="gocd-pipelines" style="height: <%= pipelines_height %>px;">
-    <% pipelines.each do |pipeline| %>
-      <div class="gocd-pipeline" style="height: <%= pipeline_height %>px;">
-        <div class="gocd-build-label">
-          <div class="gocd-build-number" title="Build label: <%= pipeline['label'] %>"><%= pipeline['label'] %></div>
-          <% (pipeline['changes'] || []).each do |change| %>
-            <% if change['author'] && change['revision'] %>
-              <% title = "Author: " + change['author']+ ", Revision: " + change['revision'] %>
-            <% end %>
-            <div class="ellipseis gocd-build-label-details" title="<%= title %>"><%= change['message'] %></div>
-          <% end %>
-        </div>
-        <div class="gocd-stages" style="height: <%= stages_height %>px;">
-          <% stage_width = 1.0/(pipeline['stages'] || []).count * options['width'] - 3 %>
-          <% (pipeline['stages'] || []).each_with_index do |stage, index| %> 
-            <% state = (stage['result'] || '').downcase + ' ' +  (stage['state'] || '').downcase %>
-            <div class="gocd-stage <%= state %>" title="Result: <%= stage['result'] %>" style="width: <%= stage_width %>px;%">
-              <% stage_name_style = stages_height > 20 ? "" : "font-size: 70%; margin: 0px;" %>
-              <div class="ellipseis gocd-stage-name" style="<%= stage_name_style %>" title="Stage: <%= stage['name'] %>"><%= stage['name'] %></div>
-              <% if stages_height > 20 %>
-                <% if stage['approved_by'] && stage['approved_by'] != 'changes' %>
-                  <div class="gocd-stage-details" title="Triggered by <%= stage['approved_by'] %>">by <%= stage['approved_by'] %></div>
-                <% end %>
-                <% if stage['scheduled_time'] %>
-                  <div class="gocd-stage-details" title="Started <%= stage['scheduled_time'] %>"><%= stage['scheduled_time'] %></div>
-                <% end %>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
+<div class="gocdbuild <%= state %>" title="Result: <%= stage['result'] %>">
+  <div class="gocdbuild-header" title="Build: <%= options['pipeline'] %>.<%= options['stage']%>"><%= options['name'] %></div>
+  <div class="gocdbuild-body" style="height: <%= build_height %>px;">
+    <div class="gocdbuild-title">
+      <div class="gocdbuild-label" title="Build label: <%= pipeline['label'] %>"><%= pipeline['label'] %></div>
+      <% if stage['approved_by'] && stage['approved_by'] != 'changes' %>
+        <div class="gocdbuild-title-detail" title="Triggered by <%= stage['approved_by'] %>">by <%= stage['approved_by'] %></div>
+      <% end %>
+      <% if stage['scheduled_time'] %>
+        <div class="gocdbuild-title-detail" title="Started <%= stage['scheduled_time'] %>"><%= stage['scheduled_time'] %></div>
+      <% end %>
+    </div>
+    <div class="gocdbuild-messages">
+      <% (pipeline['changes'] || []).each do |change| %>
+        <% if change['author'] && change['revision'] %>
+          <% title = "Author: " + change['author']+ ", Revision: " + change['revision'] %>
+        <% end %>
+        <div class="ellipseis gocdbuild-message" title="<%= title %>"><%= change['message'] %></div>
+      <% end %>
+    </div>
   </div>
 </div>
 EOS
@@ -61,10 +47,10 @@ EOS
 
     def style
 <<EOS
-.gocd-title {
+.gocdbuild-header {
  text-align: center;
  font-weight: 600;
- font-size: 120%;
+ font-size: 150%;
  padding-top: #{const[:title_padding_top]}px;
  height: #{const[:title_height]}px;
 }
@@ -72,45 +58,31 @@ EOS
   background-color: #cccccc;
   color: #777777;
 }
-.gocd-pipeline {
+.gocdbuild {
   clear: both;
   width: 100%;
-  margin: 2px 0px 4px 0px;
-  background-color: #6FBEF3;
+  margin: 0px;
   overflow: hidden;
   border-radius: 3px;
 }
-.gocd-build-label {
-  font-size: 100%;
+.gocdbuild-label {
+  font-size: 160%;
+  font-weight: 600;
   max-height: #{const[:label_height] *2 }px;
   min-height: #{const[:label_height]}px;
   line-height: normal; 
   overflow: auto;
-}
-.gocd-build-number {
-  font-weight: 600;
-  font-size: 140%;
   float: left;
   margin: 0px 4px 0px 4px;
 }
-.gocd-build-label-details {
-  margin: 2px 2px 2px 2px;
-}
-.gocd-stages {
-  clear: both;
-  margin: 0px 0px 4px 4px;
-}
-.gocd-stage {
+.gocdbuild-title-detail {
+  margin: 2px 6px 2px 6px;
   float: left;
-  height: 100%;
-  border-radius: 3px;
-  line-height: normal; 
-  margin-right: 4px;
-  overflow: hidden;
+  font-style: italic;
 }
-.gocd-stage-name {
-  font-size: 110%;
-  margin: 2px 2px 2px 6px;
+.gocdbuild-messages {
+  clear: both;
+  margin: 0px 6px 2px 6px;
 }
 .gocd-stage-details {
   font-size: 80%;
@@ -131,6 +103,12 @@ EOS
             'validation_message' => 'Pipeline Name cannot be empty and should contain only alphanumeric characters, underscore and period.'
           },
           {
+            'name' => 'stage',
+            'description' => 'Stage Name',
+            'validate' => '^[0-9a-zA-Z._]+$',
+            'validation_message' => 'Stage Name cannot be empty and should contain only alphanumeric characters, underscore and period.'
+          },
+          {
             'name' => 'base_url',
             'description' => 'Server Base URL',
             'validate' => '^[0-9a-zA-Z\-_:/.]+$',
@@ -147,13 +125,6 @@ EOS
             'description' => 'Password',
             'validate' => '^.*$',
             'validation_message' => 'Password can be any characters.'
-          },
-          {
-            'name' => 'number_of_instances',
-            'description' => 'Number of Instances',
-            'validate' => '^[0-9]+$',
-            'validation_message' => 'Number of Instances must be digits.',
-            'default' => 3
           }
       ]
     end
@@ -172,13 +143,13 @@ EOS
         #return {'error' => e.message} 
         raise Ju::RemoteConnectionError.new("Failed to get GOCD pipeline information. #{e.message}")
       end
-      Transformer.transform(JSON.parse(response), options['number_of_instances'])
+      Transformer.transform(JSON.parse(response), options['stage'])
     end
 
     # to avoid constant already defined warning when reloading class
     def const
       {
-        title_height: 27, 
+        title_height: 36, 
         title_padding_top: 3,
         label_width: 80,
         label_height: 15,
@@ -186,15 +157,14 @@ EOS
     end
 
     class Transformer
-      def self.transform(response, number_of_instances)
-        response['pipelines'] = response['pipelines'][0..(number_of_instances.to_i - 1)] 
-        response['pipelines'].each do |pipeline|
-          pipeline['changes'] = transform_changes(pipeline)
-          pipeline['stages'].each do |stage|
-            transform_stage(stage)
-          end
-        end
-        response
+      def self.transform(response, stage_name)
+        pipeline = response['pipelines'].first
+        pipeline['changes'] = transform_changes(pipeline)
+        stage = pipeline['stages'].find{ |s| s["name"] == stage_name }
+        transform_stage(stage)
+        pipeline['stage'] = stage
+        pipeline.delete("pipelines")
+        pipeline
       end
 
       private 
@@ -241,6 +211,4 @@ EOS
   end
 end
 
-
-
-Ju::Plugin.register('gocd_pipeline', Ju::GocdPipeline)
+Ju::Plugin.register('gocd_build', Ju::GocdBuild)
